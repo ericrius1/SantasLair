@@ -28,7 +28,7 @@ FW.World = class World
     @midPointZ = 10
     @dougCounter = 0
     window.currentPoint = 0
-    window.totalPoints = 500
+    window.totalPoints = 200
 
     # CAMERA
     FW.camera = new THREE.PerspectiveCamera(55.0, @SCREEN_WIDTH / @SCREEN_HEIGHT, 1, @camFar)
@@ -49,10 +49,6 @@ FW.World = class World
     FW.scene = new THREE.Scene()
 
 
-    #DOUG
-    @swirl = new FW.Swirl()
-    @dougStuff()
-    
     # RENDERER
     FW.Renderer = new THREE.WebGLRenderer()
     FW.Renderer.setSize @SCREEN_WIDTH, @SCREEN_HEIGHT
@@ -95,6 +91,14 @@ FW.World = class World
     for i in [1..40]
       @trees.push new FW.Tree(new THREE.Vector3(rnd(-2000, 2000), 0, rnd(-2000, 2000)))
 
+    #DOUG
+    @swirl = new FW.Swirl()
+    @laser = new FW.Laser()
+    setTimeout(()=>
+      @activateLaser()
+    5000)
+    @dougStuff()
+    
 
 
     # EVENTS
@@ -123,6 +127,7 @@ FW.World = class World
     FW.camera.position.y = @startingY
     @meteor.tick()
     @stars.tick()
+    @laser.tick()
     # for tree in @trees
       # tree.tick()
     @water.render()
@@ -152,13 +157,11 @@ FW.World = class World
     50)
 
     
-
-
-
-
+  activateLaser: ->
+    @laser.activate()
 
   point: (x, z, color, size)->
-    @swirl.swirlGroup.triggerPoolEmitter 1, new THREE.Vector3(x, 100, z), @newColor
+    @swirl.swirlGroup.triggerPoolEmitter 1, new THREE.Vector3(x, 100, z)
 
   
 

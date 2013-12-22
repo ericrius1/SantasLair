@@ -37,7 +37,7 @@
       this.midPointZ = 10;
       this.dougCounter = 0;
       window.currentPoint = 0;
-      window.totalPoints = 500;
+      window.totalPoints = 200;
       FW.camera = new THREE.PerspectiveCamera(55.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, this.startingY, 400);
       FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
@@ -49,8 +49,6 @@
         this.controls.flyEnabled = true;
       }
       FW.scene = new THREE.Scene();
-      this.swirl = new FW.Swirl();
-      this.dougStuff();
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
@@ -79,6 +77,12 @@
       for (i = _i = 1; _i <= 40; i = ++_i) {
         this.trees.push(new FW.Tree(new THREE.Vector3(rnd(-2000, 2000), 0, rnd(-2000, 2000))));
       }
+      this.swirl = new FW.Swirl();
+      this.laser = new FW.Laser();
+      setTimeout(function() {
+        return _this.activateLaser();
+      }, 5000);
+      this.dougStuff();
       window.addEventListener("resize", (function() {
         return _this.onWindowResize();
       }), false);
@@ -107,6 +111,7 @@
       FW.camera.position.y = this.startingY;
       this.meteor.tick();
       this.stars.tick();
+      this.laser.tick();
       this.water.render();
       return FW.Renderer.render(FW.scene, FW.camera);
     };
@@ -137,8 +142,12 @@
       }, 50);
     };
 
+    World.prototype.activateLaser = function() {
+      return this.laser.activate();
+    };
+
     World.prototype.point = function(x, z, color, size) {
-      return this.swirl.swirlGroup.triggerPoolEmitter(1, new THREE.Vector3(x, 100, z), this.newColor);
+      return this.swirl.swirlGroup.triggerPoolEmitter(1, new THREE.Vector3(x, 100, z));
     };
 
     return World;

@@ -7,7 +7,7 @@ FW.Swirl = class Swirl
       maxAge: 10
     });
 
-    for i in [1..50000]
+    for i in [1..10000]
       @swirlGroup.addPool 1, @generateNode(), false
     FW.scene.add(@swirlGroup.mesh)
 

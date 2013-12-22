@@ -13,7 +13,7 @@
         texture: THREE.ImageUtils.loadTexture('assets/star.png'),
         maxAge: 10
       });
-      for (i = _i = 1; _i <= 50000; i = ++_i) {
+      for (i = _i = 1; _i <= 10000; i = ++_i) {
         this.swirlGroup.addPool(1, this.generateNode(), false);
       }
       FW.scene.add(this.swirlGroup.mesh);
