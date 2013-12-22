@@ -6,53 +6,44 @@
 
     rnd = FW.rnd;
 
-    function Tree() {
-      var i, _i;
-      this.cityGroup = new ShaderParticleGroup({
+    function Tree(pos) {
+      var height, y, _i;
+      this.position = pos;
+      this.treeGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-        maxAge: 111
+        maxAge: 100
       });
       this.colorEnd = new THREE.Color();
       this.colorEnd.setRGB(Math.random(), Math.random(), Math.random());
-      for (i = _i = 1; _i <= 1000; i = ++_i) {
-        this.cityGroup.addPool(1, this.generateNode(), false);
+      height = rnd(30, 60);
+      for (y = _i = 1; 1 <= height ? _i <= height : _i >= height; y = 1 <= height ? ++_i : --_i) {
+        this.treeGroup.addEmitter(this.generateNode(y));
       }
-      FW.scene.add(this.cityGroup.mesh);
+      FW.scene.add(this.treeGroup.mesh);
     }
 
-    Tree.prototype.generateNode = function() {
-      var cityEmitter, colorEnd, colorStart;
+    Tree.prototype.generateNode = function(y) {
+      var cityEmitter, colorEnd, colorStart, spread;
       colorStart = new THREE.Color();
-      colorStart.setRGB(Math.random(), Math.random(), Math.random());
+      colorStart.setRGB(.2, y / 50, .2);
       colorEnd = new THREE.Color();
-      colorEnd.setRGB(Math.random(), Math.random(), Math.random());
+      colorEnd.setRGB(.3, y / 50, .3);
+      spread = 250 - y * 5;
       return cityEmitter = new ShaderParticleEmitter({
-        size: 100,
+        size: 50,
+        sizeSpread: 20,
+        position: new THREE.Vector3(this.position.x, y * 4, this.position.z),
+        positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 0, spread * rnd(0.9, 1)),
         colorStart: colorStart,
+        colorSpread: new THREE.Vector3(1, 1, 1),
         colorEnd: colorEnd,
-        alive: 0,
-        particlesPerSecond: 1
+        particlesPerSecond: 10 / y,
+        opacityEnd: 1
       });
     };
 
-    Tree.prototype.activate = function() {
-      var x, z, _i, _results;
-      _results = [];
-      for (x = _i = 1; _i <= 10; x = ++_i) {
-        _results.push((function() {
-          var _j, _results1;
-          _results1 = [];
-          for (z = _j = 1; _j <= 10; z = ++_j) {
-            _results1.push(this.cityGroup.triggerPoolEmitter(1, new THREE.Vector3(x * 100, 100, z * 100)));
-          }
-          return _results1;
-        }).call(this));
-      }
-      return _results;
-    };
-
     Tree.prototype.tick = function() {
-      return this.cityGroup.tick(FW.globalTick);
+      return this.treeGroup.tick(FW.globalTick);
     };
 
     return Tree;
