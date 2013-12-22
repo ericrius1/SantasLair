@@ -27,6 +27,8 @@ FW.World = class World
     @midPointX = 10
     @midPointZ = 10
     @dougCounter = 0
+    window.currentPoint = 0
+    window.totalPoints = 500
 
     # CAMERA
     FW.camera = new THREE.PerspectiveCamera(55.0, @SCREEN_WIDTH / @SCREEN_HEIGHT, 1, @camFar)
@@ -49,6 +51,7 @@ FW.World = class World
 
     #DOUG
     @swirl = new FW.Swirl()
+    @dougStuff()
     
     # RENDERER
     FW.Renderer = new THREE.WebGLRenderer()
@@ -123,7 +126,6 @@ FW.World = class World
     # for tree in @trees
       # tree.tick()
     @water.render()
-    @dougStuff()
     FW.Renderer.render( FW.scene, FW.camera );
 
   #For the things I don't want to run as often.. meteors, birds moving etc
@@ -134,21 +136,20 @@ FW.World = class World
     @slowUpdateInterval)
 
   dougStuff: ->
+    @newColor = new THREE.Color()
+    @newColor.setRGB(rnd(0, 1), rnd(0, 1), 1)
     setTimeout(=>
-      num = 200
+
       @dougCounter++ 
       @swirl.tick()
-      
-      for i in [0..num]
-        angle = (192 * Math.PI * (i/num)) + @dougCounter; 
-        px = @midPointX + (Math.sin(angle) * Math.log(i) * (i))
-        pz = @midPointZ + (Math.cos(angle) * Math.log(i) * (i))
-        console.log "px",px
-        console.log "pz",pz
+
+      for currentPoint in [0..totalPoints]
+        angle = (180 * Math.PI * (currentPoint/totalPoints)) + @dougCounter; 
+        px = @midPointX + (Math.sin(angle) * Math.log(currentPoint) * (currentPoint))
+        pz = @midPointZ + (Math.cos(angle) * Math.log(currentPoint) * (currentPoint))
         @point(px, pz, new THREE.Color(), 1)
       @dougStuff()
-    
-    200)
+    50)
 
     
 
@@ -157,7 +158,7 @@ FW.World = class World
 
 
   point: (x, z, color, size)->
-    @swirl.swirlGroup.triggerPoolEmitter 1, new THREE.Vector3(x, 100, z)
+    @swirl.swirlGroup.triggerPoolEmitter 1, new THREE.Vector3(x, 100, z), @newColor
 
   
 

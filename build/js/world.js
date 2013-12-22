@@ -36,6 +36,8 @@
       this.midPointX = 10;
       this.midPointZ = 10;
       this.dougCounter = 0;
+      window.currentPoint = 0;
+      window.totalPoints = 500;
       FW.camera = new THREE.PerspectiveCamera(55.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, this.startingY, 400);
       FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
@@ -48,6 +50,7 @@
       }
       FW.scene = new THREE.Scene();
       this.swirl = new FW.Swirl();
+      this.dougStuff();
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
@@ -105,7 +108,6 @@
       this.meteor.tick();
       this.stars.tick();
       this.water.render();
-      this.dougStuff();
       return FW.Renderer.render(FW.scene, FW.camera);
     };
 
@@ -119,25 +121,24 @@
 
     World.prototype.dougStuff = function() {
       var _this = this;
+      this.newColor = new THREE.Color();
+      this.newColor.setRGB(rnd(0, 1), rnd(0, 1), 1);
       return setTimeout(function() {
-        var angle, i, num, px, pz, _i;
-        num = 200;
+        var angle, currentPoint, px, pz, _i;
         _this.dougCounter++;
         _this.swirl.tick();
-        for (i = _i = 0; 0 <= num ? _i <= num : _i >= num; i = 0 <= num ? ++_i : --_i) {
-          angle = (192 * Math.PI * (i / num)) + _this.dougCounter;
-          px = _this.midPointX + (Math.sin(angle) * Math.log(i) * i);
-          pz = _this.midPointZ + (Math.cos(angle) * Math.log(i) * i);
-          console.log("px", px);
-          console.log("pz", pz);
+        for (currentPoint = _i = 0; 0 <= totalPoints ? _i <= totalPoints : _i >= totalPoints; currentPoint = 0 <= totalPoints ? ++_i : --_i) {
+          angle = (180 * Math.PI * (currentPoint / totalPoints)) + _this.dougCounter;
+          px = _this.midPointX + (Math.sin(angle) * Math.log(currentPoint) * currentPoint);
+          pz = _this.midPointZ + (Math.cos(angle) * Math.log(currentPoint) * currentPoint);
           _this.point(px, pz, new THREE.Color(), 1);
         }
         return _this.dougStuff();
-      }, 200);
+      }, 50);
     };
 
     World.prototype.point = function(x, z, color, size) {
-      return this.swirl.swirlGroup.triggerPoolEmitter(1, new THREE.Vector3(x, 100, z));
+      return this.swirl.swirlGroup.triggerPoolEmitter(1, new THREE.Vector3(x, 100, z), this.newColor);
     };
 
     return World;
