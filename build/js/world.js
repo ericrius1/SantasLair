@@ -11,7 +11,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, cssObject, directionalLight, dougsTrippyShit, element, i, planeGeo, planeMat, randColor, waterNormals, _i,
+      var aMeshMirror, directionalLight, i, randColor, waterNormals, _i,
         _this = this;
       this.textureCounter = 0;
       this.animDelta = 0;
@@ -33,6 +33,9 @@
       this.slowUpdateInterval = 1000;
       this.noLightCity = true;
       this.trees = [];
+      this.midPointX = 10;
+      this.midPointZ = 10;
+      this.dougCounter = 0;
       FW.camera = new THREE.PerspectiveCamera(55.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, this.startingY, 400);
       FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
@@ -44,20 +47,10 @@
         this.controls.flyEnabled = true;
       }
       FW.scene = new THREE.Scene();
-      planeGeo = new THREE.PlaneGeometry(100, 100, 10, 10);
-      planeMat = new THREE.MeshBasicMaterial({
-        color: 0xff0000
-      });
-      dougsTrippyShit = new THREE.Mesh(planeGeo, planeMat);
-      FW.scene.add(dougsTrippyShit);
-      dougsTrippyShit.position.y -= 100;
-      dougsTrippyShit.rotation.x = -Math.PI * 0.5;
+      this.swirl = new FW.Swirl();
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      element = document.createElement('canvas');
-      FW.Renderer.domElement.appendChild(element);
-      cssObject = new THREE.CSS3DObject(element);
       directionalLight = new THREE.DirectionalLight(0xff0000, rnd(0.8, 1.5));
       randColor = Math.floor(Math.random() * 16777215);
       console.log(randColor);
@@ -70,7 +63,7 @@
         textureWidth: 512,
         textureHeight: 512,
         waterNormals: waterNormals,
-        alpha: 0.50,
+        alpha: 0.98,
         waterColor: 0xa7E8ff,
         distortionScale: 50
       });
@@ -112,6 +105,7 @@
       this.meteor.tick();
       this.stars.tick();
       this.water.render();
+      this.dougStuff();
       return FW.Renderer.render(FW.scene, FW.camera);
     };
 
@@ -121,6 +115,29 @@
         _this.meteor.calcPositions();
         return _this.slowUpdate();
       }, this.slowUpdateInterval);
+    };
+
+    World.prototype.dougStuff = function() {
+      var _this = this;
+      return setTimeout(function() {
+        var angle, i, num, px, pz, _i;
+        num = 200;
+        _this.dougCounter++;
+        _this.swirl.tick();
+        for (i = _i = 0; 0 <= num ? _i <= num : _i >= num; i = 0 <= num ? ++_i : --_i) {
+          angle = (192 * Math.PI * (i / num)) + _this.dougCounter;
+          px = _this.midPointX + (Math.sin(angle) * Math.log(i) * i);
+          pz = _this.midPointZ + (Math.cos(angle) * Math.log(i) * i);
+          console.log("px", px);
+          console.log("pz", pz);
+          _this.point(px, pz, new THREE.Color(), 1);
+        }
+        return _this.dougStuff();
+      }, 200);
+    };
+
+    World.prototype.point = function(x, z, color, size) {
+      return this.swirl.swirlGroup.triggerPoolEmitter(1, new THREE.Vector3(x, 100, z));
     };
 
     return World;

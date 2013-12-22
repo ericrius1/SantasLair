@@ -34,6 +34,10 @@ window.onload = ->
       infoEl.style.display = if infoShowing then 'none' else 'block'
       infoShowing = !infoShowing;
 
+  dougShit = document.createElement 'canvas' 
+  document.body.appendChild dougShit
+  #create the object3d for this element
+    
         
       
 

@@ -24,6 +24,9 @@ FW.World = class World
     @slowUpdateInterval = 1000
     @noLightCity = true
     @trees = []
+    @midPointX = 10
+    @midPointZ = 10
+    @dougCounter = 0
 
     # CAMERA
     FW.camera = new THREE.PerspectiveCamera(55.0, @SCREEN_WIDTH / @SCREEN_HEIGHT, 1, @camFar)
@@ -44,22 +47,13 @@ FW.World = class World
     FW.scene = new THREE.Scene()
 
 
-    #DOUGS SHIT
-    planeGeo = new THREE.PlaneGeometry(100, 100, 10, 10)
-    planeMat = new THREE.MeshBasicMaterial color: 0xff0000
-    dougsTrippyShit = new THREE.Mesh planeGeo, planeMat
-    FW.scene.add dougsTrippyShit
-    dougsTrippyShit.position.y -= 100
-    dougsTrippyShit.rotation.x = -Math.PI * 0.5
+    #DOUG
+    @swirl = new FW.Swirl()
     
     # RENDERER
     FW.Renderer = new THREE.WebGLRenderer()
     FW.Renderer.setSize @SCREEN_WIDTH, @SCREEN_HEIGHT
     document.body.appendChild FW.Renderer.domElement
-    element = document.createElement 'canvas' 
-    FW.Renderer.domElement.appendChild element
-    #create the object3d for this element
-    cssObject = new THREE.CSS3DObject element
 
     # LIGHTS
     directionalLight = new THREE.DirectionalLight 0xff0000, rnd(0.8, 1.5)
@@ -79,7 +73,7 @@ FW.World = class World
       textureWidth: 512
       textureHeight: 512
       waterNormals: waterNormals
-      alpha: 0.50
+      alpha: 0.98
       waterColor: 0xa7E8ff
       distortionScale: 50
 
@@ -129,6 +123,7 @@ FW.World = class World
     # for tree in @trees
       # tree.tick()
     @water.render()
+    @dougStuff()
     FW.Renderer.render( FW.scene, FW.camera );
 
   #For the things I don't want to run as often.. meteors, birds moving etc
@@ -137,6 +132,34 @@ FW.World = class World
       @meteor.calcPositions()
       @slowUpdate()
     @slowUpdateInterval)
+
+  dougStuff: ->
+    setTimeout(=>
+      num = 200
+      @dougCounter++ 
+      @swirl.tick()
+      
+      for i in [0..num]
+        angle = (192 * Math.PI * (i/num)) + @dougCounter; 
+        px = @midPointX + (Math.sin(angle) * Math.log(i) * (i))
+        pz = @midPointZ + (Math.cos(angle) * Math.log(i) * (i))
+        console.log "px",px
+        console.log "pz",pz
+        @point(px, pz, new THREE.Color(), 1)
+      @dougStuff()
+    
+    200)
+
+    
+
+
+
+
+
+  point: (x, z, color, size)->
+    @swirl.swirlGroup.triggerPoolEmitter 1, new THREE.Vector3(x, 100, z)
+
+  
 
 
 
