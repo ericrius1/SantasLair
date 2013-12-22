@@ -11,7 +11,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, directionalLight, i, randColor, waterNormals, _i,
+      var aMeshMirror, cssObject, directionalLight, dougsTrippyShit, element, i, planeGeo, planeMat, randColor, waterNormals, _i,
         _this = this;
       this.textureCounter = 0;
       this.animDelta = 0;
@@ -44,9 +44,20 @@
         this.controls.flyEnabled = true;
       }
       FW.scene = new THREE.Scene();
+      planeGeo = new THREE.PlaneGeometry(100, 100, 10, 10);
+      planeMat = new THREE.MeshBasicMaterial({
+        color: 0xff0000
+      });
+      dougsTrippyShit = new THREE.Mesh(planeGeo, planeMat);
+      FW.scene.add(dougsTrippyShit);
+      dougsTrippyShit.position.y -= 100;
+      dougsTrippyShit.rotation.x = -Math.PI * 0.5;
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
+      element = document.createElement('canvas');
+      FW.Renderer.domElement.appendChild(element);
+      cssObject = new THREE.CSS3DObject(element);
       directionalLight = new THREE.DirectionalLight(0xff0000, rnd(0.8, 1.5));
       randColor = Math.floor(Math.random() * 16777215);
       console.log(randColor);
@@ -59,7 +70,7 @@
         textureWidth: 512,
         textureHeight: 512,
         waterNormals: waterNormals,
-        alpha: 0.99,
+        alpha: 0.50,
         waterColor: 0xa7E8ff,
         distortionScale: 50
       });
@@ -97,15 +108,9 @@
     };
 
     World.prototype.render = function() {
-      var tree, _i, _len, _ref;
       FW.camera.position.y = this.startingY;
       this.meteor.tick();
       this.stars.tick();
-      _ref = this.trees;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tree = _ref[_i];
-        tree.tick();
-      }
       this.water.render();
       return FW.Renderer.render(FW.scene, FW.camera);
     };

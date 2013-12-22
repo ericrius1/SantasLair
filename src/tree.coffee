@@ -10,7 +10,7 @@ FW.Tree = class Tree
     @colorEnd = new THREE.Color()
     @colorEnd.setRGB(Math.random(),Math.random(),Math.random() )
     height = rnd(30, 60)
-    for y in [1..height]
+    for y in [1..50]
       @treeGroup.addEmitter @generateNode(y)
     FW.scene.add(@treeGroup.mesh)
 

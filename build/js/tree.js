@@ -16,7 +16,7 @@
       this.colorEnd = new THREE.Color();
       this.colorEnd.setRGB(Math.random(), Math.random(), Math.random());
       height = rnd(30, 60);
-      for (y = _i = 1; 1 <= height ? _i <= height : _i >= height; y = 1 <= height ? ++_i : --_i) {
+      for (y = _i = 1; _i <= 50; y = ++_i) {
         this.treeGroup.addEmitter(this.generateNode(y));
       }
       FW.scene.add(this.treeGroup.mesh);

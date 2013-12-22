@@ -43,11 +43,23 @@ FW.World = class World
     # SCENE 
     FW.scene = new THREE.Scene()
 
+
+    #DOUGS SHIT
+    planeGeo = new THREE.PlaneGeometry(100, 100, 10, 10)
+    planeMat = new THREE.MeshBasicMaterial color: 0xff0000
+    dougsTrippyShit = new THREE.Mesh planeGeo, planeMat
+    FW.scene.add dougsTrippyShit
+    dougsTrippyShit.position.y -= 100
+    dougsTrippyShit.rotation.x = -Math.PI * 0.5
     
     # RENDERER
     FW.Renderer = new THREE.WebGLRenderer()
     FW.Renderer.setSize @SCREEN_WIDTH, @SCREEN_HEIGHT
     document.body.appendChild FW.Renderer.domElement
+    element = document.createElement 'canvas' 
+    FW.Renderer.domElement.appendChild element
+    #create the object3d for this element
+    cssObject = new THREE.CSS3DObject element
 
     # LIGHTS
     directionalLight = new THREE.DirectionalLight 0xff0000, rnd(0.8, 1.5)
@@ -67,7 +79,7 @@ FW.World = class World
       textureWidth: 512
       textureHeight: 512
       waterNormals: waterNormals
-      alpha: 0.99
+      alpha: 0.50
       waterColor: 0xa7E8ff
       distortionScale: 50
 
@@ -114,8 +126,8 @@ FW.World = class World
     FW.camera.position.y = @startingY
     @meteor.tick()
     @stars.tick()
-    for tree in @trees
-      tree.tick()
+    # for tree in @trees
+      # tree.tick()
     @water.render()
     FW.Renderer.render( FW.scene, FW.camera );
 
