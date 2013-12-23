@@ -37,8 +37,9 @@
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
         waterNormals: waterNormals,
+        alpha: 1,
         waterColor: 0xffffff,
-        distortionScale: 500
+        distortionScale: 50
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);

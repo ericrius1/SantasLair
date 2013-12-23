@@ -42,8 +42,9 @@ FW.World = class World
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
     @water = new THREE.Water FW.Renderer, FW.camera, FW.scene,
       waterNormals: waterNormals
+      alpha: 1
       waterColor: 0xffffff
-      distortionScale: 500
+      distortionScale: 50
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry @width, @height, 50, 50
