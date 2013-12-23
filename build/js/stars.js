@@ -8,9 +8,9 @@
 
     function Stars() {
       this.colorStart = new THREE.Color();
-      this.colorStart.setRGB(Math.random(), Math.random(), Math.random());
+      this.colorStart.setRGB(1, 1, 1);
       this.starGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+        texture: THREE.ImageUtils.loadTexture('assets/white_star.png'),
         blending: THREE.AdditiveBlending,
         maxAge: 100
       });
@@ -31,7 +31,7 @@
         opacityMiddle: 1,
         opacityEnd: 0,
         colorStart: this.colorStart,
-        colorSpread: new THREE.Vector3(rnd(.1, .5), rnd(.1, .5), rnd(.1, .5))
+        colorEnd: this.colorEnd
       });
       return this.starGroup.addEmitter(this.starEmitter);
     };

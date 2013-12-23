@@ -11,57 +11,34 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, directionalLight, i, randColor, waterNormals, _i,
+      var aMeshMirror, i, waterNormals, _i,
         _this = this;
-      this.textureCounter = 0;
-      this.animDelta = 0;
-      this.animDeltaDir = 1;
-      this.lightVal = .16;
-      this.lightDir = 0;
       FW.clock = new THREE.Clock();
-      this.updateNoise = true;
-      this.animateTerrain = false;
       this.mlib = {};
-      this.MARGIN = 10;
       this.SCREEN_WIDTH = window.innerWidth;
       this.SCREEN_HEIGHT = window.innerHeight;
       this.camFar = 200000;
       this.width = 50000;
       this.height = 50000;
-      this.startingY = 40;
-      this.slowUpdateInterval = 1000;
-      this.noLightCity = true;
+      this.rippleFactor = 4000;
       this.trees = [];
-      this.midPointX = 10;
-      this.midPointZ = 10;
-      this.dougCounter = 0;
-      window.currentPoint = 0;
-      window.totalPoints = 200;
-      FW.camera = new THREE.PerspectiveCamera(55.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
+      FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, this.startingY, 400);
       FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxDistance = 10000;
+      this.controls.minDistance = 200;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      directionalLight = new THREE.DirectionalLight(0xff0000, rnd(0.8, 1.5));
-      randColor = Math.floor(Math.random() * 16777215);
-      console.log(randColor);
-      directionalLight.color.setHex(randColor);
-      directionalLight.position.set(0, 6000, 0);
-      FW.scene.add(directionalLight);
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
-        textureWidth: 512,
-        textureHeight: 512,
         waterNormals: waterNormals,
-        alpha: 0.98,
         waterColor: 0xffffff,
-        distortionScale: 5
+        distortionScale: 500
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
@@ -80,7 +57,7 @@
 
     World.prototype.onWindowResize = function(event) {
       this.SCREEN_WIDTH = window.innerWidth;
-      this.SCREEN_HEIGHT = window.innerHeight - 2 * this.MARGIN;
+      this.SCREEN_HEIGHT = window.innerHeight;
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       FW.camera.aspect = this.SCREEN_WIDTH / this.SCREEN_HEIGHT;
       return FW.camera.updateProjectionMatrix();
@@ -91,6 +68,7 @@
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
       time = Date.now();
+      this.water.material.uniforms.time.value += 1.0 / this.rippleFactor;
       this.controls.update();
       return this.render();
     };
@@ -98,7 +76,6 @@
     World.prototype.render = function() {
       var tree, _i, _len, _ref;
       this.meteor.tick();
-      this.stars.tick();
       _ref = this.trees;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         tree = _ref[_i];
@@ -114,32 +91,6 @@
         _this.meteor.calcPositions();
         return _this.slowUpdate();
       }, this.slowUpdateInterval);
-    };
-
-    World.prototype.dougStuff = function() {
-      var _this = this;
-      this.newColor = new THREE.Color();
-      this.newColor.setRGB(rnd(0, 1), rnd(0, 1), 1);
-      return setTimeout(function() {
-        var angle, currentPoint, px, pz, _i;
-        _this.dougCounter++;
-        _this.swirl.tick();
-        for (currentPoint = _i = 0; 0 <= totalPoints ? _i <= totalPoints : _i >= totalPoints; currentPoint = 0 <= totalPoints ? ++_i : --_i) {
-          angle = (180 * Math.PI * (currentPoint / totalPoints)) + _this.dougCounter;
-          px = _this.midPointX + (Math.sin(angle) * Math.log(currentPoint) * currentPoint);
-          pz = _this.midPointZ + (Math.cos(angle) * Math.log(currentPoint) * currentPoint);
-          _this.point(px, pz, new THREE.Color(), 1);
-        }
-        return _this.dougStuff();
-      }, 50);
-    };
-
-    World.prototype.activateLaser = function() {
-      return this.laser.activate();
-    };
-
-    World.prototype.point = function(x, z, color, size) {
-      return this.swirl.swirlGroup.triggerPoolEmitter(1, new THREE.Vector3(x, 100, z));
     };
 
     return World;

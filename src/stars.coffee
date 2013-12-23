@@ -3,10 +3,10 @@ FW.Stars = class Stars
   constructor: ()->
 
     @colorStart = new THREE.Color()
-    @colorStart.setRGB(Math.random(),Math.random(),Math.random() )
+    @colorStart.setRGB(1,1, 1)
 
     @starGroup = new ShaderParticleGroup({
-      texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+      texture: THREE.ImageUtils.loadTexture('assets/white_star.png'),
       blending: THREE.AdditiveBlending,
       maxAge: 100
     });
@@ -27,7 +27,7 @@ FW.Stars = class Stars
       opacityMiddle: 1
       opacityEnd: 0
       colorStart: @colorStart
-      colorSpread: new THREE.Vector3(rnd(.1, .5), rnd(.1, .5), rnd(.1, .5))
+      colorEnd: @colorEnd
     
     @starGroup.addEmitter @starEmitter
   
