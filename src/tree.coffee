@@ -3,8 +3,9 @@ FW.Tree = class Tree
   constructor: (pos)->
     @position = pos
     @treeGroup = new ShaderParticleGroup({
-      texture: THREE.ImageUtils.loadTexture('assets/star.png')
+      texture: THREE.ImageUtils.loadTexture('assets/leaf.png')
       maxAge: 100
+      blending: THREE.NormalBlending
     });
 
     height = rnd(30, 60)
@@ -14,12 +15,9 @@ FW.Tree = class Tree
 
   generateNode: (y)->
     colorStart = new THREE.Color()
-    colorStart.setRGB .067, 0.17, .035
-    colorEnd = new THREE.Color()
-    colorEnd.setRGB .067, 0.17, .078
     spread = 250 - y*5
     cityEmitter = new ShaderParticleEmitter
-      size: 50
+      size: 200
       sizeSpread: 50
       position: new THREE.Vector3 rnd(@position.x-10, @position.x+10),  y*4, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
@@ -27,7 +25,9 @@ FW.Tree = class Tree
       colorStart: colorStart
       colorEnd: colorStart
       particlesPerSecond: 10/y
-      opacityEnd: 1
+      opacityStart: 1.0
+      opacityMiddle: 1.0
+      opacityEnd: 1.0
 
   # activate: ->
   #   for i in [0..10]

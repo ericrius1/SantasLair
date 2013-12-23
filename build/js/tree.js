@@ -10,8 +10,9 @@
       var height, y, _i;
       this.position = pos;
       this.treeGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-        maxAge: 100
+        texture: THREE.ImageUtils.loadTexture('assets/leaf.png'),
+        maxAge: 100,
+        blending: THREE.NormalBlending
       });
       height = rnd(30, 60);
       for (y = _i = 1; _i <= 50; y = ++_i) {
@@ -21,21 +22,20 @@
     }
 
     Tree.prototype.generateNode = function(y) {
-      var cityEmitter, colorEnd, colorStart, spread;
+      var cityEmitter, colorStart, spread;
       colorStart = new THREE.Color();
-      colorStart.setRGB(.067, 0.17, .035);
-      colorEnd = new THREE.Color();
-      colorEnd.setRGB(.067, 0.17, .078);
       spread = 250 - y * 5;
       return cityEmitter = new ShaderParticleEmitter({
-        size: 50,
+        size: 200,
         sizeSpread: 50,
         position: new THREE.Vector3(rnd(this.position.x - 10, this.position.x + 10), y * 4, this.position.z),
         positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 0, spread * rnd(0.9, 1)),
         colorStart: colorStart,
         colorEnd: colorStart,
         particlesPerSecond: 10 / y,
-        opacityEnd: 1
+        opacityStart: 1.0,
+        opacityMiddle: 1.0,
+        opacityEnd: 1.0
       });
     };
 
