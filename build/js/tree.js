@@ -9,6 +9,7 @@
     function Tree(pos) {
       var height, position, y, _i;
       this.position = pos;
+      this.treeTick = 0.16;
       this.treeGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/leaf.png'),
         maxAge: 100,
@@ -16,7 +17,7 @@
       });
       this.ornamentGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-        maxAge: 100,
+        maxAge: 10,
         blending: THREE.NormalBlending
       });
       height = rnd(30, 60);
@@ -33,7 +34,7 @@
       return treeEmitter = new ShaderParticleEmitter({
         size: 200,
         sizeSpread: 50,
-        position: new THREE.Vector3(this.position.x, y * 4, rnd(this.position.z - 100, this.position.z + 100)),
+        position: new THREE.Vector3(this.position.x, y * 4, this.position.z),
         positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 0, spread * rnd(0.9, 1)),
         particlesPerSecond: 10 / y,
         opacityStart: 1.0,
@@ -52,7 +53,10 @@
     };
 
     Tree.prototype.tick = function() {
-      return this.treeGroup.tick(FW.globalTick);
+      this.treeGroup.tick(this.treeTick);
+      if (this.treeTick > 0.0) {
+        return this.treeTick -= .0001;
+      }
     };
 
     return Tree;

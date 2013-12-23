@@ -61,9 +61,9 @@ FW.World = class World
 
     #TREES
     for i in [1..40]
-      position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000))
+      position = new THREE.Vector3(rnd(-4000, 4000), rnd(-200, 0), rnd(-4000, 4000))
       distance = FW.camera.position.distanceTo(position)
-      if(distance > 500)
+      if(distance > 100)
         @trees.push new FW.Tree position
 
 

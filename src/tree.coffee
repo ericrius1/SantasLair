@@ -2,6 +2,7 @@ FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos)->
     @position = pos
+    @treeTick = 0.16
     @treeGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/leaf.png')
       maxAge: 100
@@ -10,7 +11,7 @@ FW.Tree = class Tree
 
     @ornamentGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/star.png')
-      maxAge: 100
+      maxAge: 10
       blending: THREE.NormalBlending
     });
 
@@ -26,7 +27,7 @@ FW.Tree = class Tree
     treeEmitter = new ShaderParticleEmitter
       size: 200
       sizeSpread: 50
-      position: new THREE.Vector3 @position.x,  y*4, rnd(@position.z-100, @position.z+100)
+      position: new THREE.Vector3 @position.x,  y*4, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread * rnd(0.9, 1) , 0, spread * rnd(0.9, 1)
       particlesPerSecond: 10/y
@@ -45,8 +46,10 @@ FW.Tree = class Tree
   
     
   tick: ->
-    # @treeGroup.tick(FW.globalTick/10)
-    @treeGroup.tick(FW.globalTick)
+    # @treeGroup.tick(FW.globalTick/2)
+    @treeGroup.tick(@treeTick)
+    if @treeTick > 0.0
+      @treeTick -=.0001
     
 
 
