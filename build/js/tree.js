@@ -10,6 +10,7 @@
       var position, y, _i, _ref;
       this.position = pos;
       this.treeTick = 2;
+      this.ornamentGroups = [];
       this.ornamentTick = .16;
       this.numLayers = 100;
       this.treeGroup = new ShaderParticleGroup({
@@ -17,25 +18,12 @@
         maxAge: 100,
         blending: THREE.NormalBlending
       });
-      this.ornamentGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-        maxAge: 10,
-        blending: THREE.NormalBlending
-      });
-      this.ornamentGroup2 = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-        maxAge: 10,
-        blending: THREE.NormalBlending
-      });
       for (y = _i = 1, _ref = this.numLayers; 1 <= _ref ? _i <= _ref : _i >= _ref; y = 1 <= _ref ? ++_i : --_i) {
         position = new THREE.Vector3(rnd(this.position.x - 10, this.position.x + 10), y * 4, this.position.z);
         this.treeGroup.addEmitter(this.generateTree(y, position));
-        this.ornamentGroup.addEmitter(this.generateOrnaments(y));
-        this.ornamentGroup2.addEmitter(this.generateOrnaments2(y));
+        this.createOrnamentGroup(y, position);
       }
       FW.scene.add(this.treeGroup.mesh);
-      FW.scene.add(this.ornamentGroup.mesh);
-      FW.scene.add(this.ornamentGroup2.mesh);
     }
 
     Tree.prototype.generateTree = function(y) {
@@ -49,6 +37,33 @@
         particlesPerSecond: 10 / y,
         opacityEnd: 1.0
       });
+    };
+
+    Tree.prototype.tick = function() {
+      var ornamentGroup, _i, _len, _ref, _results;
+      this.treeGroup.tick(this.treeTick);
+      if (this.treeTick > 0.0) {
+        this.treeTick -= .01;
+      }
+      _ref = this.ornamentGroups;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        ornamentGroup = _ref[_i];
+        _results.push(ornamentGroup.tick(this.ornamentTick));
+      }
+      return _results;
+    };
+
+    Tree.prototype.createOrnamentGroup = function(y, position) {
+      var ornamentGroup;
+      ornamentGroup = new ShaderParticleGroup({
+        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+        maxAge: 10,
+        blending: THREE.NormalBlending
+      });
+      ornamentGroup.addEmitter(this.generateOrnaments(y, position));
+      this.ornamentGroups.push(ornamentGroup);
+      return FW.scene.add(ornamentGroup.mesh);
     };
 
     Tree.prototype.generateOrnaments = function(y) {
@@ -69,7 +84,12 @@
       });
     };
 
-    Tree.prototype.generateOrnaments2 = function(y) {
+    return Tree;
+
+  })();
+
+  ({
+    generateOrnaments2: function(y) {
       var colorStart, ornamentEmmiter, spread;
       spread = Math.max(0, 250 - y * 2.5);
       colorStart = new THREE.Color();
@@ -85,22 +105,7 @@
         opacityMiddle: 1,
         opacityEnd: 0.5
       });
-    };
-
-    Tree.prototype.tick = function() {
-      var _this = this;
-      this.treeGroup.tick(this.treeTick);
-      if (this.treeTick > 0.0) {
-        this.treeTick -= .01;
-      }
-      this.ornamentGroup.tick(this.ornamentTick);
-      return setTimeout(function() {
-        return _this.ornamentGroup2.tick(_this.ornamentTick);
-      }, 200);
-    };
-
-    return Tree;
-
-  })();
+    }
+  });
 
 }).call(this);
