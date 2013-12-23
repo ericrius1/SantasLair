@@ -17,8 +17,7 @@ FW.World = class World
 
     # CAMERA
     FW.camera = new THREE.PerspectiveCamera(45.0, @SCREEN_WIDTH / @SCREEN_HEIGHT, 1, @camFar)
-    FW.camera.position.set  0, @startingY, 400
-    FW.camera.lookAt new THREE.Vector3 0, 40, 0
+    FW.camera.position.set  0, 400, 800
     
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
@@ -59,9 +58,13 @@ FW.World = class World
     #FUN
     @meteor = new FW.Meteor()
     @stars = new FW.Stars()
-    for i in [1..40]
-      @trees.push new FW.Tree(new THREE.Vector3(rnd(-2000, 2000), 0, rnd(-2000, 2000)))
 
+    #TREES
+    for i in [1..40]
+      position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000))
+      distance = FW.camera.position.distanceTo(position)
+      if(distance > 500)
+        @trees.push new FW.Tree position
 
 
 

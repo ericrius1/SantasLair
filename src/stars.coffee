@@ -6,7 +6,7 @@ FW.Stars = class Stars
     @colorStart.setRGB(1,1, 1)
 
     @starGroup = new ShaderParticleGroup({
-      texture: THREE.ImageUtils.loadTexture('assets/white_star.png'),
+      texture: THREE.ImageUtils.loadTexture('assets/star.png'),
       blending: THREE.AdditiveBlending,
       maxAge: 100
     });

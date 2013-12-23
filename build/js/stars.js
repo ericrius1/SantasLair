@@ -10,7 +10,7 @@
       this.colorStart = new THREE.Color();
       this.colorStart.setRGB(1, 1, 1);
       this.starGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/white_star.png'),
+        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
         blending: THREE.AdditiveBlending,
         maxAge: 100
       });

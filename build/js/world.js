@@ -11,7 +11,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, i, waterNormals, _i,
+      var aMeshMirror, distance, i, position, waterNormals, _i,
         _this = this;
       FW.clock = new THREE.Clock();
       this.mlib = {};
@@ -23,8 +23,7 @@
       this.rippleFactor = 2000;
       this.trees = [];
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
-      FW.camera.position.set(0, this.startingY, 400);
-      FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
+      FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxDistance = 10000;
       this.controls.minDistance = 200;
@@ -49,7 +48,11 @@
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
       for (i = _i = 1; _i <= 40; i = ++_i) {
-        this.trees.push(new FW.Tree(new THREE.Vector3(rnd(-2000, 2000), 0, rnd(-2000, 2000))));
+        position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000));
+        distance = FW.camera.position.distanceTo(position);
+        if (distance > 500) {
+          this.trees.push(new FW.Tree(position));
+        }
       }
       window.addEventListener("resize", (function() {
         return _this.onWindowResize();

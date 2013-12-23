@@ -8,37 +8,44 @@ FW.Tree = class Tree
       blending: THREE.NormalBlending
     });
 
+    @ornamentGroup = new ShaderParticleGroup({
+      texture: THREE.ImageUtils.loadTexture('assets/star.png')
+      maxAge: 100
+      blending: THREE.NormalBlending
+    });
+
     height = rnd(30, 60)
     for y in [1..50]
-      @treeGroup.addEmitter @generateNode(y)
+      position = new THREE.Vector3 rnd(@position.x-10, @position.x+10), y*4,  @position.z
+      @treeGroup.addEmitter @generateTree(y, position)
+      # @ornamentGroup.addEmitter @generateOrnaments(y)
     FW.scene.add(@treeGroup.mesh)
 
-  generateNode: (y)->
-    colorStart = new THREE.Color()
+  generateTree: (y)->
     spread = 250 - y*5
-    cityEmitter = new ShaderParticleEmitter
+    treeEmitter = new ShaderParticleEmitter
       size: 200
       sizeSpread: 50
-      position: new THREE.Vector3 rnd(@position.x-10, @position.x+10),  y*4, @position.z
+      position: new THREE.Vector3 @position.x,  y*4, rnd(@position.z-100, @position.z+100)
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread * rnd(0.9, 1) , 0, spread * rnd(0.9, 1)
-      colorStart: colorStart
-      colorEnd: colorStart
       particlesPerSecond: 10/y
       opacityStart: 1.0
       opacityMiddle: 1.0
       opacityEnd: 1.0
+  
+  generateOrnaments: (y)->
+    spread = 250 - y*5
+    ornamentEmmiter = new ShaderParticleEmitter
+      size: 100
+      sizeSpread: 50
 
-  # activate: ->
-  #   for i in [0..10]
-  #     end = 10 - i
-  #     for x in [i..end]
-  #       for z in [i..end]
-  #         @treeGroup.triggerPoolEmitter(1, new THREE.Vector3 x * 100, 100 * i, z * 100)
-     
+
+
   
     
   tick: ->
+    # @treeGroup.tick(FW.globalTick/10)
     @treeGroup.tick(FW.globalTick)
     
 
