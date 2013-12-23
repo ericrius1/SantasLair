@@ -36,7 +36,7 @@ FW.World = class World
     FW.camera.lookAt new THREE.Vector3 0, 40, 0
     
     #CONTROLS
-    @controls = new THREE.FlyControls(FW.camera)
+    @controls = new THREE.OrbitControls(FW.camera)
     @controls.movementSpeed = 800;
     @controls.rollSpeed =  Math.PI / 4;
     if FW.development is true
@@ -91,13 +91,13 @@ FW.World = class World
     for i in [1..40]
       @trees.push new FW.Tree(new THREE.Vector3(rnd(-2000, 2000), 0, rnd(-2000, 2000)))
 
-    #DOUG
-    @swirl = new FW.Swirl()
-    @laser = new FW.Laser()
-    setTimeout(()=>
-      @activateLaser()
-    5000)
-    @dougStuff()
+    # #DOUG
+    # @swirl = new FW.Swirl()
+    # @laser = new FW.Laser()
+    # setTimeout(()=>
+    #   @activateLaser()
+    # 5000)
+    # @dougStuff()
     
 
 
@@ -121,15 +121,13 @@ FW.World = class World
     delta = FW.clock.getDelta()
     time = Date.now()
     @water.material.uniforms.time.value += 1.0 / 60
-    @controls.update(delta)
+    @controls.update()
     @render()
   render : ->
-    FW.camera.position.y = @startingY
     @meteor.tick()
     @stars.tick()
-    @laser.tick()
-    # for tree in @trees
-      # tree.tick()
+    for tree in @trees
+      tree.tick()
     @water.render()
     FW.Renderer.render( FW.scene, FW.camera );
 

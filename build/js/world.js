@@ -41,7 +41,7 @@
       FW.camera = new THREE.PerspectiveCamera(55.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, this.startingY, 400);
       FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
-      this.controls = new THREE.FlyControls(FW.camera);
+      this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.movementSpeed = 800;
       this.controls.rollSpeed = Math.PI / 4;
       if (FW.development === true) {
@@ -77,12 +77,6 @@
       for (i = _i = 1; _i <= 40; i = ++_i) {
         this.trees.push(new FW.Tree(new THREE.Vector3(rnd(-2000, 2000), 0, rnd(-2000, 2000))));
       }
-      this.swirl = new FW.Swirl();
-      this.laser = new FW.Laser();
-      setTimeout(function() {
-        return _this.activateLaser();
-      }, 5000);
-      this.dougStuff();
       window.addEventListener("resize", (function() {
         return _this.onWindowResize();
       }), false);
@@ -103,15 +97,19 @@
       delta = FW.clock.getDelta();
       time = Date.now();
       this.water.material.uniforms.time.value += 1.0 / 60;
-      this.controls.update(delta);
+      this.controls.update();
       return this.render();
     };
 
     World.prototype.render = function() {
-      FW.camera.position.y = this.startingY;
+      var tree, _i, _len, _ref;
       this.meteor.tick();
       this.stars.tick();
-      this.laser.tick();
+      _ref = this.trees;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tree = _ref[_i];
+        tree.tick();
+      }
       this.water.render();
       return FW.Renderer.render(FW.scene, FW.camera);
     };
