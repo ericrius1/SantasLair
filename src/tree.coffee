@@ -7,8 +7,6 @@ FW.Tree = class Tree
       maxAge: 100
     });
 
-    @colorEnd = new THREE.Color()
-    @colorEnd.setRGB(Math.random(),Math.random(),Math.random() )
     height = rnd(30, 60)
     for y in [1..50]
       @treeGroup.addEmitter @generateNode(y)
@@ -16,19 +14,18 @@ FW.Tree = class Tree
 
   generateNode: (y)->
     colorStart = new THREE.Color()
-    colorStart.setRGB .2, y/50, .2
+    colorStart.setRGB .067, 0.17, .035
     colorEnd = new THREE.Color()
-    colorEnd.setRGB .3, y/50, .3
+    colorEnd.setRGB .067, 0.17, .078
     spread = 250 - y*5
     cityEmitter = new ShaderParticleEmitter
       size: 50
-      sizeSpread: 20
-      position: new THREE.Vector3 @position.x,  y*4, @position.z
+      sizeSpread: 50
+      position: new THREE.Vector3 rnd(@position.x-10, @position.x+10),  y*4, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread * rnd(0.9, 1) , 0, spread * rnd(0.9, 1)
       colorStart: colorStart
-      colorSpread: new THREE.Vector3 1 ,1,1
-      colorEnd: colorEnd
+      colorEnd: colorStart
       particlesPerSecond: 10/y
       opacityEnd: 1
 
