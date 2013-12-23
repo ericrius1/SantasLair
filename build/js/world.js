@@ -26,10 +26,9 @@
       this.SCREEN_WIDTH = window.innerWidth;
       this.SCREEN_HEIGHT = window.innerHeight;
       this.camFar = 200000;
-      this.width = 150000;
-      this.height = 150000;
+      this.width = 50000;
+      this.height = 50000;
       this.startingY = 40;
-      this.rippleFactor = rnd(60, 300);
       this.slowUpdateInterval = 1000;
       this.noLightCity = true;
       this.trees = [];
@@ -42,12 +41,8 @@
       FW.camera.position.set(0, this.startingY, 400);
       FW.camera.lookAt(new THREE.Vector3(0, 40, 0));
       this.controls = new THREE.OrbitControls(FW.camera);
-      this.controls.movementSpeed = 800;
-      this.controls.rollSpeed = Math.PI / 4;
-      if (FW.development === true) {
-        this.controls.pitchEnabled = true;
-        this.controls.flyEnabled = true;
-      }
+      this.controls.maxDistance = 10000;
+      this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
@@ -65,8 +60,8 @@
         textureHeight: 512,
         waterNormals: waterNormals,
         alpha: 0.98,
-        waterColor: 0xa7E8ff,
-        distortionScale: 50
+        waterColor: 0xffffff,
+        distortionScale: 5
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
@@ -96,7 +91,6 @@
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
       time = Date.now();
-      this.water.material.uniforms.time.value += 1.0 / 60;
       this.controls.update();
       return this.render();
     };

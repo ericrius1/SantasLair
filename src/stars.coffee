@@ -18,11 +18,11 @@ FW.Stars = class Stars
   generateStars: ->
     @starEmitter = new ShaderParticleEmitter
       type: 'sphere'
-      radius: 50000
+      radius: 5000
       speed: .1
-      size: rnd(4000, 6000)
-      sizeSpread: 4000
-      particlesPerSecond: rnd(500, 1100)
+      size: rnd(800, 1200)
+      sizeSpread: 400
+      particlesPerSecond: 500
       opacityStart: 0
       opacityMiddle: 1
       opacityEnd: 0

@@ -17,10 +17,9 @@ FW.World = class World
     @SCREEN_WIDTH = window.innerWidth
     @SCREEN_HEIGHT = window.innerHeight
     @camFar = 200000
-    @width = 150000
-    @height = 150000
+    @width = 50000
+    @height = 50000
     @startingY = 40
-    @rippleFactor = rnd(60, 300)
     @slowUpdateInterval = 1000
     @noLightCity = true
     @trees = []
@@ -37,12 +36,8 @@ FW.World = class World
     
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
-    @controls.movementSpeed = 800;
-    @controls.rollSpeed =  Math.PI / 4;
-    if FW.development is true
-      @controls.pitchEnabled = true
-      @controls.flyEnabled = true
-      # @controls.mouseMove = true
+    @controls.maxDistance = 10000
+    @controls.maxPolarAngle = Math.PI/4 + .7
     
 
     # SCENE 
@@ -73,8 +68,8 @@ FW.World = class World
       textureHeight: 512
       waterNormals: waterNormals
       alpha: 0.98
-      waterColor: 0xa7E8ff
-      distortionScale: 50
+      waterColor: 0xffffff
+      distortionScale: 5
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry @width, @height, 50, 50
@@ -120,7 +115,7 @@ FW.World = class World
     requestAnimationFrame @animate
     delta = FW.clock.getDelta()
     time = Date.now()
-    @water.material.uniforms.time.value += 1.0 / 60
+    # @water.material.uniforms.time.value += 1.0 / @rippleFactor
     @controls.update()
     @render()
   render : ->
