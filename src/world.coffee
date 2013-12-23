@@ -11,7 +11,7 @@ FW.World = class World
     @camFar = 200000
     @width = 50000
     @height = 50000
-    @rippleFactor = 4000
+    @rippleFactor = 2000
     @trees = []
 
 
@@ -44,7 +44,8 @@ FW.World = class World
       waterNormals: waterNormals
       alpha: 1
       waterColor: 0xffffff
-      distortionScale: 50
+      sunColor: 0x5bced8
+      distortionScale: 100
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry @width, @height, 50, 50

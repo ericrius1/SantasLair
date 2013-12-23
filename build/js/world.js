@@ -20,7 +20,7 @@
       this.camFar = 200000;
       this.width = 50000;
       this.height = 50000;
-      this.rippleFactor = 4000;
+      this.rippleFactor = 2000;
       this.trees = [];
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, this.startingY, 400);
@@ -39,7 +39,8 @@
         waterNormals: waterNormals,
         alpha: 1,
         waterColor: 0xffffff,
-        distortionScale: 50
+        sunColor: 0x5bced8,
+        distortionScale: 100
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
