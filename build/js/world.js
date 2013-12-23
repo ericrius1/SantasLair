@@ -47,8 +47,8 @@
       FW.scene.add(aMeshMirror);
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
-      for (i = _i = 1; _i <= 40; i = ++_i) {
-        position = new THREE.Vector3(rnd(-4000, 4000), rnd(-200, 0), rnd(-4000, 4000));
+      for (i = _i = 1; _i <= 1; i = ++_i) {
+        position = new THREE.Vector3(0, 0, 0);
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
           this.trees.push(new FW.Tree(position));
