@@ -9,10 +9,10 @@
     function Tree(pos) {
       var position, y, _i, _ref;
       this.position = pos;
-      this.treeTick = 0.16;
+      this.treeTick = 2;
       this.numLayers = 100;
       this.treeGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/leaf.png'),
+        texture: THREE.ImageUtils.loadTexture('assets/leaf2.png'),
         maxAge: 100,
         blending: THREE.NormalBlending
       });
@@ -32,30 +32,30 @@
       var spread, treeEmitter;
       spread = Math.max(0, 250 - y * 2.5);
       return treeEmitter = new ShaderParticleEmitter({
-        size: 200,
-        sizeSpread: 50,
+        size: 150,
         position: new THREE.Vector3(this.position.x, y * 4, this.position.z),
-        positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 0, spread * rnd(0.9, 1)),
-        particlesPerSecond: 15 / y,
-        opacityStart: 1.0,
-        opacityMiddle: 1.0,
+        positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 100, spread * rnd(0.9, 1)),
+        colorEnd: new THREE.Color(),
+        particlesPerSecond: 10 / y,
         opacityEnd: 1.0
       });
     };
 
     Tree.prototype.generateOrnaments = function(y) {
       var ornamentEmmiter, spread;
-      spread = 250 - y * 5;
+      spread = Math.max(0, 250 - y * 2.5);
       return ornamentEmmiter = new ShaderParticleEmitter({
         size: 100,
-        sizeSpread: 50
+        sizeSpread: 50,
+        position: new THREE.Vector3(this.position.x, y * 4, this.position.z),
+        positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 0, spread)
       });
     };
 
     Tree.prototype.tick = function() {
       this.treeGroup.tick(this.treeTick);
       if (this.treeTick > 0.0) {
-        return this.treeTick -= .0001;
+        return this.treeTick -= .01;
       }
     };
 
