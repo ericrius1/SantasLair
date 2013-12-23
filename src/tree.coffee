@@ -30,7 +30,7 @@ FW.Tree = class Tree
       position: new THREE.Vector3 @position.x,  y*4, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread * rnd(0.9, 1) , 0, spread * rnd(0.9, 1)
-      particlesPerSecond: 20/y
+      particlesPerSecond: 15/y
       opacityStart: 1.0
       opacityMiddle: 1.0
       opacityEnd: 1.0

@@ -36,7 +36,7 @@
         sizeSpread: 50,
         position: new THREE.Vector3(this.position.x, y * 4, this.position.z),
         positionSpread: new THREE.Vector3(spread * rnd(0.9, 1), 0, spread * rnd(0.9, 1)),
-        particlesPerSecond: 20 / y,
+        particlesPerSecond: 15 / y,
         opacityStart: 1.0,
         opacityMiddle: 1.0,
         opacityEnd: 1.0
