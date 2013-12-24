@@ -41,7 +41,7 @@
         textureWidth: 512,
         textureHeight: 512,
         waterNormals: waterNormals,
-        alpha: 1,
+        alpha: 0.99,
         waterColor: 0xffffff,
         sunColor: 0x0ecce3,
         distortionScale: 100
@@ -52,8 +52,9 @@
       FW.scene.add(aMeshMirror);
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
+      this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000));
+        position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000));
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
           this.trees.push(new FW.Tree(position));

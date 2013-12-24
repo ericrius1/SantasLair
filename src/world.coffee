@@ -45,7 +45,7 @@ FW.World = class World
       textureWidth: 512
       textureHeight: 512
       waterNormals: waterNormals
-      alpha: 1
+      alpha: 0.99
       waterColor: 0xffffff
       sunColor: 0x0ecce3  
       distortionScale: 100
@@ -64,8 +64,9 @@ FW.World = class World
     @stars = new FW.Stars()
 
     # TREES
+    @trees.push new FW.Tree(new THREE.Vector3(), 10)
     for i in [1..@numTrees]
-      position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000))
+      position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000))
       distance = FW.camera.position.distanceTo(position)
       if(distance > 100)
         @trees.push new FW.Tree position
