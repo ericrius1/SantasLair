@@ -22,7 +22,8 @@
       colorStart.setRGB(.8, .1, .1);
       this.starEmitter = new ShaderParticleEmitter({
         type: 'sphere',
-        radius: FW.width,
+        position: new THREE.Vector3(0, 3000, 0),
+        radius: FW.width * 0.8,
         colorStart: colorStart,
         colorEnd: colorStart,
         speed: .1,

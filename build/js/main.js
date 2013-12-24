@@ -33,13 +33,13 @@
   window.soundOn = !FW.development;
 
   window.onload = function() {
-    var dougShit, infoEl, infoShowing;
+    var infoEl, infoShowing;
     FW.myWorld = new FW.World();
     FW.myWorld.animate();
     FW.main = new FW.Main();
     infoEl = document.getElementsByClassName('infoWrapper')[0];
     infoShowing = false;
-    document.onclick = function(event) {
+    return document.onclick = function(event) {
       var el;
       el = event.target;
       if (el.className === "icon") {
@@ -47,8 +47,6 @@
         return infoShowing = !infoShowing;
       }
     };
-    dougShit = document.createElement('canvas');
-    return document.body.appendChild(dougShit);
   };
 
   FW.Main = Main = (function() {
