@@ -109,6 +109,7 @@ FW.World = class World
     @meteor.tick()
     @snow.tick()
     @stars.tick()
+
     for tree in @trees
       tree.tick()
     @water.render()
@@ -123,20 +124,19 @@ FW.World = class World
 
 
   setUpTerrain: ()->
-    @terrainWidth = 5000
+    @terrainWidth = 4000
     @terrainHeight = 2000
-    currentPos = new THREE.Vector3(-FW.width * .4, -100, -FW.width * .4)
-    @loadTerrain currentPos
-
+    terrain = @loadTerrain new THREE.Vector3(-FW.width/2 + @terrainWidth/2 , -100, -FW.width/2 + @terrainHeight/1.3)
+    terrain.rotation.y = .5
   loadTerrain: (position)->
     parameters = 
       alea: RAND_MT,
       generator: PN_GENERATOR,
       width: @terrainWidth
       height: @terrainHeight
-      widthSegments: 200
-      heightSegments: 200
-      depth: 4000
+      widthSegments: 100
+      heightSegments: 100
+      depth: 3000
       param: 4,
       filterparam: 1
       filter: [ CIRCLE_FILTER ]
@@ -148,4 +148,5 @@ FW.World = class World
     terrain = new THREE.Mesh terrainGeo, terrainMaterial
     terrain.position = position
     FW.scene.add terrain
+    return terrain
 

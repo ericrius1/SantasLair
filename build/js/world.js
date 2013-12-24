@@ -106,11 +106,11 @@
     };
 
     World.prototype.setUpTerrain = function() {
-      var currentPos;
-      this.terrainWidth = 5000;
+      var terrain;
+      this.terrainWidth = 4000;
       this.terrainHeight = 2000;
-      currentPos = new THREE.Vector3(-FW.width * .4, -100, -FW.width * .4);
-      return this.loadTerrain(currentPos);
+      terrain = this.loadTerrain(new THREE.Vector3(-FW.width / 2 + this.terrainWidth / 2, -100, -FW.width / 2 + this.terrainHeight / 1.3));
+      return terrain.rotation.y = .5;
     };
 
     World.prototype.loadTerrain = function(position) {
@@ -120,9 +120,9 @@
         generator: PN_GENERATOR,
         width: this.terrainWidth,
         height: this.terrainHeight,
-        widthSegments: 200,
-        heightSegments: 200,
-        depth: 4000,
+        widthSegments: 100,
+        heightSegments: 100,
+        depth: 3000,
         param: 4,
         filterparam: 1,
         filter: [CIRCLE_FILTER],
@@ -137,7 +137,8 @@
       });
       terrain = new THREE.Mesh(terrainGeo, terrainMaterial);
       terrain.position = position;
-      return FW.scene.add(terrain);
+      FW.scene.add(terrain);
+      return terrain;
     };
 
     return World;
