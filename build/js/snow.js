@@ -9,7 +9,7 @@
     function Snow() {
       this.snowGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
-        maxAge: 60
+        maxAge: 50
       });
       this.snowGroup.addEmitter(this.generateSnow());
       FW.scene.add(this.snowGroup.mesh);
@@ -21,10 +21,10 @@
       colorStart = new THREE.Color();
       colorStart.setRGB(1, 1, 1);
       return snowEmitterSettings = new ShaderParticleEmitter({
-        size: 500,
+        size: 1000,
         sizeEnd: 250,
-        position: new THREE.Vector3(0, FW.width * 0.8, 0),
-        positionSpread: new THREE.Vector3(FW.width * 0.9, 3000, FW.width * 0.9),
+        position: new THREE.Vector3(0, FW.width * 0.7, 0),
+        positionSpread: new THREE.Vector3(FW.width * 0.95, 2000, FW.width * 0.95),
         colorStart: colorStart,
         colorEnd: colorStart,
         velocity: new THREE.Vector3(0, -100, 0),

@@ -27,7 +27,6 @@ FW.World = class World
 
     # SCENE 
     FW.scene = new THREE.Scene()
-    FW.scene.fog = new THREE.FogExp2( 0xefd1b5, .000025 );
 
 
     # RENDERER
@@ -37,10 +36,10 @@ FW.World = class World
 
     #LIGHTS
     directionalLight = new THREE.DirectionalLight 0xabf2ff, 3
-    directionalLight.position.set( -1000, FW.width * 0.8, 0 )
+    directionalLight.position.set( FW.width/3, FW.width * 0.8, -FW.width/3 )
     FW.scene.add( directionalLight )
     directionalLight = new THREE.DirectionalLight 0xff00ff, 2
-    directionalLight.position.set( 2000, FW.width * 0.8, 0 )
+    directionalLight.position.set( -FW.width/3, FW.width * 0.8, FW.width/3 )
     FW.scene.add( directionalLight )
 
 

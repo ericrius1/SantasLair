@@ -23,15 +23,14 @@
       this.controls.zoomSpeed = 0.5;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
-      FW.scene.fog = new THREE.FogExp2(0xefd1b5, .000025);
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
       directionalLight = new THREE.DirectionalLight(0xabf2ff, 3);
-      directionalLight.position.set(-1000, FW.width * 0.8, 0);
+      directionalLight.position.set(FW.width / 3, FW.width * 0.8, -FW.width / 3);
       FW.scene.add(directionalLight);
       directionalLight = new THREE.DirectionalLight(0xff00ff, 2);
-      directionalLight.position.set(2000, FW.width * 0.8, 0);
+      directionalLight.position.set(-FW.width / 3, FW.width * 0.8, FW.width / 3);
       FW.scene.add(directionalLight);
       this.setUpTerrain();
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
