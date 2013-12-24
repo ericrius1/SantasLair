@@ -1,9 +1,10 @@
 FW.Tree = class Tree
   rnd = FW.rnd
-  constructor: (pos)->
+  constructor: (pos, scaleFactor)->
     @ornamentMaxAge = 1
     @ornamentsMovingUp = true
     @position = pos
+    @scaleFactor = scaleFactor
     @treeTick = 2
     @ornamentGroups = []
     @ornamentTick = .05
@@ -21,6 +22,7 @@ FW.Tree = class Tree
       @treeGroup.addEmitter @generateTree(curHeightLayer)
       @createOrnamentGroup(curHeightLayer)
     FW.scene.add(@treeGroup.mesh)
+    @treeGroup.mesh.scale.set(@scaleFactor, @scaleFactor, @scaleFactor)
     setTimeout(()=>
       @activateOrnamentLayer()
     rnd(1000, 5000))
@@ -62,7 +64,7 @@ FW.Tree = class Tree
     50)
 
 
-  createOrnamentGroup: (curHeightLayer  , position)->
+  createOrnamentGroup: (curHeightLayer)->
       ornamentGroup = new ShaderParticleGroup(
         texture: THREE.ImageUtils.loadTexture('assets/star.png')
         maxAge: @ornamentMaxAge

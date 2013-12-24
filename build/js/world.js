@@ -51,12 +51,12 @@
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
       this.snow = new FW.Snow();
-      this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
+      this.trees.push(new FW.Tree(new THREE.Vector3(), 5));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         position = new THREE.Vector3(rnd(-FW.width / this.treeRange, FW.width / this.treeRange), 0, rnd(-FW.width / this.treeRange, FW.width / this.treeRange));
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
-          this.trees.push(new FW.Tree(position));
+          this.trees.push(new FW.Tree(position, 1));
         }
       }
       window.addEventListener("resize", (function() {

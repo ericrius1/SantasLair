@@ -6,12 +6,13 @@
 
     rnd = FW.rnd;
 
-    function Tree(pos) {
+    function Tree(pos, scaleFactor) {
       var curHeightLayer, _i, _ref,
         _this = this;
       this.ornamentMaxAge = 1;
       this.ornamentsMovingUp = true;
       this.position = pos;
+      this.scaleFactor = scaleFactor;
       this.treeTick = 2;
       this.ornamentGroups = [];
       this.ornamentTick = .05;
@@ -29,6 +30,7 @@
         this.createOrnamentGroup(curHeightLayer);
       }
       FW.scene.add(this.treeGroup.mesh);
+      this.treeGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
       setTimeout(function() {
         return _this.activateOrnamentLayer();
       }, rnd(1000, 5000));
@@ -74,7 +76,7 @@
       }, 50);
     };
 
-    Tree.prototype.createOrnamentGroup = function(curHeightLayer, position) {
+    Tree.prototype.createOrnamentGroup = function(curHeightLayer) {
       var ornamentGroup;
       ornamentGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/star.png'),

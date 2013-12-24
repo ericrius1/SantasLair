@@ -75,12 +75,12 @@ FW.World = class World
 
 
     # TREES
-    @trees.push new FW.Tree(new THREE.Vector3(), 10)
+    @trees.push new FW.Tree(new THREE.Vector3(), 5)
     for i in [1..@numTrees]
       position = new THREE.Vector3(rnd(-FW.width/@treeRange, FW.width/@treeRange), 0, rnd(-FW.width/@treeRange, FW.width/@treeRange))
       distance = FW.camera.position.distanceTo(position)
       if(distance > 100)
-        @trees.push new FW.Tree position
+        @trees.push new FW.Tree position, 1
 
 
 
