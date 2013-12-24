@@ -26,10 +26,10 @@
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      directionalLight = new THREE.DirectionalLight(0xabf2ff, 3);
+      directionalLight = new THREE.DirectionalLight(0xabf2ff, 4);
       directionalLight.position.set(FW.width / 3, FW.width * 0.8, -FW.width / 3);
       FW.scene.add(directionalLight);
-      directionalLight = new THREE.DirectionalLight(0xff00ff, 2);
+      directionalLight = new THREE.DirectionalLight(0xff00ff, 3);
       directionalLight.position.set(-FW.width / 3, FW.width * 0.8, FW.width / 3);
       FW.scene.add(directionalLight);
       this.setUpTerrain();
