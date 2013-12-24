@@ -52,7 +52,7 @@
   FW.Main = Main = (function() {
     function Main() {
       if (soundOn) {
-        SC.stream("/tracks/rameses-b-inspire", function(sound) {
+        SC.stream("/tracks/home-alone-christmas-dubstep-remix-free-download", function(sound) {
           if (soundOn) {
             return sound.play();
           }

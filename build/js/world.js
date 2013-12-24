@@ -11,7 +11,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, distance, i, position, waterNormals, _i, _ref,
+      var aMeshMirror, directionalLight, distance, i, position, randColor, waterNormals, _i, _ref,
         _this = this;
       FW.clock = new THREE.Clock();
       this.mlib = {};
@@ -29,11 +29,16 @@
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
       FW.scene.fog = new THREE.FogExp2(0xefd1b5, 1.25);
-      FW.Renderer = new THREE.WebGLRenderer({
-        antialias: true
-      });
+      FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
+      directionalLight = new THREE.DirectionalLight(0xff0000, rnd(0.8, 1.5));
+      randColor = Math.floor(Math.random() * 16777215);
+      console.log(randColor);
+      directionalLight.color.setHex(randColor);
+      directionalLight.position.set(0, 6000, 0);
+      FW.scene.add(directionalLight);
+      this.loadTerrain(new THREE.Vector3());
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
@@ -104,6 +109,33 @@
         _this.meteor.calcPositions();
         return _this.slowUpdate();
       }, this.slowUpdateInterval);
+    };
+
+    World.prototype.loadTerrain = function(position) {
+      var parameters, terrain, terrainGeo, terrainMaterial;
+      parameters = {
+        alea: RAND_MT,
+        generator: PN_GENERATOR,
+        width: rnd(2000, 4000),
+        height: rnd(2000, 4000),
+        widthSegments: 100,
+        heightSegments: 100,
+        depth: rnd(500, 2000),
+        param: 4,
+        filterparam: 1,
+        filter: [CIRCLE_FILTER],
+        postgen: [MOUNTAINS_COLORS],
+        effect: [DESTRUCTURE_EFFECT]
+      };
+      terrainGeo = TERRAINGEN.Get(parameters);
+      terrainMaterial = new THREE.MeshPhongMaterial({
+        vertexColors: THREE.VertexColors,
+        shading: THREE.FlatShading,
+        side: THREE.DoubleSide
+      });
+      terrain = new THREE.Mesh(terrainGeo, terrainMaterial);
+      terrain.position = position;
+      return FW.scene.add(terrain);
     };
 
     return World;

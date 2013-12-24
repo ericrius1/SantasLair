@@ -38,15 +38,10 @@ window.onload = ->
       infoEl.style.display = if infoShowing then 'none' else 'block'
       infoShowing = !infoShowing;
 
-    
-        
-      
-
-
 FW.Main = class Main
   constructor: ->
     if soundOn
-      SC.stream "/tracks/rameses-b-inspire", (sound)->
+      SC.stream "/tracks/home-alone-christmas-dubstep-remix-free-download", (sound)->
         if soundOn
           sound.play()
 

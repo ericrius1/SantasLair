@@ -33,11 +33,21 @@ FW.World = class World
 
 
     # RENDERER
-    FW.Renderer = new THREE.WebGLRenderer(antialias: true)
+    FW.Renderer = new THREE.WebGLRenderer()
     FW.Renderer.setSize @SCREEN_WIDTH, @SCREEN_HEIGHT
 
     document.body.appendChild FW.Renderer.domElement
 
+    # LIGHTS
+    directionalLight = new THREE.DirectionalLight 0xff0000, rnd(0.8, 1.5)
+    randColor = Math.floor(Math.random()*16777215);
+    console.log randColor
+    directionalLight.color.setHex(randColor)
+    directionalLight.position.set( 0, 6000, 0 )
+    FW.scene.add( directionalLight )
+
+    #TERRAIN
+    @loadTerrain new THREE.Vector3()
 
     #WATER
     waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals.jpg'
@@ -64,6 +74,7 @@ FW.World = class World
     @meteor = new FW.Meteor()
     @stars = new FW.Stars()
     @snow = new FW.Snow()
+
 
     # TREES
     @trees.push new FW.Tree(new THREE.Vector3(), 10)
@@ -112,4 +123,25 @@ FW.World = class World
       @meteor.calcPositions()
       @slowUpdate()
     @slowUpdateInterval)
+
+  loadTerrain: (position)->
+    parameters = 
+      alea: RAND_MT,
+      generator: PN_GENERATOR,
+      width: rnd 2000, 4000
+      height: rnd 2000, 4000
+      widthSegments: 100
+      heightSegments: 100
+      depth: rnd 500, 2000
+      param: 4,
+      filterparam: 1
+      filter: [ CIRCLE_FILTER ]
+      postgen: [ MOUNTAINS_COLORS ]
+      effect: [ DESTRUCTURE_EFFECT ]
+
+    terrainGeo = TERRAINGEN.Get(parameters)
+    terrainMaterial = new THREE.MeshPhongMaterial vertexColors: THREE.VertexColors, shading: THREE.FlatShading, side: THREE.DoubleSide 
+    terrain = new THREE.Mesh terrainGeo, terrainMaterial
+    terrain.position = position
+    FW.scene.add terrain
 
