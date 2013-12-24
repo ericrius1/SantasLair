@@ -8,10 +8,12 @@
 
     function Tree(pos) {
       var position, y, _i, _ref;
+      this.ornamentMaxAge = 1;
+      this.ornamentsMovingUp = true;
       this.position = pos;
       this.treeTick = 4;
       this.ornamentGroups = [];
-      this.ornamentTick = .08;
+      this.ornamentTick = .05;
       this.numLayers = 10;
       this.heightFactor = 25;
       this.squishFactor = 24;
@@ -36,8 +38,8 @@
         this.treeGroup.tick(this.treeTick);
         this.treeTick -= .1;
       }
-      if (this.treeTick < 0) {
-        this.treeTick = 0;
+      if (this.treeTick < .0) {
+        this.treeTick = 0.0;
       }
       _ref = this.ornamentGroups;
       _results = [];
@@ -51,42 +53,58 @@
     Tree.prototype.activateOrnamentLayer = function() {
       var _this = this;
       return setTimeout(function() {
-        _this.ornamentGroups[_this.currentLightLayer++].triggerPoolEmitter(1);
+        if (_this.ornamentsMovingUp) {
+          if (_this.currentLightLayer < _this.ornamentGroups.length) {
+            _this.ornamentGroups[_this.currentLightLayer++].triggerPoolEmitter(1);
+          } else if (_this.currentLightLayer === _this.ornamentGroups.length) {
+            _this.ornamentsMovingUp = false;
+            _this.currentLightLayer--;
+          }
+        } else if (!_this.ornamentsMovingUp) {
+          if (_this.currentLightLayer >= 0) {
+            _this.ornamentGroups[_this.currentLightLayer--].triggerPoolEmitter(1);
+          } else if (_this.currentLightLayer < 0) {
+            _this.ornamentsMovingUp = true;
+            _this.currentLightLayer++;
+          }
+        }
         return _this.activateOrnamentLayer();
-      }, 1000);
+      }, 100);
     };
 
     Tree.prototype.createOrnamentGroup = function(y, position) {
       var ornamentGroup;
       ornamentGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-        maxAge: 10,
-        blending: THREE.NormalBlending
+        maxAge: this.ornamentMaxAge,
+        blending: THREE.AdditiveBlending
       });
-      ornamentGroup.addPool(1, this.generateOrnaments(y), false);
+      ornamentGroup.addPool(2, this.generateOrnaments(y), false);
       this.ornamentGroups.push(ornamentGroup);
       FW.scene.add(ornamentGroup.mesh);
       return ornamentGroup.mesh.renderDepth = -1;
     };
 
     Tree.prototype.generateOrnaments = function(y) {
-      var colorStart, ornamentEmmiterSettings, spread;
+      var colorEnd, colorStart, ornamentEmmiterSettings, spread;
       spread = Math.max(0, 250 - y * this.squishFactor);
       colorStart = new THREE.Color();
       colorStart.setRGB(Math.random(), Math.random(), Math.random());
+      colorEnd = new THREE.Color();
+      colorEnd.setRGB(Math.random(), Math.random(), Math.random());
       return ornamentEmmiterSettings = new ShaderParticleEmitter({
         size: 200,
-        sizeEnd: 0,
-        sizeSpread: 100,
-        colorStart: new THREE.Color('white'),
-        colorEnd: colorStart,
+        sizeEnd: 20,
+        colorStart: colorStart,
+        colorEnd: colorEnd,
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 10, 20, spread + 10),
-        particlesPerSecond: 5,
-        opacityStart: 1.0,
+        positionSpread: new THREE.Vector3(spread + 5, 25, spread + 5),
+        particlesPerSecond: 1000,
+        opacityStart: 0.8,
         opacityMiddle: 1.0,
         opacityEnd: 1.0,
-        alive: 0
+        alive: 0,
+        emitterDuration: 1
       });
     };
 
@@ -99,7 +117,7 @@
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 10, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 10.0,
+        particlesPerSecond: 25.0 / y,
         opacityEnd: 1.0
       });
     };

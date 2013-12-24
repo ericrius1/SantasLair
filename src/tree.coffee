@@ -1,10 +1,12 @@
 FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos)->
+    @ornamentMaxAge = 1
+    @ornamentsMovingUp = true
     @position = pos
     @treeTick = 4
     @ornamentGroups = []
-    @ornamentTick = .08
+    @ornamentTick = .05
     @numLayers = 10
     @heightFactor = 25
     @squishFactor = 24
@@ -33,27 +35,40 @@ FW.Tree = class Tree
     if @treeTick > 0.0
       @treeGroup.tick(@treeTick)
       @treeTick -=.1
-    if @treeTick < 0
-      @treeTick = 0
+    if @treeTick < .0
+      @treeTick = 0.0
     for ornamentGroup in @ornamentGroups
       ornamentGroup.tick(@ornamentTick)
     
 
   activateOrnamentLayer: ()->
     setTimeout(()=>
-      @ornamentGroups[@currentLightLayer++].triggerPoolEmitter(1)
+      if @ornamentsMovingUp
+        if @currentLightLayer < @ornamentGroups.length
+          @ornamentGroups[@currentLightLayer++].triggerPoolEmitter(1)
+        #We've reached top of tree, now go back down
+        else if @currentLightLayer is @ornamentGroups.length
+          @ornamentsMovingUp = false
+          @currentLightLayer--
+      else if not @ornamentsMovingUp
+        if @currentLightLayer >= 0
+          @ornamentGroups[@currentLightLayer--].triggerPoolEmitter(1)
+        # We've reached bottom of trees, now move back up
+        else if @currentLightLayer < 0
+          @ornamentsMovingUp = true 
+          @currentLightLayer++
       @activateOrnamentLayer()
-    1000)
+    100)
 
 
   createOrnamentGroup: (y, position)->
       ornamentGroup = new ShaderParticleGroup(
         texture: THREE.ImageUtils.loadTexture('assets/star.png')
-        maxAge: 10
-        blending: THREE.NormalBlending
+        maxAge: @ornamentMaxAge
+        blending: THREE.AdditiveBlending
       )
 
-      ornamentGroup.addPool 1, @generateOrnaments(y), false
+      ornamentGroup.addPool 2, @generateOrnaments(y), false
       @ornamentGroups.push ornamentGroup
       FW.scene.add ornamentGroup.mesh
       ornamentGroup.mesh.renderDepth = -1
@@ -63,19 +78,21 @@ FW.Tree = class Tree
     spread = Math.max 0, 250 - y * @squishFactor
     colorStart = new THREE.Color()
     colorStart.setRGB(Math.random(), Math.random(), Math.random())
+    colorEnd = new THREE.Color()
+    colorEnd.setRGB(Math.random(), Math.random(), Math.random())
     ornamentEmmiterSettings = new ShaderParticleEmitter
       size: 200
-      sizeEnd: 0
-      sizeSpread: 100
-      colorStart: new THREE.Color('white')
-      colorEnd: colorStart
+      sizeEnd: 20
+      colorStart: colorStart
+      colorEnd: colorEnd
       position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+10, 20, spread+ 10
-      particlesPerSecond: 5
-      opacityStart: 1.0 
+      positionSpread: new THREE.Vector3 spread+5, 25, spread+ 5
+      particlesPerSecond: 1000
+      opacityStart: 0.8
       opacityMiddle: 1.0
       opacityEnd: 1.0
       alive: 0
+      emitterDuration: 1
 
   generateTree: (y)->
     spread = Math.max 0, 250 - y* @squishFactor
@@ -86,7 +103,7 @@ FW.Tree = class Tree
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread , 10, spread
       colorEnd: new THREE.Color()
-      particlesPerSecond: 10.0
+      particlesPerSecond: 25.0/ (y)
       opacityEnd: 1.0
 
 
