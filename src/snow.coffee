@@ -27,7 +27,7 @@ FW.Snow = class Snow
       velocitySpread: new THREE.Vector3(111, 0, 111)
       acceleration: new THREE.Vector3(0, -.2, 0)
       accelerationSpread: new THREE.Vector3(0.7, 0,0.7 )
-      particlesPerSecond: 30
+      particlesPerSecond: 15
       opacityEnd: 0.7
 
   

@@ -3,7 +3,7 @@ FW.Tree = class Tree
   constructor: (pos, scaleFactor)->
     #ORNAMENT STUFF
     @ornamentMaxAge = 4
-    @lightSwitchingTimeout = 103
+    @lightSwitchingTimeout = 200  
     @ornamentsMovingUp = true
     @ornamentGroups = []
     @ornamentTick = .16
@@ -58,6 +58,7 @@ FW.Tree = class Tree
         else if @currentLightLayer is @ornamentGroups.length
           @ornamentsMovingUp = false
           @currentLightLayer--
+          @ornamentGroups[@currentLightLayer--].triggerPoolEmitter(1)
       else if not @ornamentsMovingUp
         if @currentLightLayer >= 0
           @ornamentGroups[@currentLightLayer--].triggerPoolEmitter(1)
@@ -65,6 +66,7 @@ FW.Tree = class Tree
         else if @currentLightLayer < 0
           @ornamentsMovingUp = true 
           @currentLightLayer++
+          @ornamentGroups[@currentLightLayer++].triggerPoolEmitter(1)
       @activateOrnamentLayer()
     @lightSwitchingTimeout)
 

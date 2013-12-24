@@ -10,7 +10,7 @@
       var curHeightLayer, _i, _ref,
         _this = this;
       this.ornamentMaxAge = 4;
-      this.lightSwitchingTimeout = 103;
+      this.lightSwitchingTimeout = 200;
       this.ornamentsMovingUp = true;
       this.ornamentGroups = [];
       this.ornamentTick = .16;
@@ -65,6 +65,7 @@
           } else if (_this.currentLightLayer === _this.ornamentGroups.length) {
             _this.ornamentsMovingUp = false;
             _this.currentLightLayer--;
+            _this.ornamentGroups[_this.currentLightLayer--].triggerPoolEmitter(1);
           }
         } else if (!_this.ornamentsMovingUp) {
           if (_this.currentLightLayer >= 0) {
@@ -72,6 +73,7 @@
           } else if (_this.currentLightLayer < 0) {
             _this.ornamentsMovingUp = true;
             _this.currentLightLayer++;
+            _this.ornamentGroups[_this.currentLightLayer++].triggerPoolEmitter(1);
           }
         }
         return _this.activateOrnamentLayer();
