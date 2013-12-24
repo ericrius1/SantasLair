@@ -13,7 +13,7 @@ FW.World = class World
     @height = 150000
     @trees = []
     @numTrees = 10
-    @rippleFactor = 60
+    @rippleFactor = 2000
 
 
     # CAMERA
@@ -39,7 +39,7 @@ FW.World = class World
 
 
     #WATER
-    waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals copy.jpg'
+    waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals.jpg'
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
     @water = new THREE.Water FW.Renderer, FW.camera, FW.scene,
       textureWidth: 512
@@ -90,7 +90,7 @@ FW.World = class World
   animate : =>
     requestAnimationFrame @animate
     delta = FW.clock.getDelta()
-    @water.material.uniforms.time.value += 1.0 / 60 
+    @water.material.uniforms.time.value += 1.0 / @rippleFactor
     time = Date.now()
     @controls.update()
     @render()

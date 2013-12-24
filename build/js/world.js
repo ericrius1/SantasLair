@@ -22,7 +22,7 @@
       this.height = 150000;
       this.trees = [];
       this.numTrees = 10;
-      this.rippleFactor = 60;
+      this.rippleFactor = 2000;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
@@ -35,7 +35,7 @@
       });
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals copy.jpg');
+      waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
         textureWidth: 512,
@@ -77,7 +77,7 @@
       var delta, time;
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
-      this.water.material.uniforms.time.value += 1.0 / 60;
+      this.water.material.uniforms.time.value += 1.0 / this.rippleFactor;
       time = Date.now();
       this.controls.update();
       return this.render();
