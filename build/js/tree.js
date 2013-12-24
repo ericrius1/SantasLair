@@ -35,13 +35,21 @@
     }
 
     Tree.prototype.tick = function() {
+      var ornamentGroup, _i, _len, _ref, _results;
       if (this.treeTick > 0.0) {
         this.treeGroup.tick(this.treeTick);
         this.treeTick -= .1;
       }
       if (this.treeTick < .0) {
-        return this.treeTick = 0.0;
+        this.treeTick = 0.0;
       }
+      _ref = this.ornamentGroups;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        ornamentGroup = _ref[_i];
+        _results.push(ornamentGroup.tick(this.ornamentTick));
+      }
+      return _results;
     };
 
     Tree.prototype.activateOrnamentLayer = function() {

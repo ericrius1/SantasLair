@@ -38,8 +38,8 @@ FW.Tree = class Tree
       @treeTick -=.1
     if @treeTick < .0
       @treeTick = 0.0
-    # for ornamentGroup in @ornamentGroups
-      # ornamentGroup.tick(@ornamentTick)
+    for ornamentGroup in @ornamentGroups
+      ornamentGroup.tick(@ornamentTick)
     
 
   activateOrnamentLayer: ()->

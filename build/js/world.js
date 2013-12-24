@@ -22,6 +22,7 @@
       this.height = 10000;
       this.trees = [];
       this.numTrees = 10;
+      this.rippleFactor = 100;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
@@ -29,7 +30,9 @@
       this.controls.minDistance = 500;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
-      FW.Renderer = new THREE.WebGLRenderer();
+      FW.Renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
@@ -40,8 +43,8 @@
         waterNormals: waterNormals,
         alpha: 1,
         waterColor: 0xffffff,
-        sunColor: 0xf133d8,
-        distortionScale: 10
+        sunColor: 0x0ecce3,
+        distortionScale: 50
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
@@ -50,7 +53,7 @@
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(-1000, 1000), rnd(-500, -10), rnd(-1000, 1000));
+        position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000));
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
           this.trees.push(new FW.Tree(position));
@@ -74,6 +77,7 @@
       var delta, time;
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
+      this.water.material.uniforms.time.value += 1.0 / this.rippleFactor;
       time = Date.now();
       this.controls.update();
       return this.render();
