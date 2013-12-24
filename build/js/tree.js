@@ -85,6 +85,7 @@
       });
       ornamentGroup.addPool(2, this.generateOrnaments(curHeightLayer), false);
       this.ornamentGroups.push(ornamentGroup);
+      ornamentGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
       FW.scene.add(ornamentGroup.mesh);
       return ornamentGroup.mesh.renderDepth = -1;
     };
@@ -95,7 +96,7 @@
       colorStart = new THREE.Color();
       colorStart.setRGB(Math.random(), Math.random(), Math.random());
       ornamentEmmiterSettings = {
-        size: 200,
+        size: 200 * this.scaleFactor,
         sizeSpread: 200,
         sizeEnd: 20,
         colorStart: colorStart,
@@ -117,7 +118,7 @@
       var spread;
       spread = Math.max(0, 250 - curHeightLayer * this.squishFactor);
       return this.treeEmitter = new ShaderParticleEmitter({
-        size: 200,
+        size: 200 * this.scaleFactor,
         sizeEnd: 100,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 10, spread),

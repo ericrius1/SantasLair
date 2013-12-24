@@ -9,7 +9,7 @@ FW.World = class World
     FW.width = 10000
   
     @trees = []
-    @numTrees = 10
+    @numTrees = 20
     @rippleFactor = 2000
     @treeRange = 2.5
 
@@ -20,8 +20,8 @@ FW.World = class World
     
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
-    # @controls.maxDistance = 5500
-    # @controls.minDistance = 500
+    @controls.maxDistance = FW.width * 3
+    @controls.minDistance = 1000
     # @controls.zoomSpeed = 0.5
     @controls.maxPolarAngle = Math.PI/4 + .7
     
@@ -78,8 +78,10 @@ FW.World = class World
     @trees.push new FW.Tree(new THREE.Vector3(), 5)
     for i in [1..@numTrees]
       position = new THREE.Vector3(rnd(-FW.width/@treeRange, FW.width/@treeRange), 0, rnd(-FW.width/@treeRange, FW.width/@treeRange))
-      distance = FW.camera.position.distanceTo(position)
-      if(distance > 100)
+      #keep trees from getting too close to camera or Big tree
+      distanceToCamera = FW.camera.position.distanceTo(position)
+      distanceToBigTree = position.distanceTo(new THREE.Vector3())
+      if(distanceToCamera > 100 and distanceToBigTree > 1111)
         @trees.push new FW.Tree position, 1
 
 

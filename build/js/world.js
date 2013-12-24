@@ -7,7 +7,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, directionalLight, distance, i, position, waterNormals, _i, _ref,
+      var aMeshMirror, directionalLight, distanceToBigTree, distanceToCamera, i, position, waterNormals, _i, _ref,
         _this = this;
       FW.clock = new THREE.Clock();
       this.SCREEN_WIDTH = window.innerWidth;
@@ -15,12 +15,14 @@
       this.camFar = 200000;
       FW.width = 10000;
       this.trees = [];
-      this.numTrees = 10;
+      this.numTrees = 20;
       this.rippleFactor = 2000;
       this.treeRange = 2.5;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
+      this.controls.maxDistance = FW.width * 3;
+      this.controls.minDistance = 1000;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
       FW.Renderer = new THREE.WebGLRenderer();
@@ -54,8 +56,9 @@
       this.trees.push(new FW.Tree(new THREE.Vector3(), 5));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         position = new THREE.Vector3(rnd(-FW.width / this.treeRange, FW.width / this.treeRange), 0, rnd(-FW.width / this.treeRange, FW.width / this.treeRange));
-        distance = FW.camera.position.distanceTo(position);
-        if (distance > 100) {
+        distanceToCamera = FW.camera.position.distanceTo(position);
+        distanceToBigTree = position.distanceTo(new THREE.Vector3());
+        if (distanceToCamera > 100 && distanceToBigTree > 1111) {
           this.trees.push(new FW.Tree(position, 1));
         }
       }

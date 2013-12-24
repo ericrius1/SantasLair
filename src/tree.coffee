@@ -73,6 +73,7 @@ FW.Tree = class Tree
 
       ornamentGroup.addPool 2, @generateOrnaments(curHeightLayer), false
       @ornamentGroups.push ornamentGroup
+      ornamentGroup.mesh.scale.set(@scaleFactor, @scaleFactor, @scaleFactor)
       FW.scene.add ornamentGroup.mesh
       ornamentGroup.mesh.renderDepth = -1
 
@@ -82,7 +83,7 @@ FW.Tree = class Tree
     colorStart = new THREE.Color()
     colorStart.setRGB(Math.random(), Math.random(), Math.random())
     ornamentEmmiterSettings = 
-      size: 200
+      size: 200 * @scaleFactor
       sizeSpread: 200
       sizeEnd: 20
       colorStart: colorStart
@@ -101,7 +102,7 @@ FW.Tree = class Tree
   generateTree: (curHeightLayer)->
     spread = Math.max 0, 250 - curHeightLayer* @squishFactor
     @treeEmitter = new ShaderParticleEmitter
-      size: 200
+      size: 200 * @scaleFactor
       sizeEnd: 100
       position: new THREE.Vector3 @position.x,  curHeightLayer*@heightFactor, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
