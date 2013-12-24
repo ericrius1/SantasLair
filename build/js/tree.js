@@ -7,12 +7,13 @@
     rnd = FW.rnd;
 
     function Tree(pos, scaleFactor) {
-      var curHeightLayer, _i, _ref;
+      var curHeightLayer, _i, _ref,
+        _this = this;
       this.ornamentMaxAge = .1;
       this.ornamentsMovingUp = true;
       this.position = pos;
       this.scaleFactor = scaleFactor;
-      this.treeTick = 2;
+      this.treeTick = .06;
       this.ornamentGroups = [];
       this.ornamentTick = .01;
       this.numLayers = 10;
@@ -31,14 +32,16 @@
       }
       this.treeGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
       FW.scene.add(this.treeGroup.mesh);
-      this.activateOrnamentLayer();
+      setTimeout(function() {
+        return _this.activateOrnamentLayer();
+      }, 1000);
     }
 
     Tree.prototype.tick = function() {
       var ornamentGroup, _i, _len, _ref, _results;
       if (this.treeTick > 0.0) {
         this.treeGroup.tick(this.treeTick);
-        this.treeTick -= .1;
+        this.treeTick -= .0005;
       }
       if (this.treeTick < .0) {
         this.treeTick = 0.0;
@@ -95,14 +98,12 @@
       colorStart.setRGB(0.5, 0, curHeightLayer / 20);
       ornamentEmmiterSettings = {
         size: 200 * this.scaleFactor,
-        sizeSpread: 200,
-        sizeEnd: 20,
         colorStart: colorStart,
         colorSpread: new THREE.Vector3(0, .2, .2),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 5, 5, spread + 5),
-        particlesPerSecond: (200 / curHeightLayer) * this.scaleFactor,
+        particlesPerSecond: (400 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
         opacityEnd: 1.0,
         alive: 0,
@@ -120,7 +121,7 @@
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 10, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 25.0 / curHeightLayer * this.scaleFactor,
+        particlesPerSecond: 45.0 / curHeightLayer * this.scaleFactor,
         opacityEnd: 1.0
       });
     };

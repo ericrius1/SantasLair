@@ -5,7 +5,7 @@ FW.Tree = class Tree
     @ornamentsMovingUp = true
     @position = pos
     @scaleFactor = scaleFactor
-    @treeTick = 2
+    @treeTick = .06
     @ornamentGroups = []
     @ornamentTick = .01
     @numLayers = 10
@@ -24,7 +24,9 @@ FW.Tree = class Tree
       @createOrnamentGroup(curHeightLayer)
     @treeGroup.mesh.scale.set(@scaleFactor, @scaleFactor, @scaleFactor)
     FW.scene.add(@treeGroup.mesh)
-    @activateOrnamentLayer()
+    setTimeout(()=>
+      @activateOrnamentLayer()
+    1000)
 
 
 
@@ -36,7 +38,7 @@ FW.Tree = class Tree
   tick: ->
     if @treeTick > 0.0
       @treeGroup.tick(@treeTick)
-      @treeTick -=.1
+      @treeTick -=.0005
     if @treeTick < .0
       @treeTick = 0.0
     for ornamentGroup in @ornamentGroups
@@ -83,14 +85,12 @@ FW.Tree = class Tree
     colorStart.setRGB(0.5, 0, curHeightLayer/20)
     ornamentEmmiterSettings = 
       size: 200 * @scaleFactor
-      sizeSpread: 200
-      sizeEnd: 20
       colorStart: colorStart
       colorSpread: new THREE.Vector3(0, .2, .2)
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+5, 5, spread+ 5
-      particlesPerSecond: (200/curHeightLayer) * (@scaleFactor)
+      particlesPerSecond: (400/curHeightLayer) * (@scaleFactor)
       opacityStart: 1.0
       opacityEnd: 1.0
       alive: 0
@@ -106,7 +106,7 @@ FW.Tree = class Tree
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread , 10, spread
       colorEnd: new THREE.Color()
-      particlesPerSecond: 25.0/ curHeightLayer * @scaleFactor
+      particlesPerSecond: 45.0/ curHeightLayer * @scaleFactor
       opacityEnd: 1.0
 
 

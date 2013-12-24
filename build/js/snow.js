@@ -28,7 +28,7 @@
         size: 700,
         sizeEnd: 200,
         sizeSpread: 200,
-        position: new THREE.Vector3(0, FW.width * 0.7, 0),
+        position: new THREE.Vector3(0, FW.width * 0.6, 0),
         positionSpread: new THREE.Vector3(200, 2000, 200),
         colorStart: colorStart,
         colorEnd: this.colorEnd,

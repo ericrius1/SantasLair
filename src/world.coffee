@@ -11,12 +11,12 @@ FW.World = class World
     @trees = []
     @numTrees = 20
     @rippleFactor = 2000
-    @treeRange = 2.5
+    @treeConstrainFactor = 5.0
 
 
     # CAMERA
     FW.camera = new THREE.PerspectiveCamera(45.0, @SCREEN_WIDTH / @SCREEN_HEIGHT, 1, @camFar)
-    FW.camera.position.set  0, 400, 800
+    FW.camera.position.set  0, 800, 2000
     
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
@@ -75,14 +75,14 @@ FW.World = class World
 
 
     # TREES
-    @trees.push new FW.Tree(new THREE.Vector3(), 2)
+    @trees.push new FW.Tree(new THREE.Vector3(), 3)
     for i in [1..@numTrees]
-      position = new THREE.Vector3(rnd(-FW.width/@treeRange, FW.width/@treeRange), 0, rnd(-FW.width/@treeRange, FW.width/@treeRange))
+      position = new THREE.Vector3(rnd(-FW.width/@treeConstrainFactor, FW.width/@treeConstrainFactor), 0, rnd(-FW.width/@treeConstrainFactor, FW.width/@treeConstrainFactor))
       #keep trees from getting too close to camera or Big tree
       distanceToCamera = FW.camera.position.distanceTo(position)
       distanceToBigTree = position.distanceTo(new THREE.Vector3())
-      if(distanceToCamera > 100 and distanceToBigTree > 800)
-        @trees.push new FW.Tree position, 1
+      if(distanceToCamera > 100 and distanceToBigTree > 1111)
+        @trees.push new FW.Tree position, rnd(1, 2)
 
 
 
