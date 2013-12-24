@@ -8,6 +8,7 @@ FW.Tree = class Tree
     @numLayers = 10
     @heightFactor = 25
     @squishFactor = 24
+    @currentLightLayer   = 0
     @treeGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/leaf2.png')
       maxAge: 10
@@ -19,7 +20,62 @@ FW.Tree = class Tree
       @treeGroup.addEmitter @generateTree(y, position)
       @createOrnamentGroup(y)
     FW.scene.add(@treeGroup.mesh)
+    @activateOrnamentLayer()
 
+
+
+  
+  
+  ##########################################
+  #TICK MAIN LOOOOP
+
+  tick: ->
+    if @treeTick > 0.0
+      @treeGroup.tick(@treeTick)
+      @treeTick -=.1
+    if @treeTick < 0
+      @treeTick = 0
+    for ornamentGroup in @ornamentGroups
+      ornamentGroup.tick(@ornamentTick)
+    
+
+  activateOrnamentLayer: ()->
+    setTimeout(()=>
+      @ornamentGroups[@currentLightLayer++].triggerPoolEmitter(1)
+      @activateOrnamentLayer()
+    1000)
+
+
+  createOrnamentGroup: (y, position)->
+      ornamentGroup = new ShaderParticleGroup(
+        texture: THREE.ImageUtils.loadTexture('assets/star.png')
+        maxAge: 10
+        blending: THREE.NormalBlending
+      )
+
+      ornamentGroup.addPool 1, @generateOrnaments(y), false
+      @ornamentGroups.push ornamentGroup
+      FW.scene.add ornamentGroup.mesh
+      ornamentGroup.mesh.renderDepth = -1
+
+
+  generateOrnaments: (y)->
+    spread = Math.max 0, 250 - y * @squishFactor
+    colorStart = new THREE.Color()
+    colorStart.setRGB(Math.random(), Math.random(), Math.random())
+    ornamentEmmiterSettings = new ShaderParticleEmitter
+      size: 200
+      sizeEnd: 0
+      sizeSpread: 100
+      colorStart: new THREE.Color('white')
+      colorEnd: colorStart
+      position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
+      positionSpread: new THREE.Vector3 spread+10, 20, spread+ 10
+      particlesPerSecond: 5
+      opacityStart: 1.0 
+      opacityMiddle: 1.0
+      opacityEnd: 1.0
+      alive: 0
 
   generateTree: (y)->
     spread = Math.max 0, 250 - y* @squishFactor
@@ -32,51 +88,8 @@ FW.Tree = class Tree
       colorEnd: new THREE.Color()
       particlesPerSecond: 10.0
       opacityEnd: 1.0
-  
-  ##########################################
-  #TICK MAIN LOOOOP
-
-  tick: ->
-    if @treeTick > 0.0
-      @treeGroup.tick(@treeTick)
-      @treeTick -=.1
-    if @treeTick < 0
-      @treeTick = 0
-    
-    setTimeout(()=>
-      @ornamentGroups[0].tick(@ornamentTick)
-    2000)
 
 
-  createOrnamentGroup: (y, position)->
-      ornamentGroup = new ShaderParticleGroup(
-        texture: THREE.ImageUtils.loadTexture('assets/star.png')
-        maxAge: 10
-        blending: THREE.NormalBlending
-      )
-
-      ornamentGroup.addEmitter @generateOrnaments(y)
-      @ornamentGroups.push ornamentGroup
-      FW.scene.add ornamentGroup.mesh
-      ornamentGroup.mesh.renderDepth = -1
-
-
-  generateOrnaments: (y)->
-    spread = Math.max 0, 250 - y * @squishFactor
-    colorStart = new THREE.Color()
-    colorStart.setRGB(Math.random(), Math.random(), Math.random())
-    ornamentEmmiter = new ShaderParticleEmitter
-      size: 200
-      sizeEnd: 0
-      sizeSpread: 100
-      colorStart: new THREE.Color('white')
-      colorEnd: colorStart
-      position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+10, 20, spread+ 10
-      particlesPerSecond: 5
-      opacityStart: 1.0 
-      opacityMiddle: 1.0
-      opacityEnd: 1.0
 
 
 

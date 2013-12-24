@@ -20,13 +20,13 @@
       this.camFar = 200000;
       this.width = 50000;
       this.height = 50000;
-      this.rippleFactor = 2000;
+      this.rippleFactor = 1000;
       this.trees = [];
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxDistance = 10000;
-      this.controls.minDistance = 200;
+      this.controls.minDistance = 500;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
       FW.Renderer = new THREE.WebGLRenderer();
