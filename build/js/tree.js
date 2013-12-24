@@ -81,7 +81,7 @@
     Tree.prototype.createOrnamentGroup = function(curHeightLayer) {
       var ornamentGroup;
       ornamentGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+        texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
         maxAge: this.ornamentMaxAge,
         blending: THREE.AdditiveBlending
       });
@@ -96,14 +96,14 @@
       var colorStart, ornamentEmmiterSettings, spread;
       spread = Math.max(0, 250 - (curHeightLayer * this.squishFactor));
       colorStart = new THREE.Color();
-      colorStart.setRGB(0.2 + curHeightLayer / 20, 0, curHeightLayer / 20);
+      colorStart.setRGB(1.0, 0, 0);
       ornamentEmmiterSettings = {
-        size: 400 * this.scaleFactor,
+        size: 200 * this.scaleFactor,
         colorStart: colorStart,
         colorSpread: new THREE.Vector3(0, .4, .4),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 5, 5, spread + 5),
+        positionSpread: new THREE.Vector3(spread + 5, this.ornamentHeightSpread, spread + 5),
         particlesPerSecond: (400 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
         opacityEnd: 1.0,

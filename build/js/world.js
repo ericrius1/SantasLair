@@ -16,7 +16,6 @@
       FW.width = 10000;
       this.trees = [];
       this.numTrees = 10;
-      this.rippleFactor = 2000;
       this.treeConstrainFactor = 6.0;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 500, 2000);
@@ -80,7 +79,6 @@
       var delta, time;
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
-      this.water.material.uniforms.time.value += 1.0 / this.rippleFactor;
       time = Date.now();
       this.controls.update();
       return this.render();
@@ -125,7 +123,7 @@
         height: this.terrainHeight,
         widthSegments: 100,
         heightSegments: 100,
-        depth: 3000,
+        depth: 2500,
         param: 4,
         filterparam: 1,
         filter: [CIRCLE_FILTER],

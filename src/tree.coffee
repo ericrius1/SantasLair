@@ -71,7 +71,7 @@ FW.Tree = class Tree
 
   createOrnamentGroup: (curHeightLayer)->
       ornamentGroup = new ShaderParticleGroup(
-        texture: THREE.ImageUtils.loadTexture('assets/star.png')
+        texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png')
         maxAge: @ornamentMaxAge
         blending: THREE.AdditiveBlending
       )
@@ -86,14 +86,15 @@ FW.Tree = class Tree
   generateOrnaments: (curHeightLayer)->
     spread = Math.max 0, 250 - (curHeightLayer * @squishFactor)
     colorStart = new THREE.Color()
-    colorStart.setRGB(0.2 + curHeightLayer/20, 0, curHeightLayer/20)
+    # colorStart.setRGB(0.2 + curHeightLayer/20, 0, curHeightLayer/20)
+    colorStart.setRGB(1.0, 0, 0)
     ornamentEmmiterSettings = 
-      size: 400 * @scaleFactor
+      size: 200 * @scaleFactor
       colorStart: colorStart
       colorSpread: new THREE.Vector3(0, .4, .4)
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+5, 5, spread+ 5
+      positionSpread: new THREE.Vector3 spread+5, @ornamentHeightSpread, spread+ 5
       particlesPerSecond: (400/curHeightLayer) * (@scaleFactor)
       opacityStart: 1.0
       opacityEnd: 1.0

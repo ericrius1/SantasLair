@@ -10,7 +10,7 @@ FW.World = class World
   
     @trees = []
     @numTrees = 10
-    @rippleFactor = 2000
+    # @rippleFactor = 2000
     @treeConstrainFactor = 6.0
 
 
@@ -104,7 +104,7 @@ FW.World = class World
   animate : =>
     requestAnimationFrame @animate
     delta = FW.clock.getDelta()
-    @water.material.uniforms.time.value += 1.0 / @rippleFactor
+    # @water.material.uniforms.time.value += 1.0 / @rippleFactor
     time = Date.now()
     @controls.update()
     @render()
@@ -139,7 +139,7 @@ FW.World = class World
       height: @terrainHeight
       widthSegments: 100
       heightSegments: 100
-      depth: 3000
+      depth: 2500
       param: 4,
       filterparam: 1
       filter: [ CIRCLE_FILTER ]
