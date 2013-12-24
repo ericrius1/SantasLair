@@ -5,10 +5,9 @@ rnd = FW.rnd
 FW.World = class World
   constructor : ->
     FW.clock = new THREE.Clock()
-    @mlib = {}
     @SCREEN_WIDTH = window.innerWidth
     @SCREEN_HEIGHT = window.innerHeight
-    @camFar = 200000
+    @camFar = 20000
     FW.width = 10000
     FW.height = 10000
     @trees = []
@@ -43,7 +42,7 @@ FW.World = class World
     randColor = Math.floor(Math.random()*16777215);
     console.log randColor
     directionalLight.color.setHex(randColor)
-    directionalLight.position.set( 0, 6000, 0 )
+    directionalLight.position.set( 0, 1000, 0 )
     FW.scene.add( directionalLight )
 
     #TERRAIN

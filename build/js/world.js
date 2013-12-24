@@ -14,10 +14,9 @@
       var aMeshMirror, directionalLight, distance, i, position, randColor, waterNormals, _i, _ref,
         _this = this;
       FW.clock = new THREE.Clock();
-      this.mlib = {};
       this.SCREEN_WIDTH = window.innerWidth;
       this.SCREEN_HEIGHT = window.innerHeight;
-      this.camFar = 200000;
+      this.camFar = 20000;
       FW.width = 10000;
       FW.height = 10000;
       this.trees = [];
@@ -36,7 +35,7 @@
       randColor = Math.floor(Math.random() * 16777215);
       console.log(randColor);
       directionalLight.color.setHex(randColor);
-      directionalLight.position.set(0, 6000, 0);
+      directionalLight.position.set(0, 1000, 0);
       FW.scene.add(directionalLight);
       this.loadTerrain(new THREE.Vector3());
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
