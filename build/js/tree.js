@@ -9,16 +9,17 @@
     function Tree(pos, scaleFactor) {
       var curHeightLayer, _i, _ref,
         _this = this;
-      this.ornamentMaxAge = .1;
+      this.ornamentMaxAge = 1;
+      this.lightSwitchingTimeout = 100;
       this.ornamentsMovingUp = true;
+      this.ornamentGroups = [];
+      this.ornamentTick = .16;
+      this.ornamentHeightSpread = 50;
       this.position = pos;
       this.scaleFactor = scaleFactor;
       this.treeTick = .06;
-      this.ornamentGroups = [];
-      this.ornamentTick = .01;
       this.numLayers = 10;
       this.heightFactor = 25;
-      this.lightSwitchingTimeout = 100;
       this.squishFactor = 24;
       this.currentLightLayer = 0;
       this.treeGroup = new ShaderParticleGroup({
@@ -34,7 +35,7 @@
       FW.scene.add(this.treeGroup.mesh);
       setTimeout(function() {
         return _this.activateOrnamentLayer();
-      }, 1000);
+      }, 3000);
     }
 
     Tree.prototype.tick = function() {
@@ -95,11 +96,11 @@
       var colorStart, ornamentEmmiterSettings, spread;
       spread = Math.max(0, 250 - (curHeightLayer * this.squishFactor));
       colorStart = new THREE.Color();
-      colorStart.setRGB(0.5, 0, curHeightLayer / 20);
+      colorStart.setRGB(0.2 + curHeightLayer / 20, 0, curHeightLayer / 20);
       ornamentEmmiterSettings = {
-        size: 200 * this.scaleFactor,
+        size: 400 * this.scaleFactor,
         colorStart: colorStart,
-        colorSpread: new THREE.Vector3(0, .2, .2),
+        colorSpread: new THREE.Vector3(0, .4, .4),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 5, 5, spread + 5),
@@ -119,9 +120,9 @@
         size: 200 * this.scaleFactor,
         sizeEnd: 100,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread, 10, spread),
+        positionSpread: new THREE.Vector3(spread, 20, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 45.0 / curHeightLayer * this.scaleFactor,
+        particlesPerSecond: 65.0 / curHeightLayer * this.scaleFactor,
         opacityEnd: 1.0
       });
     };

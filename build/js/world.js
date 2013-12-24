@@ -15,11 +15,11 @@
       this.camFar = 200000;
       FW.width = 10000;
       this.trees = [];
-      this.numTrees = 20;
+      this.numTrees = 10;
       this.rippleFactor = 2000;
-      this.treeConstrainFactor = 5.0;
+      this.treeConstrainFactor = 6.0;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
-      FW.camera.position.set(0, 800, 2000);
+      FW.camera.position.set(0, 500, 2000);
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxDistance = FW.width * 3;
       this.controls.minDistance = 1000;
@@ -53,7 +53,6 @@
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
       this.snow = new FW.Snow();
-      this.trees.push(new FW.Tree(new THREE.Vector3(), 3));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         position = new THREE.Vector3(rnd(-FW.width / this.treeConstrainFactor, FW.width / this.treeConstrainFactor), 0, rnd(-FW.width / this.treeConstrainFactor, FW.width / this.treeConstrainFactor));
         distanceToCamera = FW.camera.position.distanceTo(position);
@@ -62,6 +61,7 @@
           this.trees.push(new FW.Tree(position, rnd(1, 2)));
         }
       }
+      this.trees.push(new FW.Tree(new THREE.Vector3(), 3));
       window.addEventListener("resize", (function() {
         return _this.onWindowResize();
       }), false);

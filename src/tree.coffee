@@ -1,16 +1,20 @@
 FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos, scaleFactor)->
-    @ornamentMaxAge = .1
+    #ORNAMENT STUFF
+    @ornamentMaxAge = 1
+    @lightSwitchingTimeout = 100
     @ornamentsMovingUp = true
+    @ornamentGroups = []
+    @ornamentTick = .16
+    @ornamentHeightSpread = 50
+
+
     @position = pos
     @scaleFactor = scaleFactor
     @treeTick = .06
-    @ornamentGroups = []
-    @ornamentTick = .01
     @numLayers = 10
     @heightFactor = 25
-    @lightSwitchingTimeout = 100
     @squishFactor = 24
     @currentLightLayer   = 0
     @treeGroup = new ShaderParticleGroup({
@@ -26,7 +30,7 @@ FW.Tree = class Tree
     FW.scene.add(@treeGroup.mesh)
     setTimeout(()=>
       @activateOrnamentLayer()
-    1000)
+    3000)
 
 
 
@@ -82,11 +86,11 @@ FW.Tree = class Tree
   generateOrnaments: (curHeightLayer)->
     spread = Math.max 0, 250 - (curHeightLayer * @squishFactor)
     colorStart = new THREE.Color()
-    colorStart.setRGB(0.5, 0, curHeightLayer/20)
+    colorStart.setRGB(0.2 + curHeightLayer/20, 0, curHeightLayer/20)
     ornamentEmmiterSettings = 
-      size: 200 * @scaleFactor
+      size: 400 * @scaleFactor
       colorStart: colorStart
-      colorSpread: new THREE.Vector3(0, .2, .2)
+      colorSpread: new THREE.Vector3(0, .4, .4)
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+5, 5, spread+ 5
@@ -104,9 +108,9 @@ FW.Tree = class Tree
       sizeEnd: 100
       position: new THREE.Vector3 @position.x,  curHeightLayer*@heightFactor, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
-      positionSpread: new THREE.Vector3 spread , 10, spread
+      positionSpread: new THREE.Vector3 spread , 20, spread
       colorEnd: new THREE.Color()
-      particlesPerSecond: 45.0/ curHeightLayer * @scaleFactor
+      particlesPerSecond: 65.0/ curHeightLayer * @scaleFactor
       opacityEnd: 1.0
 
 
