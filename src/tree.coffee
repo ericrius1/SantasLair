@@ -6,13 +6,14 @@ FW.Tree = class Tree
     @ornamentGroups = []
     @ornamentTick = .08
     @numLayers = 100
+    @heightFactor = 6
     @treeGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/leaf2.png')
       maxAge: 100
       blending: THREE.NormalBlending
     });
     
-    for y in [1..@numLayers]
+    for y in [1..50]
       position = new THREE.Vector3 rnd(@position.x-10, @position.x+10), y*4,  @position.z
       @treeGroup.addEmitter @generateTree(y, position)
       @createOrnamentGroup(y)
@@ -20,10 +21,10 @@ FW.Tree = class Tree
 
 
   generateTree: (y)->
-    spread = Math.max 0, 250 - y* 2.5
+    spread = Math.max 0, 250 - y* 5
     treeEmitter = new ShaderParticleEmitter
       size: 150
-      position: new THREE.Vector3 @position.x,  y*4, @position.z
+      position: new THREE.Vector3 @position.x,  y*@heightFactor, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread , 10, spread
       colorEnd: new THREE.Color()
@@ -34,7 +35,6 @@ FW.Tree = class Tree
   #TICK MAIN LOOOOP
 
   tick: ->
-    # @treeGroup.tick(FW.globalTick/2)
     @treeGroup.tick(@treeTick)
     if @treeTick > 0.0
       @treeTick -=.4 
@@ -46,8 +46,8 @@ FW.Tree = class Tree
   createOrnamentGroup: (y, position)->
       ornamentGroup = new ShaderParticleGroup(
         texture: THREE.ImageUtils.loadTexture('assets/star.png')
-        maxAge: 20
-        blending: THREE.AdditiveBlending
+        maxAge: 10
+        blending: THREE.NormalBlending
       )
 
       ornamentGroup.addEmitter @generateOrnaments(y)
@@ -57,19 +57,16 @@ FW.Tree = class Tree
 
 
   generateOrnaments: (y)->
-    spread = Math.max 0, 250 - y * 2.5
+    spread = Math.max 0, 250 - y * 5
     colorStart = new THREE.Color()
-    if Math.random() < .5
-      colorStart.setHex(0xff0000)
-    else
-      colorStart.setHex(0xff00ff)
+    colorStart.setRGB(Math.random(), Math.random(), Math.random())
     ornamentEmmiter = new ShaderParticleEmitter
       size: 200
       sizeEnd: 0
       colorStart: new THREE.Color('white')
       colorEnd: colorStart
-      position: new THREE.Vector3 @position.x, y*4, @position.z
-      positionSpread: new THREE.Vector3 spread+ 10, 10, spread+ 10
+      position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
+      positionSpread: new THREE.Vector3 spread+20, 10, spread+ 20
       particlesPerSecond: 1
       opacityStart: 0.5 
       opacityMiddle: 1.0
