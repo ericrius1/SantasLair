@@ -15,7 +15,7 @@
       this.camFar = 200000;
       FW.width = 10000;
       this.trees = [];
-      this.numTrees = 10;
+      this.numTrees = 7;
       this.treeConstrainFactor = 6.0;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 500, 2000);
@@ -43,7 +43,7 @@
         alpha: 1.0,
         waterColor: 0xffffff,
         sunColor: 0x0ecce3,
-        distortionScale: 50
+        distortionScale: 100
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(FW.width, FW.width, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
@@ -111,7 +111,8 @@
       this.terrainWidth = 4000;
       this.terrainHeight = 2000;
       terrain = this.loadTerrain(new THREE.Vector3(-FW.width / 2 + this.terrainWidth / 2, -100, -FW.width / 2 + this.terrainHeight / 1.3));
-      return terrain.rotation.y = .5;
+      terrain.rotation.y = .5;
+      return terrain = this.loadTerrain(new THREE.Vector3(FW.width / 2 - this.terrainWidth / 2, -100, -FW.width / 2 + this.terrainHeight / 1.3));
     };
 
     World.prototype.loadTerrain = function(position) {
@@ -121,10 +122,10 @@
         generator: PN_GENERATOR,
         width: this.terrainWidth,
         height: this.terrainHeight,
-        widthSegments: 100,
-        heightSegments: 100,
-        depth: 2500,
-        param: 4,
+        widthSegments: 200,
+        heightSegments: 200,
+        depth: rnd(1000, 2500),
+        param: 6,
         filterparam: 1,
         filter: [CIRCLE_FILTER],
         postgen: [MOUNTAINS_COLORS],

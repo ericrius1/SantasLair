@@ -17,7 +17,7 @@ FW.Stars = class Stars
     starEmitter = new ShaderParticleEmitter
       type: 'sphere'
       position: new THREE.Vector3(0, 3000, 0)
-      radius: FW.width * 0.8
+      radius: FW.width * 0.65
       colorStart: color
       colorEnd: color
       size: 1000

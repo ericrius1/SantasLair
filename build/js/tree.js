@@ -9,8 +9,8 @@
     function Tree(pos, scaleFactor) {
       var curHeightLayer, _i, _ref,
         _this = this;
-      this.ornamentMaxAge = 1;
-      this.lightSwitchingTimeout = 100;
+      this.ornamentMaxAge = 4;
+      this.lightSwitchingTimeout = 103;
       this.ornamentsMovingUp = true;
       this.ornamentGroups = [];
       this.ornamentTick = .16;
@@ -35,7 +35,7 @@
       FW.scene.add(this.treeGroup.mesh);
       setTimeout(function() {
         return _this.activateOrnamentLayer();
-      }, 3000);
+      }, 1000);
     }
 
     Tree.prototype.tick = function() {
@@ -81,11 +81,11 @@
     Tree.prototype.createOrnamentGroup = function(curHeightLayer) {
       var ornamentGroup;
       ornamentGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
+        texture: THREE.ImageUtils.loadTexture('assets/ornament.png'),
         maxAge: this.ornamentMaxAge,
         blending: THREE.AdditiveBlending
       });
-      ornamentGroup.addPool(2, this.generateOrnaments(curHeightLayer), false);
+      ornamentGroup.addPool(4, this.generateOrnaments(curHeightLayer), false);
       this.ornamentGroups.push(ornamentGroup);
       ornamentGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
       FW.scene.add(ornamentGroup.mesh);
@@ -96,15 +96,14 @@
       var colorStart, ornamentEmmiterSettings, spread;
       spread = Math.max(0, 250 - (curHeightLayer * this.squishFactor));
       colorStart = new THREE.Color();
-      colorStart.setRGB(1.0, 0, 0);
+      colorStart.setRGB(.4, 0, 0);
       ornamentEmmiterSettings = {
         size: 200 * this.scaleFactor,
         colorStart: colorStart,
-        colorSpread: new THREE.Vector3(0, .4, .4),
-        colorEnd: colorStart,
+        colorSpread: new THREE.Vector3(.4, 0, .1),
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 5, this.ornamentHeightSpread, spread + 5),
-        particlesPerSecond: (400 / curHeightLayer) * this.scaleFactor,
+        positionSpread: new THREE.Vector3(spread + 1, this.ornamentHeightSpread, spread + 1),
+        particlesPerSecond: (100 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
         opacityEnd: 1.0,
         alive: 0,

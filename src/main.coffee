@@ -21,15 +21,11 @@ SC?.initialize({
     client_id: "7da24ca214bf72b66ed2494117d05480",
 });
 
-#JSON.parse(decodeURI((location.search).substring(1, location.search.length - 1)))
 FW.sfxVolume = 0.2
 FW.globalTick = 0.16
-FW.development = true
+FW.development = false
 window.soundOn = !FW.development
 
-#make user let go when they want to explode firework
-#flocking birds
-#sunrise sunset
 window.onload = ->
   FW.myWorld = new FW.World()
   FW.myWorld.animate()
@@ -45,11 +41,12 @@ window.onload = ->
 FW.Main = class Main
   constructor: ->
     if soundOn
-      SC.stream "/tracks/home-alone-christmas-dubstep-remix-free-download", (sound)->
+      SC.stream "/tracks/north-atlantic-drift-canvas-02", (sound)->
         if soundOn
           sound.play()
 
           #snudge-spaceship-aloha-remix
+          #north-atlantic-drift-canvas-02
 
 
 

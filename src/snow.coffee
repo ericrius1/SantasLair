@@ -3,7 +3,7 @@ FW.Snow = class Snow
   constructor: ()->
     @snowGroup = new ShaderParticleGroup(
       texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png')
-      maxAge: 60
+      maxAge: 70
     );
     @colorEnd = new THREE.Color()
     colorStart = new THREE.Color()
@@ -19,14 +19,14 @@ FW.Snow = class Snow
       size: 700
       sizeEnd: 200
       sizeSpread: 200
-      position: new THREE.Vector3(0, FW.width * 0.6, 0)
-      positionSpread: new THREE.Vector3(200, 2000, 200)
+      position: new THREE.Vector3(0, FW.width * 0.4, 0)
+      positionSpread: new THREE.Vector3(200, 500, 200)
       colorStart: colorStart
       colorEnd: @colorEnd
-      velocity: new THREE.Vector3(0, -100, 0)
+      velocity: new THREE.Vector3(0, -40, 0)
       velocitySpread: new THREE.Vector3(111, 0, 111)
-      acceleration: new THREE.Vector3(0, -.1, 0)
-      accelerationSpread: new THREE.Vector3(1.5, 0, 1.5)
+      acceleration: new THREE.Vector3(0, -.2, 0)
+      accelerationSpread: new THREE.Vector3(0.7, 0,0.7 )
       particlesPerSecond: 30
       opacityEnd: 0.7
 

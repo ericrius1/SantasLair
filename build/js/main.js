@@ -32,7 +32,7 @@
 
   FW.globalTick = 0.16;
 
-  FW.development = true;
+  FW.development = false;
 
   window.soundOn = !FW.development;
 
@@ -56,7 +56,7 @@
   FW.Main = Main = (function() {
     function Main() {
       if (soundOn) {
-        SC.stream("/tracks/home-alone-christmas-dubstep-remix-free-download", function(sound) {
+        SC.stream("/tracks/north-atlantic-drift-canvas-02", function(sound) {
           if (soundOn) {
             return sound.play();
           }

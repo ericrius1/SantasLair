@@ -2,8 +2,8 @@ FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos, scaleFactor)->
     #ORNAMENT STUFF
-    @ornamentMaxAge = 1
-    @lightSwitchingTimeout = 100
+    @ornamentMaxAge = 4
+    @lightSwitchingTimeout = 103
     @ornamentsMovingUp = true
     @ornamentGroups = []
     @ornamentTick = .16
@@ -30,7 +30,7 @@ FW.Tree = class Tree
     FW.scene.add(@treeGroup.mesh)
     setTimeout(()=>
       @activateOrnamentLayer()
-    3000)
+    1000)
 
 
 
@@ -71,12 +71,12 @@ FW.Tree = class Tree
 
   createOrnamentGroup: (curHeightLayer)->
       ornamentGroup = new ShaderParticleGroup(
-        texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png')
+        texture: THREE.ImageUtils.loadTexture('assets/ornament.png')
         maxAge: @ornamentMaxAge
         blending: THREE.AdditiveBlending
       )
 
-      ornamentGroup.addPool 2, @generateOrnaments(curHeightLayer), false
+      ornamentGroup.addPool 4, @generateOrnaments(curHeightLayer), false
       @ornamentGroups.push ornamentGroup
       ornamentGroup.mesh.scale.set(@scaleFactor, @scaleFactor, @scaleFactor)
       FW.scene.add ornamentGroup.mesh
@@ -87,15 +87,14 @@ FW.Tree = class Tree
     spread = Math.max 0, 250 - (curHeightLayer * @squishFactor)
     colorStart = new THREE.Color()
     # colorStart.setRGB(0.2 + curHeightLayer/20, 0, curHeightLayer/20)
-    colorStart.setRGB(1.0, 0, 0)
+    colorStart.setRGB(.4, 0, 0)
     ornamentEmmiterSettings = 
       size: 200 * @scaleFactor
       colorStart: colorStart
-      colorSpread: new THREE.Vector3(0, .4, .4)
-      colorEnd: colorStart
+      colorSpread: new THREE.Vector3(.4, 0, .1)
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+5, @ornamentHeightSpread, spread+ 5
-      particlesPerSecond: (400/curHeightLayer) * (@scaleFactor)
+      positionSpread: new THREE.Vector3 spread+1, @ornamentHeightSpread, spread+1
+      particlesPerSecond: (100/curHeightLayer) * (@scaleFactor)
       opacityStart: 1.0
       opacityEnd: 1.0
       alive: 0
