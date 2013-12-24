@@ -1,6 +1,10 @@
 FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos)->
+    @curOrnColor = 
+      r: rnd(0, .5)
+      g: rnd(0, 0.5)
+      b: rnd(0, 0.5)
     @ornamentMaxAge = 1
     @ornamentsMovingUp = true
     @position = pos
@@ -76,16 +80,14 @@ FW.Tree = class Tree
 
   generateOrnaments: (y)->
     spread = Math.max 0, 250 - y * @squishFactor
-    colorStart = new THREE.Color()
-    colorStart.setRGB(Math.random(), Math.random(), Math.random())
-    colorEnd = new THREE.Color()
-    colorEnd.setRGB(Math.random(), Math.random(), Math.random())
-    ornamentEmmiterSettings = new ShaderParticleEmitter
+    colorStart = new THREE.Color().copy(@curOrnColor)
+    console.log colorStart
+    ornamentEmmiterSettings = 
       size: 200
       sizeSpread: 200
       sizeEnd: 20
       colorStart: colorStart
-      colorEnd: colorEnd
+      colorEnd: colorStart
       position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+5, 25, spread+ 5
       particlesPerSecond: 300/y
@@ -94,6 +96,9 @@ FW.Tree = class Tree
       opacityEnd: 0.5
       alive: 0
       emitterDuration: 1
+    #Every layer make color different  
+    @nextColor()
+    return ornamentEmmiterSettings
 
   generateTree: (y)->
     spread = Math.max 0, 250 - y* @squishFactor
@@ -106,6 +111,11 @@ FW.Tree = class Tree
       colorEnd: new THREE.Color()
       particlesPerSecond: 25.0/ (y)
       opacityEnd: 1.0
+
+  nextColor: ->
+    @curOrnColor.r = Math.min @curOrnColor.r+.05, 1
+    # @curOrnColor.g = Math.min @curOrnColor.g+.1, 1
+    # @curOrnColor.b = Math.min @curOrnColor.b+.1, 1
 
 
 

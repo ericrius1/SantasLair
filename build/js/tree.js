@@ -8,6 +8,11 @@
 
     function Tree(pos) {
       var position, y, _i, _ref;
+      this.curOrnColor = {
+        r: rnd(0, .5),
+        g: rnd(0, 0.5),
+        b: rnd(0, 0.5)
+      };
       this.ornamentMaxAge = 1;
       this.ornamentsMovingUp = true;
       this.position = pos;
@@ -86,18 +91,16 @@
     };
 
     Tree.prototype.generateOrnaments = function(y) {
-      var colorEnd, colorStart, ornamentEmmiterSettings, spread;
+      var colorStart, ornamentEmmiterSettings, spread;
       spread = Math.max(0, 250 - y * this.squishFactor);
-      colorStart = new THREE.Color();
-      colorStart.setRGB(Math.random(), Math.random(), Math.random());
-      colorEnd = new THREE.Color();
-      colorEnd.setRGB(Math.random(), Math.random(), Math.random());
-      return ornamentEmmiterSettings = new ShaderParticleEmitter({
+      colorStart = new THREE.Color().copy(this.curOrnColor);
+      console.log(colorStart);
+      ornamentEmmiterSettings = {
         size: 200,
         sizeSpread: 200,
         sizeEnd: 20,
         colorStart: colorStart,
-        colorEnd: colorEnd,
+        colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 5, 25, spread + 5),
         particlesPerSecond: 300 / y,
@@ -106,7 +109,9 @@
         opacityEnd: 0.5,
         alive: 0,
         emitterDuration: 1
-      });
+      };
+      this.nextColor();
+      return ornamentEmmiterSettings;
     };
 
     Tree.prototype.generateTree = function(y) {
@@ -121,6 +126,10 @@
         particlesPerSecond: 25.0 / y,
         opacityEnd: 1.0
       });
+    };
+
+    Tree.prototype.nextColor = function() {
+      return this.curOrnColor.r = Math.min(this.curOrnColor.r + .05, 1);
     };
 
     return Tree;
