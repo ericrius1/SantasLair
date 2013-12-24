@@ -8,33 +8,29 @@
 
     function Stars() {
       this.starGroup = new ShaderParticleGroup({
-        texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+        texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
         blending: THREE.AdditiveBlending,
-        maxAge: 100
+        maxAge: 20
       });
-      this.generateStars();
+      this.generateStars(new THREE.Color(0xe5192c));
+      this.generateStars(new THREE.Color(0x3224e7));
       FW.scene.add(this.starGroup.mesh);
     }
 
-    Stars.prototype.generateStars = function() {
-      var colorStart;
-      colorStart = new THREE.Color();
-      colorStart.setRGB(.8, .1, .1);
-      this.starEmitter = new ShaderParticleEmitter({
+    Stars.prototype.generateStars = function(color) {
+      var starEmitter;
+      starEmitter = new ShaderParticleEmitter({
         type: 'sphere',
         position: new THREE.Vector3(0, 3000, 0),
         radius: FW.width * 0.8,
-        colorStart: colorStart,
-        colorEnd: colorStart,
-        speed: .1,
-        size: rnd(2000, 4000),
+        colorStart: color,
+        colorEnd: color,
+        size: 1000,
         sizeSpread: 400,
         particlesPerSecond: 500,
-        opacityStart: 0,
-        opacityMiddle: 0.5,
-        opacityEnd: 0
+        opacityEnd: 1
       });
-      return this.starGroup.addEmitter(this.starEmitter);
+      return this.starGroup.addEmitter(starEmitter);
     };
 
     Stars.prototype.tick = function() {
