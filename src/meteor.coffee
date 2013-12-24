@@ -8,7 +8,7 @@ FW.Meteor = class Meteor
       blending: THREE.AdditiveBlending,
       maxAge: 15
     @meteorVisibleDistance = 50000
-    for i in [1..2]
+    for i in [1..5]
       @newMeteor()
     FW.scene.add(@meteorGroup.mesh)
     @calcPositions()
@@ -34,8 +34,6 @@ FW.Meteor = class Meteor
     @resetMeteor meteor
     colorEnd = new THREE.Color()
     colorEnd.setRGB(Math.random(),Math.random(),Math.random() )
-    meteor.light = new THREE.PointLight(colorStart, 2, 1000)
-    FW.scene.add(meteor.light)
     meteor.tailEmitter = new ShaderParticleEmitter
       position: meteor.position
       positionSpread: new THREE.Vector3(20, 20, 2)
@@ -66,7 +64,6 @@ FW.Meteor = class Meteor
       meteor.translateX(meteor.speedX * meteor.dirX)
       meteor.translateY( meteor.speedY * meteor.dirY)
       meteor.translateZ(meteor.speedZ * meteor.dirZ)
-      meteor.light.position = new THREE.Vector3().copy(meteor.position)
       meteor.tailEmitter.position = new THREE.Vector3().copy(meteor.position)
     @meteorGroup.tick(FW.globalTick)
     

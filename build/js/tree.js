@@ -10,7 +10,7 @@
       var curHeightLayer, _i, _ref,
         _this = this;
       this.ornamentMaxAge = 4;
-      this.lightSwitchingTimeout = 240;
+      this.lightSwitchingTimeout = 465;
       this.ornamentsMovingUp = true;
       this.ornamentGroups = [];
       this.ornamentTick = .04;
@@ -123,7 +123,7 @@
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 20, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 65.0 / curHeightLayer * this.scaleFactor,
+        particlesPerSecond: 40.0 / curHeightLayer * this.scaleFactor,
         opacityEnd: 1.0
       });
     };

@@ -15,7 +15,7 @@
         maxAge: 15
       });
       this.meteorVisibleDistance = 50000;
-      for (i = _i = 1; _i <= 2; i = ++_i) {
+      for (i = _i = 1; _i <= 5; i = ++_i) {
         this.newMeteor();
       }
       FW.scene.add(this.meteorGroup.mesh);
@@ -43,8 +43,6 @@
       this.resetMeteor(meteor);
       colorEnd = new THREE.Color();
       colorEnd.setRGB(Math.random(), Math.random(), Math.random());
-      meteor.light = new THREE.PointLight(colorStart, 2, 1000);
-      FW.scene.add(meteor.light);
       meteor.tailEmitter = new ShaderParticleEmitter({
         position: meteor.position,
         positionSpread: new THREE.Vector3(20, 20, 2),
@@ -87,7 +85,6 @@
         meteor.translateX(meteor.speedX * meteor.dirX);
         meteor.translateY(meteor.speedY * meteor.dirY);
         meteor.translateZ(meteor.speedZ * meteor.dirZ);
-        meteor.light.position = new THREE.Vector3().copy(meteor.position);
         meteor.tailEmitter.position = new THREE.Vector3().copy(meteor.position);
       }
       return this.meteorGroup.tick(FW.globalTick);

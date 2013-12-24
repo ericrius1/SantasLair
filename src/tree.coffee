@@ -3,7 +3,7 @@ FW.Tree = class Tree
   constructor: (pos, scaleFactor)->
     #ORNAMENT STUFF
     @ornamentMaxAge = 4
-    @lightSwitchingTimeout = 240 
+    @lightSwitchingTimeout = 465
     @ornamentsMovingUp = true
     @ornamentGroups = []
     @ornamentTick = .04
@@ -111,7 +111,7 @@ FW.Tree = class Tree
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread , 20, spread
       colorEnd: new THREE.Color()
-      particlesPerSecond: 65.0/ curHeightLayer * @scaleFactor
+      particlesPerSecond: 40.0/ curHeightLayer * @scaleFactor
       opacityEnd: 1.0
 
 

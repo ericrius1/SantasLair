@@ -9,14 +9,13 @@ FW.World = class World
     FW.width = 10000
   
     @trees = []
-    @numTrees = 7
-    # @rippleFactor = 2000
+    @numTrees = 5
     @treeConstrainFactor = 6.0
 
 
     # CAMERA
     FW.camera = new THREE.PerspectiveCamera(45.0, @SCREEN_WIDTH / @SCREEN_HEIGHT, 1, @camFar)
-    FW.camera.position.set  0, 500, 2000
+    FW.camera.position.set  0, 600, 2200
     
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
@@ -36,10 +35,10 @@ FW.World = class World
     document.body.appendChild FW.Renderer.domElement
 
     #LIGHTS
-    directionalLight = new THREE.DirectionalLight 0xabf2ff, 4
+    directionalLight = new THREE.DirectionalLight 0xabf2ff, 2
     directionalLight.position.set( FW.width/3, FW.width * 0.8, -FW.width/3 )
     FW.scene.add( directionalLight )
-    directionalLight = new THREE.DirectionalLight 0xff00ff, 3
+    directionalLight = new THREE.DirectionalLight 0xff00ff, 1
     directionalLight.position.set( -FW.width/3, FW.width * 0.8, FW.width/3 )
     FW.scene.add( directionalLight )
 
@@ -54,10 +53,10 @@ FW.World = class World
       textureWidth: 512
       textureHeight: 512
       waterNormals: waterNormals
-      alpha: 1.0
+      alpha: 0.95
       waterColor: 0xffffff
       sunColor: 0x0ecce3  
-      distortionScale: 100
+      distortionScale: 20
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry FW.width, FW.width, 50, 50
@@ -104,7 +103,6 @@ FW.World = class World
   animate : =>
     requestAnimationFrame @animate
     delta = FW.clock.getDelta()
-    # @water.material.uniforms.time.value += 1.0 / @rippleFactor
     time = Date.now()
     @controls.update()
     @render()

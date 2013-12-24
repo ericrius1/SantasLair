@@ -15,10 +15,10 @@
       this.camFar = 200000;
       FW.width = 10000;
       this.trees = [];
-      this.numTrees = 7;
+      this.numTrees = 5;
       this.treeConstrainFactor = 6.0;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
-      FW.camera.position.set(0, 500, 2000);
+      FW.camera.position.set(0, 600, 2200);
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxDistance = FW.width * 3;
       this.controls.minDistance = 1000;
@@ -27,10 +27,10 @@
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      directionalLight = new THREE.DirectionalLight(0xabf2ff, 4);
+      directionalLight = new THREE.DirectionalLight(0xabf2ff, 2);
       directionalLight.position.set(FW.width / 3, FW.width * 0.8, -FW.width / 3);
       FW.scene.add(directionalLight);
-      directionalLight = new THREE.DirectionalLight(0xff00ff, 3);
+      directionalLight = new THREE.DirectionalLight(0xff00ff, 1);
       directionalLight.position.set(-FW.width / 3, FW.width * 0.8, FW.width / 3);
       FW.scene.add(directionalLight);
       this.setUpTerrain();
@@ -40,10 +40,10 @@
         textureWidth: 512,
         textureHeight: 512,
         waterNormals: waterNormals,
-        alpha: 1.0,
+        alpha: 0.95,
         waterColor: 0xffffff,
         sunColor: 0x0ecce3,
-        distortionScale: 100
+        distortionScale: 20
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(FW.width, FW.width, 50, 50), this.water.material);
       aMeshMirror.add(this.water);

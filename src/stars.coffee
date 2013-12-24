@@ -20,9 +20,8 @@ FW.Stars = class Stars
       radius: FW.width * 0.65
       colorStart: THREE.Color()
       colorEnd: new THREE.Color(0xff00ff)
-      size: 2000
-      sizeSpread: 2000
-      particlesPerSecond: 2000
+      size: 3000
+      particlesPerSecond: 500
       opacityStart: 0
       opacityMiddle: 0.3
       opacityEnd: 0
