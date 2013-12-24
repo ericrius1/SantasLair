@@ -52,6 +52,7 @@
       FW.scene.add(aMeshMirror);
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
+      this.snow = new FW.Snow();
       this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000));
@@ -87,6 +88,7 @@
     World.prototype.render = function() {
       var tree, _i, _len, _ref;
       this.meteor.tick();
+      this.snow.tick();
       _ref = this.trees;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         tree = _ref[_i];

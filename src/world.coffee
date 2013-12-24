@@ -62,6 +62,7 @@ FW.World = class World
     #FUN
     @meteor = new FW.Meteor()
     @stars = new FW.Stars()
+    @snow = new FW.Snow()
 
     # TREES
     @trees.push new FW.Tree(new THREE.Vector3(), 10)
@@ -97,6 +98,7 @@ FW.World = class World
     @render()
   render : ->
     @meteor.tick()
+    @snow.tick()
     # @stars.tick()
     for tree in @trees
       tree.tick()
