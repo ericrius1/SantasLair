@@ -43,7 +43,7 @@
     };
 
     Tree.prototype.tick = function() {
-      var ornamentGroup, _i, _len, _ref, _results;
+      var _this = this;
       if (this.treeTick > 0.0) {
         this.treeGroup.tick(this.treeTick);
         this.treeTick -= .1;
@@ -51,13 +51,9 @@
       if (this.treeTick < 0) {
         this.treeTick = 0;
       }
-      _ref = this.ornamentGroups;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        ornamentGroup = _ref[_i];
-        _results.push(ornamentGroup.tick(this.ornamentTick));
-      }
-      return _results;
+      return setTimeout(function() {
+        return _this.ornamentGroups[0].tick(_this.ornamentTick);
+      }, 2000);
     };
 
     Tree.prototype.createOrnamentGroup = function(y, position) {
@@ -85,7 +81,7 @@
         colorStart: new THREE.Color('white'),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 10, 10, spread + 10),
+        positionSpread: new THREE.Vector3(spread + 10, 20, spread + 10),
         particlesPerSecond: 5,
         opacityStart: 1.0,
         opacityMiddle: 1.0,

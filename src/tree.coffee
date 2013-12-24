@@ -43,8 +43,9 @@ FW.Tree = class Tree
     if @treeTick < 0
       @treeTick = 0
     
-    for ornamentGroup in @ornamentGroups
-      ornamentGroup.tick(@ornamentTick)
+    setTimeout(()=>
+      @ornamentGroups[0].tick(@ornamentTick)
+    2000)
 
 
   createOrnamentGroup: (y, position)->
@@ -71,7 +72,7 @@ FW.Tree = class Tree
       colorStart: new THREE.Color('white')
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+10, 10, spread+ 10
+      positionSpread: new THREE.Vector3 spread+10, 20, spread+ 10
       particlesPerSecond: 5
       opacityStart: 1.0 
       opacityMiddle: 1.0

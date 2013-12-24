@@ -11,7 +11,7 @@ FW.World = class World
     @camFar = 200000
     @width = 50000
     @height = 50000
-    @rippleFactor = 2000
+    @rippleFactor = 1000
     @trees = []
 
 
@@ -22,7 +22,7 @@ FW.World = class World
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
     @controls.maxDistance = 10000
-    @controls.minDistance = 200
+    @controls.minDistance = 500
     @controls.maxPolarAngle = Math.PI/4 + .7
     
 
