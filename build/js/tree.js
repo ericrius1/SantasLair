@@ -7,8 +7,7 @@
     rnd = FW.rnd;
 
     function Tree(pos, scaleFactor) {
-      var curHeightLayer, _i, _ref,
-        _this = this;
+      var curHeightLayer, _i, _ref;
       this.ornamentMaxAge = .5;
       this.ornamentsMovingUp = true;
       this.position = pos;
@@ -31,9 +30,7 @@
       }
       this.treeGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
       FW.scene.add(this.treeGroup.mesh);
-      setTimeout(function() {
-        return _this.activateOrnamentLayer();
-      }, rnd(1000, 5000));
+      this.activateOrnamentLayer();
     }
 
     Tree.prototype.tick = function() {
@@ -94,19 +91,18 @@
       var colorStart, ornamentEmmiterSettings, spread;
       spread = Math.max(0, 250 - (curHeightLayer * this.squishFactor));
       colorStart = new THREE.Color();
-      colorStart.setRGB(Math.random(), Math.random(), Math.random());
+      colorStart.setRGB(0.5, 0, curHeightLayer / 20);
       ornamentEmmiterSettings = {
         size: 200 * this.scaleFactor,
         sizeSpread: 200,
         sizeEnd: 20,
         colorStart: colorStart,
-        colorSpread: new THREE.Vector3(0.2, 0.2, 0.2),
+        colorSpread: new THREE.Vector3(0, .2, .2),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 5, 0, spread + 5),
+        positionSpread: new THREE.Vector3(spread + 5, 5, spread + 5),
         particlesPerSecond: (100 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
-        opacityMiddle: 1.0,
         opacityEnd: 1.0,
         alive: 0,
         emitterDuration: 1
@@ -123,7 +119,7 @@
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 10, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 25.0 / curHeightLayer,
+        particlesPerSecond: 25.0 / curHeightLayer * this.scaleFactor,
         opacityEnd: 1.0
       });
     };
