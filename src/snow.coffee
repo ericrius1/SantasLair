@@ -19,6 +19,7 @@ FW.Snow = class Snow
       position: new THREE.Vector3(0, 10000, 0)
       positionSpread: new THREE.Vector3(FW.height, 0, FW.width)
       colorStart: colorStart
+      colorEnd: colorStart
       velocity: new THREE.Vector3(0, -100, 0)
       acceleration: new THREE.Vector3(0, -1, 0)
       accelerationSpread: new THREE.Vector3(2, .1, 2)

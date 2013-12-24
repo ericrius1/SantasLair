@@ -22,7 +22,7 @@
     Stars.prototype.generateStars = function() {
       this.starEmitter = new ShaderParticleEmitter({
         type: 'sphere',
-        radius: 5000,
+        radius: FW.width,
         speed: .1,
         size: rnd(800, 1200),
         sizeSpread: 400,

@@ -100,7 +100,7 @@ FW.World = class World
   render : ->
     @meteor.tick()
     @snow.tick()
-    # @stars.tick()
+    @stars.tick()
     for tree in @trees
       tree.tick()
     @water.render()

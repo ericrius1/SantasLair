@@ -88,6 +88,7 @@
       var tree, _i, _len, _ref;
       this.meteor.tick();
       this.snow.tick();
+      this.stars.tick();
       _ref = this.trees;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         tree = _ref[_i];
