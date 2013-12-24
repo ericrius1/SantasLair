@@ -44,7 +44,7 @@
         alpha: 1,
         waterColor: 0xffffff,
         sunColor: 0x0ecce3,
-        distortionScale: 40
+        distortionScale: 100
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);

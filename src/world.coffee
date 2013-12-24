@@ -48,7 +48,7 @@ FW.World = class World
       alpha: 1
       waterColor: 0xffffff
       sunColor: 0x0ecce3  
-      distortionScale: 40
+      distortionScale: 100
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry @width, @height, 50, 50

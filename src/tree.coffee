@@ -4,7 +4,7 @@ FW.Tree = class Tree
     @ornamentMaxAge = 1
     @ornamentsMovingUp = true
     @position = pos
-    @treeTick = .16
+    @treeTick = 2
     @ornamentGroups = []
     @ornamentTick = .05
     @numLayers = 10
@@ -84,11 +84,11 @@ FW.Tree = class Tree
       sizeSpread: 200
       sizeEnd: 20
       colorStart: colorStart
-      colorSpread: new THREE.Vector3(0.5, 0.5, 0.5)
+      colorSpread: new THREE.Vector3(0.2, 0.2, 0.2)
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+5, 25, spread+ 5
-      particlesPerSecond: 10
+      positionSpread: new THREE.Vector3 spread+5, 10, spread+ 5
+      particlesPerSecond: 100/curHeightLayer
       opacityStart: 1.0
       opacityMiddle: 1.0
       opacityEnd: 1.0
