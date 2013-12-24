@@ -3,11 +3,11 @@ FW.Tree = class Tree
   constructor: (pos, scaleFactor)->
     #ORNAMENT STUFF
     @ornamentMaxAge = 4
-    @lightSwitchingTimeout = 200  
+    @lightSwitchingTimeout = 240 
     @ornamentsMovingUp = true
     @ornamentGroups = []
-    @ornamentTick = .16
-    @ornamentHeightSpread = 50
+    @ornamentTick = .04
+    @ornamentHeightSpread = 20
 
 
     @position = pos
@@ -78,7 +78,7 @@ FW.Tree = class Tree
         blending: THREE.AdditiveBlending
       )
 
-      ornamentGroup.addPool 4, @generateOrnaments(curHeightLayer), false
+      ornamentGroup.addPool 2, @generateOrnaments(curHeightLayer), false
       @ornamentGroups.push ornamentGroup
       ornamentGroup.mesh.scale.set(@scaleFactor, @scaleFactor, @scaleFactor)
       FW.scene.add ornamentGroup.mesh
@@ -88,7 +88,6 @@ FW.Tree = class Tree
   generateOrnaments: (curHeightLayer)->
     spread = Math.max 0, 250 - (curHeightLayer * @squishFactor)
     colorStart = new THREE.Color()
-    # colorStart.setRGB(0.2 + curHeightLayer/20, 0, curHeightLayer/20)
     colorStart.setRGB(.4, 0, 0)
     ornamentEmmiterSettings = 
       size: 200 * @scaleFactor
@@ -96,7 +95,7 @@ FW.Tree = class Tree
       colorSpread: new THREE.Vector3(.4, 0, .1)
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+1, @ornamentHeightSpread, spread+1
-      particlesPerSecond: (100/curHeightLayer) * (@scaleFactor)
+      particlesPerSecond: (200/curHeightLayer) * (@scaleFactor)
       opacityStart: 1.0
       opacityEnd: 1.0
       alive: 0

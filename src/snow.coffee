@@ -7,9 +7,9 @@ FW.Snow = class Snow
     );
     @colorEnd = new THREE.Color()
     colorStart = new THREE.Color()
-    colorStart.setRGB(1, 0, 0)
+    colorStart.setRGB(0.4, 0, 0)
     @snowGroup.addEmitter @generateSnow(colorStart)
-    colorStart.setRGB(0, 1, 0)
+    colorStart.setRGB(0, 0, 1)
     @snowGroup.addEmitter @generateSnow(colorStart)
     FW.scene.add(@snowGroup.mesh)
     @snowGroup.mesh.renderDepth = -2
@@ -26,7 +26,7 @@ FW.Snow = class Snow
       velocity: new THREE.Vector3(0, -40, 0)
       velocitySpread: new THREE.Vector3(111, 0, 111)
       acceleration: new THREE.Vector3(0, -.2, 0)
-      accelerationSpread: new THREE.Vector3(0.7, 0,0.7 )
+      accelerationSpread: new THREE.Vector3(1.1, 0, 1.1 )
       particlesPerSecond: 15
       opacityEnd: 0.7
 

@@ -10,11 +10,11 @@
       var curHeightLayer, _i, _ref,
         _this = this;
       this.ornamentMaxAge = 4;
-      this.lightSwitchingTimeout = 200;
+      this.lightSwitchingTimeout = 240;
       this.ornamentsMovingUp = true;
       this.ornamentGroups = [];
-      this.ornamentTick = .16;
-      this.ornamentHeightSpread = 50;
+      this.ornamentTick = .04;
+      this.ornamentHeightSpread = 20;
       this.position = pos;
       this.scaleFactor = scaleFactor;
       this.treeTick = .06;
@@ -87,7 +87,7 @@
         maxAge: this.ornamentMaxAge,
         blending: THREE.AdditiveBlending
       });
-      ornamentGroup.addPool(4, this.generateOrnaments(curHeightLayer), false);
+      ornamentGroup.addPool(2, this.generateOrnaments(curHeightLayer), false);
       this.ornamentGroups.push(ornamentGroup);
       ornamentGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
       FW.scene.add(ornamentGroup.mesh);
@@ -105,7 +105,7 @@
         colorSpread: new THREE.Vector3(.4, 0, .1),
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 1, this.ornamentHeightSpread, spread + 1),
-        particlesPerSecond: (100 / curHeightLayer) * this.scaleFactor,
+        particlesPerSecond: (200 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
         opacityEnd: 1.0,
         alive: 0,
