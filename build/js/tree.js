@@ -12,7 +12,7 @@
       this.ornamentMaxAge = 1;
       this.ornamentsMovingUp = true;
       this.position = pos;
-      this.treeTick = 4;
+      this.treeTick = .16;
       this.ornamentGroups = [];
       this.ornamentTick = .05;
       this.numLayers = 10;

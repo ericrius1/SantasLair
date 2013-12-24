@@ -18,11 +18,11 @@
       this.SCREEN_WIDTH = window.innerWidth;
       this.SCREEN_HEIGHT = window.innerHeight;
       this.camFar = 200000;
-      this.width = 10000;
-      this.height = 10000;
+      this.width = 150000;
+      this.height = 150000;
       this.trees = [];
       this.numTrees = 10;
-      this.rippleFactor = 100;
+      this.rippleFactor = 60;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
@@ -35,7 +35,7 @@
       });
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
+      waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals copy.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
         textureWidth: 512,
@@ -44,7 +44,7 @@
         alpha: 1,
         waterColor: 0xffffff,
         sunColor: 0x0ecce3,
-        distortionScale: 50
+        distortionScale: 40
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
@@ -77,7 +77,7 @@
       var delta, time;
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
-      this.water.material.uniforms.time.value += 1.0 / this.rippleFactor;
+      this.water.material.uniforms.time.value += 1.0 / 60;
       time = Date.now();
       this.controls.update();
       return this.render();

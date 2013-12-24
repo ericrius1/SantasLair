@@ -9,11 +9,11 @@ FW.World = class World
     @SCREEN_WIDTH = window.innerWidth
     @SCREEN_HEIGHT = window.innerHeight
     @camFar = 200000
-    @width = 10000
-    @height = 10000
+    @width = 150000
+    @height = 150000
     @trees = []
     @numTrees = 10
-    @rippleFactor = 100
+    @rippleFactor = 60
 
 
     # CAMERA
@@ -39,7 +39,7 @@ FW.World = class World
 
 
     #WATER
-    waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals.jpg'
+    waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals copy.jpg'
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
     @water = new THREE.Water FW.Renderer, FW.camera, FW.scene,
       textureWidth: 512
@@ -48,7 +48,7 @@ FW.World = class World
       alpha: 1
       waterColor: 0xffffff
       sunColor: 0x0ecce3  
-      distortionScale: 50
+      distortionScale: 40
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry @width, @height, 50, 50
@@ -63,7 +63,7 @@ FW.World = class World
     @meteor = new FW.Meteor()
     @stars = new FW.Stars()
 
-    #TREES
+    # TREES
     for i in [1..@numTrees]
       position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000))
       distance = FW.camera.position.distanceTo(position)
@@ -90,7 +90,7 @@ FW.World = class World
   animate : =>
     requestAnimationFrame @animate
     delta = FW.clock.getDelta()
-    @water.material.uniforms.time.value += 1.0 / @rippleFactor  
+    @water.material.uniforms.time.value += 1.0 / 60 
     time = Date.now()
     @controls.update()
     @render()
