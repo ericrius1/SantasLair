@@ -27,7 +27,7 @@ FW.World = class World
 
     # SCENE 
     FW.scene = new THREE.Scene()
-    FW.scene.fog = new THREE.FogExp2( 0xefd1b5, .0025 );
+    FW.scene.fog = new THREE.FogExp2( 0xefd1b5, .000025 );
 
 
     # RENDERER
@@ -36,11 +36,11 @@ FW.World = class World
     document.body.appendChild FW.Renderer.domElement
 
     #LIGHTS
-    directionalLight = new THREE.DirectionalLight 0xff0000, 3
-    randColor = Math.floor(Math.random()*16777215);
-    console.log randColor
-    directionalLight.color.setHex(randColor)
+    directionalLight = new THREE.DirectionalLight 0xabf2ff, 3
     directionalLight.position.set( -1000, FW.width * 0.8, 0 )
+    FW.scene.add( directionalLight )
+    directionalLight = new THREE.DirectionalLight 0xff00ff, 2
+    directionalLight.position.set( 2000, FW.width * 0.8, 0 )
     FW.scene.add( directionalLight )
 
 
@@ -124,19 +124,20 @@ FW.World = class World
 
 
   setUpTerrain: ()->
-    currentPos = new THREE.Vector3(-FW.width/2+ 2000, -100, -FW.width/2 + 1000)
-    for i in [1..3]
-      @loadTerrain currentPos
+    @terrainWidth = 5000
+    @terrainHeight = 2000
+    currentPos = new THREE.Vector3(-FW.width * .4, -100, -FW.width * .4)
+    @loadTerrain currentPos
 
   loadTerrain: (position)->
     parameters = 
       alea: RAND_MT,
       generator: PN_GENERATOR,
-      width: 4000
-      height:4000
-      widthSegments: 100
-      heightSegments: 100
-      depth: rnd 500, 2000
+      width: @terrainWidth
+      height: @terrainHeight
+      widthSegments: 200
+      heightSegments: 200
+      depth: 4000
       param: 4,
       filterparam: 1
       filter: [ CIRCLE_FILTER ]

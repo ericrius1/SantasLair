@@ -7,7 +7,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, directionalLight, distance, i, position, randColor, waterNormals, _i, _ref,
+      var aMeshMirror, directionalLight, distance, i, position, waterNormals, _i, _ref,
         _this = this;
       FW.clock = new THREE.Clock();
       this.SCREEN_WIDTH = window.innerWidth;
@@ -23,15 +23,15 @@
       this.controls.zoomSpeed = 0.5;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
-      FW.scene.fog = new THREE.FogExp2(0xefd1b5, .0025);
+      FW.scene.fog = new THREE.FogExp2(0xefd1b5, .000025);
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      directionalLight = new THREE.DirectionalLight(0xff0000, 3);
-      randColor = Math.floor(Math.random() * 16777215);
-      console.log(randColor);
-      directionalLight.color.setHex(randColor);
+      directionalLight = new THREE.DirectionalLight(0xabf2ff, 3);
       directionalLight.position.set(-1000, FW.width * 0.8, 0);
+      FW.scene.add(directionalLight);
+      directionalLight = new THREE.DirectionalLight(0xff00ff, 2);
+      directionalLight.position.set(2000, FW.width * 0.8, 0);
       FW.scene.add(directionalLight);
       this.setUpTerrain();
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
@@ -107,13 +107,11 @@
     };
 
     World.prototype.setUpTerrain = function() {
-      var currentPos, i, _i, _results;
-      currentPos = new THREE.Vector3(-FW.width / 2 + 2000, -100, -FW.width / 2 + 1000);
-      _results = [];
-      for (i = _i = 1; _i <= 3; i = ++_i) {
-        _results.push(this.loadTerrain(currentPos));
-      }
-      return _results;
+      var currentPos;
+      this.terrainWidth = 5000;
+      this.terrainHeight = 2000;
+      currentPos = new THREE.Vector3(-FW.width * .4, -100, -FW.width * .4);
+      return this.loadTerrain(currentPos);
     };
 
     World.prototype.loadTerrain = function(position) {
@@ -121,11 +119,11 @@
       parameters = {
         alea: RAND_MT,
         generator: PN_GENERATOR,
-        width: 4000,
-        height: 4000,
-        widthSegments: 100,
-        heightSegments: 100,
-        depth: rnd(500, 2000),
+        width: this.terrainWidth,
+        height: this.terrainHeight,
+        widthSegments: 200,
+        heightSegments: 200,
+        depth: 4000,
         param: 4,
         filterparam: 1,
         filter: [CIRCLE_FILTER],
