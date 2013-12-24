@@ -9,7 +9,7 @@
     function Tree(pos, scaleFactor) {
       var curHeightLayer, _i, _ref,
         _this = this;
-      this.ornamentMaxAge = 1;
+      this.ornamentMaxAge = .5;
       this.ornamentsMovingUp = true;
       this.position = pos;
       this.scaleFactor = scaleFactor;
@@ -29,8 +29,8 @@
         this.treeGroup.addEmitter(this.generateTree(curHeightLayer));
         this.createOrnamentGroup(curHeightLayer);
       }
-      FW.scene.add(this.treeGroup.mesh);
       this.treeGroup.mesh.scale.set(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+      FW.scene.add(this.treeGroup.mesh);
       setTimeout(function() {
         return _this.activateOrnamentLayer();
       }, rnd(1000, 5000));
@@ -92,7 +92,7 @@
 
     Tree.prototype.generateOrnaments = function(curHeightLayer) {
       var colorStart, ornamentEmmiterSettings, spread;
-      spread = Math.max(0, 250 - curHeightLayer * this.squishFactor);
+      spread = Math.max(0, 250 - (curHeightLayer * this.squishFactor));
       colorStart = new THREE.Color();
       colorStart.setRGB(Math.random(), Math.random(), Math.random());
       ornamentEmmiterSettings = {
@@ -103,8 +103,8 @@
         colorSpread: new THREE.Vector3(0.2, 0.2, 0.2),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 5, 10, spread + 5),
-        particlesPerSecond: 100 / curHeightLayer,
+        positionSpread: new THREE.Vector3(spread + 5, 0, spread + 5),
+        particlesPerSecond: (100 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
         opacityMiddle: 1.0,
         opacityEnd: 1.0,
