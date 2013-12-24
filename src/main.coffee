@@ -1,4 +1,8 @@
 
+if !Detector.webgl
+   Detector.addGetWebGLMessage()
+
+
 window.map = (value, min1, max1, min2, max2) ->
   min2 + (max2 - min2) * ((value - min1) / (max1 - min1))
 
