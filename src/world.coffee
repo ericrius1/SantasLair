@@ -21,7 +21,7 @@ FW.World = class World
     @controls = new THREE.OrbitControls(FW.camera)
     # @controls.maxDistance = 5500
     # @controls.minDistance = 500
-    @controls.zoomSpeed = 0.5
+    # @controls.zoomSpeed = 0.5
     @controls.maxPolarAngle = Math.PI/4 + .7
     
 

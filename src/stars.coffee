@@ -6,10 +6,10 @@ FW.Stars = class Stars
     @starGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
       blending: THREE.AdditiveBlending,
-      maxAge: 20
+      maxAge: 40
     });
 
-    @generateStars(new THREE.Color(0xe5192c))
+    @generateStars(new THREE.Color(0xff4d4d))
     @generateStars(new THREE.Color(0x3224e7))
     FW.scene.add(@starGroup.mesh)
 
@@ -21,9 +21,11 @@ FW.Stars = class Stars
       colorStart: color
       colorEnd: color
       size: 1000
-      sizeSpread: 400
+      sizeSpread: 1000
       particlesPerSecond: 500
-      opacityEnd: 1
+      opacityStart: 0
+      opacityMiddle: 1
+      opacityEnd: 0
     
     @starGroup.addEmitter starEmitter
   
