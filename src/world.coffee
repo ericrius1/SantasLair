@@ -9,8 +9,8 @@ FW.World = class World
     @SCREEN_WIDTH = window.innerWidth
     @SCREEN_HEIGHT = window.innerHeight
     @camFar = 200000
-    @width = 150000
-    @height = 150000
+    FW.width = 10000
+    FW.height = 10000
     @trees = []
     @numTrees = 10
     @rippleFactor = 2000
@@ -22,13 +22,14 @@ FW.World = class World
     
     #CONTROLS
     @controls = new THREE.OrbitControls(FW.camera)
-    @controls.maxDistance = 10000
-    @controls.minDistance = 500
+    # @controls.maxDistance = 5500
+    # @controls.minDistance = 500
     @controls.maxPolarAngle = Math.PI/4 + .7
     
 
     # SCENE 
     FW.scene = new THREE.Scene()
+    FW.scene.fog = new THREE.FogExp2( 0xefd1b5, 1.25 );
 
 
     # RENDERER
@@ -51,7 +52,7 @@ FW.World = class World
       distortionScale: 100
 
     aMeshMirror = new THREE.Mesh(
-      new THREE.PlaneGeometry @width, @height, 50, 50
+      new THREE.PlaneGeometry FW.width, FW.height, 50, 50
       @water.material
     )
     aMeshMirror.add @water
@@ -67,7 +68,7 @@ FW.World = class World
     # TREES
     @trees.push new FW.Tree(new THREE.Vector3(), 10)
     for i in [1..@numTrees]
-      position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000))
+      position = new THREE.Vector3(rnd(-FW.width/2.2, FW.width/2.2), 0, rnd(-FW.height/2.2, FW.height/2.2))
       distance = FW.camera.position.distanceTo(position)
       if(distance > 100)
         @trees.push new FW.Tree position

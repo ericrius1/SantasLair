@@ -18,18 +18,17 @@
       this.SCREEN_WIDTH = window.innerWidth;
       this.SCREEN_HEIGHT = window.innerHeight;
       this.camFar = 200000;
-      this.width = 150000;
-      this.height = 150000;
+      FW.width = 10000;
+      FW.height = 10000;
       this.trees = [];
       this.numTrees = 10;
       this.rippleFactor = 2000;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
-      this.controls.maxDistance = 10000;
-      this.controls.minDistance = 500;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
+      FW.scene.fog = new THREE.FogExp2(0xefd1b5, 1.25);
       FW.Renderer = new THREE.WebGLRenderer({
         antialias: true
       });
@@ -46,7 +45,7 @@
         sunColor: 0x0ecce3,
         distortionScale: 100
       });
-      aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
+      aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(FW.width, FW.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
       aMeshMirror.rotation.x = -Math.PI * 0.5;
       FW.scene.add(aMeshMirror);
@@ -55,7 +54,7 @@
       this.snow = new FW.Snow();
       this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(-5000, 5000), 0, rnd(-5000, 5000));
+        position = new THREE.Vector3(rnd(-FW.width / 2.2, FW.width / 2.2), 0, rnd(-FW.height / 2.2, FW.height / 2.2));
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
           this.trees.push(new FW.Tree(position));
