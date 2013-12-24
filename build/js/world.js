@@ -22,6 +22,8 @@
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxDistance = FW.width * 3;
       this.controls.minDistance = 1000;
+      this.controls.zoomSpeed = 0.3;
+      this.controls.rotateSpeed = 0.3;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
       FW.Renderer = new THREE.WebGLRenderer();
