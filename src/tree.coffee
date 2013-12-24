@@ -2,7 +2,7 @@ FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos)->
     @position = pos
-    @treeTick = 2
+    @treeTick = 4
     @ornamentGroups = []
     @ornamentTick = .08
     @numLayers = 10
@@ -39,7 +39,7 @@ FW.Tree = class Tree
   tick: ->
     if @treeTick > 0.0
       @treeGroup.tick(@treeTick)
-      @treeTick -=.01
+      @treeTick -=.1
     if @treeTick < 0
       @treeTick = 0
     
@@ -67,12 +67,13 @@ FW.Tree = class Tree
     ornamentEmmiter = new ShaderParticleEmitter
       size: 200
       sizeEnd: 0
+      sizeSpread: 100
       colorStart: new THREE.Color('white')
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
-      positionSpread: new THREE.Vector3 spread+20, 10, spread+ 20
-      particlesPerSecond: 1
-      opacityStart: 0.5 
+      positionSpread: new THREE.Vector3 spread+10, 10, spread+ 10
+      particlesPerSecond: 5
+      opacityStart: 1.0 
       opacityMiddle: 1.0
       opacityEnd: 1.0
 

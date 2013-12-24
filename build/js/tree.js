@@ -9,7 +9,7 @@
     function Tree(pos) {
       var position, y, _i, _ref;
       this.position = pos;
-      this.treeTick = 2;
+      this.treeTick = 4;
       this.ornamentGroups = [];
       this.ornamentTick = .08;
       this.numLayers = 10;
@@ -46,7 +46,7 @@
       var ornamentGroup, _i, _len, _ref, _results;
       if (this.treeTick > 0.0) {
         this.treeGroup.tick(this.treeTick);
-        this.treeTick -= .01;
+        this.treeTick -= .1;
       }
       if (this.treeTick < 0) {
         this.treeTick = 0;
@@ -81,12 +81,13 @@
       return ornamentEmmiter = new ShaderParticleEmitter({
         size: 200,
         sizeEnd: 0,
+        sizeSpread: 100,
         colorStart: new THREE.Color('white'),
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
-        positionSpread: new THREE.Vector3(spread + 20, 10, spread + 20),
-        particlesPerSecond: 1,
-        opacityStart: 0.5,
+        positionSpread: new THREE.Vector3(spread + 10, 10, spread + 10),
+        particlesPerSecond: 5,
+        opacityStart: 1.0,
         opacityMiddle: 1.0,
         opacityEnd: 1.0
       });
