@@ -8,20 +8,21 @@
 
     function Tree(pos, scaleFactor) {
       var curHeightLayer, _i, _ref;
-      this.ornamentMaxAge = .5;
+      this.ornamentMaxAge = .1;
       this.ornamentsMovingUp = true;
       this.position = pos;
       this.scaleFactor = scaleFactor;
       this.treeTick = 2;
       this.ornamentGroups = [];
-      this.ornamentTick = .05;
+      this.ornamentTick = .01;
       this.numLayers = 10;
       this.heightFactor = 25;
+      this.lightSwitchingTimeout = 100;
       this.squishFactor = 24;
       this.currentLightLayer = 0;
       this.treeGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/leaf2.png'),
-        maxAge: 10,
+        maxAge: 5,
         blending: THREE.NormalBlending
       });
       for (curHeightLayer = _i = 1, _ref = this.numLayers; 1 <= _ref ? _i <= _ref : _i >= _ref; curHeightLayer = 1 <= _ref ? ++_i : --_i) {
@@ -70,7 +71,7 @@
           }
         }
         return _this.activateOrnamentLayer();
-      }, 50);
+      }, this.lightSwitchingTimeout);
     };
 
     Tree.prototype.createOrnamentGroup = function(curHeightLayer) {
@@ -101,7 +102,7 @@
         colorEnd: colorStart,
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 5, 5, spread + 5),
-        particlesPerSecond: (100 / curHeightLayer) * this.scaleFactor,
+        particlesPerSecond: (200 / curHeightLayer) * this.scaleFactor,
         opacityStart: 1.0,
         opacityEnd: 1.0,
         alive: 0,

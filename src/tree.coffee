@@ -1,20 +1,21 @@
 FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos, scaleFactor)->
-    @ornamentMaxAge = .5
+    @ornamentMaxAge = .1
     @ornamentsMovingUp = true
     @position = pos
     @scaleFactor = scaleFactor
     @treeTick = 2
     @ornamentGroups = []
-    @ornamentTick = .05
+    @ornamentTick = .01
     @numLayers = 10
     @heightFactor = 25
+    @lightSwitchingTimeout = 100
     @squishFactor = 24
     @currentLightLayer   = 0
     @treeGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/leaf2.png')
-      maxAge: 10
+      maxAge: 5
       blending: THREE.NormalBlending
     });
     
@@ -59,7 +60,7 @@ FW.Tree = class Tree
           @ornamentsMovingUp = true 
           @currentLightLayer++
       @activateOrnamentLayer()
-    50)
+    @lightSwitchingTimeout)
 
 
   createOrnamentGroup: (curHeightLayer)->
@@ -89,7 +90,7 @@ FW.Tree = class Tree
       colorEnd: colorStart
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+5, 5, spread+ 5
-      particlesPerSecond: (100/curHeightLayer) * (@scaleFactor)
+      particlesPerSecond: (200/curHeightLayer) * (@scaleFactor)
       opacityStart: 1.0
       opacityEnd: 1.0
       alive: 0
