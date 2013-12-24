@@ -17,6 +17,7 @@
       this.trees = [];
       this.numTrees = 10;
       this.rippleFactor = 2000;
+      this.treeRange = 2.5;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
@@ -52,7 +53,7 @@
       this.snow = new FW.Snow();
       this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(-FW.width / 2.2, FW.width / 2.2), 0, rnd(-FW.width / 2.2, FW.width / 2.2));
+        position = new THREE.Vector3(rnd(-FW.width / this.treeRange, FW.width / this.treeRange), 0, rnd(-FW.width / this.treeRange, FW.width / this.treeRange));
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
           this.trees.push(new FW.Tree(position));

@@ -11,6 +11,7 @@ FW.World = class World
     @trees = []
     @numTrees = 10
     @rippleFactor = 2000
+    @treeRange = 2.5
 
 
     # CAMERA
@@ -76,7 +77,7 @@ FW.World = class World
     # TREES
     @trees.push new FW.Tree(new THREE.Vector3(), 10)
     for i in [1..@numTrees]
-      position = new THREE.Vector3(rnd(-FW.width/2.2, FW.width/2.2), 0, rnd(-FW.width/2.2, FW.width/2.2))
+      position = new THREE.Vector3(rnd(-FW.width/@treeRange, FW.width/@treeRange), 0, rnd(-FW.width/@treeRange, FW.width/@treeRange))
       distance = FW.camera.position.distanceTo(position)
       if(distance > 100)
         @trees.push new FW.Tree position
