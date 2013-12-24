@@ -1,15 +1,13 @@
 
-window.windowHalfX = window.innerWidth / 2;
-window.windowHalfY = window.innerHeight / 2;
 rnd = FW.rnd
 FW.World = class World
   constructor : ->
     FW.clock = new THREE.Clock()
     @SCREEN_WIDTH = window.innerWidth
     @SCREEN_HEIGHT = window.innerHeight
-    @camFar = 20000
+    @camFar = 200000
     FW.width = 10000
-    FW.height = 10000
+  
     @trees = []
     @numTrees = 10
     @rippleFactor = 2000
@@ -28,25 +26,25 @@ FW.World = class World
 
     # SCENE 
     FW.scene = new THREE.Scene()
-    FW.scene.fog = new THREE.FogExp2( 0xefd1b5, 1.25 );
+    # FW.scene.fog = new THREE.FogExp2( 0xefd1b5, .025 );
 
 
     # RENDERER
     FW.Renderer = new THREE.WebGLRenderer()
     FW.Renderer.setSize @SCREEN_WIDTH, @SCREEN_HEIGHT
-
     document.body.appendChild FW.Renderer.domElement
 
-    # LIGHTS
-    directionalLight = new THREE.DirectionalLight 0xff0000, rnd(0.8, 1.5)
+    #LIGHTS
+    directionalLight = new THREE.DirectionalLight 0xff0000, 3
     randColor = Math.floor(Math.random()*16777215);
     console.log randColor
     directionalLight.color.setHex(randColor)
-    directionalLight.position.set( 0, 1000, 0 )
+    directionalLight.position.set( -1000, FW.width * 0.8, 0 )
     FW.scene.add( directionalLight )
 
+
     #TERRAIN
-    @loadTerrain new THREE.Vector3()
+    @setUpTerrain()
 
     #WATER
     waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals.jpg'
@@ -61,7 +59,7 @@ FW.World = class World
       distortionScale: 100
 
     aMeshMirror = new THREE.Mesh(
-      new THREE.PlaneGeometry FW.width, FW.height, 50, 50
+      new THREE.PlaneGeometry FW.width, FW.width, 50, 50
       @water.material
     )
     aMeshMirror.add @water
@@ -70,18 +68,18 @@ FW.World = class World
 
         
     #FUN
-    @meteor = new FW.Meteor()
-    @stars = new FW.Stars()
-    @snow = new FW.Snow()
+    # @meteor = new FW.Meteor()
+    # @stars = new FW.Stars()
+    # @snow = new FW.Snow()
 
 
     # TREES
-    @trees.push new FW.Tree(new THREE.Vector3(), 10)
-    for i in [1..@numTrees]
-      position = new THREE.Vector3(rnd(-FW.width/2.2, FW.width/2.2), 0, rnd(-FW.height/2.2, FW.height/2.2))
-      distance = FW.camera.position.distanceTo(position)
-      if(distance > 100)
-        @trees.push new FW.Tree position
+    # @trees.push new FW.Tree(new THREE.Vector3(), 10)
+    # for i in [1..@numTrees]
+    #   position = new THREE.Vector3(rnd(-FW.width/2.2, FW.width/2.2), 0, rnd(-FW.width/2.2, FW.width/2.2))
+    #   distance = FW.camera.position.distanceTo(position)
+    #   if(distance > 100)
+    #     @trees.push new FW.Tree position
 
 
 
@@ -108,11 +106,11 @@ FW.World = class World
     @controls.update()
     @render()
   render : ->
-    @meteor.tick()
-    @snow.tick()
-    @stars.tick()
-    for tree in @trees
-      tree.tick()
+    # @meteor.tick()
+    # @snow.tick()
+    # @stars.tick()
+    # for tree in @trees
+    #   tree.tick()
     @water.render()
     FW.Renderer.render( FW.scene, FW.camera );
 
@@ -123,12 +121,17 @@ FW.World = class World
       @slowUpdate()
     @slowUpdateInterval)
 
+
+  setUpTerrain: ()->
+    startingPos = new THREE.Vector3(-FW.width/2+ 2000, -100, -FW.width/2 + 1000)
+    @loadTerrain startingPos
+
   loadTerrain: (position)->
     parameters = 
       alea: RAND_MT,
       generator: PN_GENERATOR,
-      width: rnd 2000, 4000
-      height: rnd 2000, 4000
+      width: 4000
+      height:4000
       widthSegments: 100
       heightSegments: 100
       depth: rnd 500, 2000

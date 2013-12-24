@@ -16,8 +16,8 @@ FW.Snow = class Snow
     snowEmitterSettings = new ShaderParticleEmitter 
       size: 500
       sizeEnd: 250
-      position: new THREE.Vector3(0, FW.height * 0.8, 0)
-      positionSpread: new THREE.Vector3(FW.height * 0.9, 3000, FW.width * 0.9)
+      position: new THREE.Vector3(0, FW.width * 0.8, 0)
+      positionSpread: new THREE.Vector3(FW.width * 0.9, 3000, FW.width * 0.9)
       colorStart: colorStart
       colorEnd: colorStart
       velocity: new THREE.Vector3(0, -100, 0)

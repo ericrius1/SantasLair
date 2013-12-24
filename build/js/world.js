@@ -2,23 +2,18 @@
   var World, rnd,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  window.windowHalfX = window.innerWidth / 2;
-
-  window.windowHalfY = window.innerHeight / 2;
-
   rnd = FW.rnd;
 
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, directionalLight, distance, i, position, randColor, waterNormals, _i, _ref,
+      var aMeshMirror, directionalLight, randColor, waterNormals,
         _this = this;
       FW.clock = new THREE.Clock();
       this.SCREEN_WIDTH = window.innerWidth;
       this.SCREEN_HEIGHT = window.innerHeight;
-      this.camFar = 20000;
+      this.camFar = 200000;
       FW.width = 10000;
-      FW.height = 10000;
       this.trees = [];
       this.numTrees = 10;
       this.rippleFactor = 2000;
@@ -27,17 +22,16 @@
       this.controls = new THREE.OrbitControls(FW.camera);
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
-      FW.scene.fog = new THREE.FogExp2(0xefd1b5, 1.25);
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
-      directionalLight = new THREE.DirectionalLight(0xff0000, rnd(0.8, 1.5));
+      directionalLight = new THREE.DirectionalLight(0xff0000, 3);
       randColor = Math.floor(Math.random() * 16777215);
       console.log(randColor);
       directionalLight.color.setHex(randColor);
-      directionalLight.position.set(0, 1000, 0);
+      directionalLight.position.set(-1000, FW.width * 0.8, 0);
       FW.scene.add(directionalLight);
-      this.loadTerrain(new THREE.Vector3());
+      this.setUpTerrain();
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
@@ -49,21 +43,10 @@
         sunColor: 0x0ecce3,
         distortionScale: 100
       });
-      aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(FW.width, FW.height, 50, 50), this.water.material);
+      aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(FW.width, FW.width, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
       aMeshMirror.rotation.x = -Math.PI * 0.5;
       FW.scene.add(aMeshMirror);
-      this.meteor = new FW.Meteor();
-      this.stars = new FW.Stars();
-      this.snow = new FW.Snow();
-      this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
-      for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(-FW.width / 2.2, FW.width / 2.2), 0, rnd(-FW.height / 2.2, FW.height / 2.2));
-        distance = FW.camera.position.distanceTo(position);
-        if (distance > 100) {
-          this.trees.push(new FW.Tree(position));
-        }
-      }
       window.addEventListener("resize", (function() {
         return _this.onWindowResize();
       }), false);
@@ -89,15 +72,6 @@
     };
 
     World.prototype.render = function() {
-      var tree, _i, _len, _ref;
-      this.meteor.tick();
-      this.snow.tick();
-      this.stars.tick();
-      _ref = this.trees;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tree = _ref[_i];
-        tree.tick();
-      }
       this.water.render();
       return FW.Renderer.render(FW.scene, FW.camera);
     };
@@ -110,13 +84,19 @@
       }, this.slowUpdateInterval);
     };
 
+    World.prototype.setUpTerrain = function() {
+      var startingPos;
+      startingPos = new THREE.Vector3(-FW.width / 2 + 2000, -100, -FW.width / 2 + 1000);
+      return this.loadTerrain(startingPos);
+    };
+
     World.prototype.loadTerrain = function(position) {
       var parameters, terrain, terrainGeo, terrainMaterial;
       parameters = {
         alea: RAND_MT,
         generator: PN_GENERATOR,
-        width: rnd(2000, 4000),
-        height: rnd(2000, 4000),
+        width: 4000,
+        height: 4000,
         widthSegments: 100,
         heightSegments: 100,
         depth: rnd(500, 2000),
