@@ -4,9 +4,9 @@ FW.Stars = class Stars
 
  
     @starGroup = new ShaderParticleGroup({
-      texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+      texture: THREE.ImageUtils.loadTexture('assets/whitestar.png'),
       blending: THREE.AdditiveBlending,
-      maxAge: 40
+      maxAge: 20
     });
 
     @generateStars(new THREE.Color(0xff4d4d))
@@ -22,9 +22,9 @@ FW.Stars = class Stars
       colorEnd: new THREE.Color(0xff00ff)
       size: 2000
       sizeSpread: 2000
-      particlesPerSecond: 1000
+      particlesPerSecond: 2000
       opacityStart: 0
-      opacityMiddle: 0.5
+      opacityMiddle: 0.3
       opacityEnd: 0
     
     @starGroup.addEmitter starEmitter
