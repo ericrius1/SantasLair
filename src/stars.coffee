@@ -2,32 +2,31 @@ FW.Stars = class Stars
   rnd = FW.rnd
   constructor: ()->
 
-    @colorStart = new THREE.Color()
-    @colorStart.setRGB(1,1, 1)
-
+ 
     @starGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/star.png'),
       blending: THREE.AdditiveBlending,
       maxAge: 100
     });
 
-    @colorEnd = new THREE.Color()
     @generateStars()
     FW.scene.add(@starGroup.mesh)
 
   generateStars: ->
+    colorStart = new THREE.Color()
+    colorStart.setRGB(.8, .1, .1)
     @starEmitter = new ShaderParticleEmitter
       type: 'sphere'
       radius: FW.width
+      colorStart: colorStart
+      colorEnd: colorStart
       speed: .1
-      size: rnd(800, 1200)
+      size: rnd(2000, 4000)
       sizeSpread: 400
       particlesPerSecond: 500
       opacityStart: 0
-      opacityMiddle: 1
+      opacityMiddle: 0.5
       opacityEnd: 0
-      colorStart: @colorStart
-      colorEnd: @colorEnd
     
     @starGroup.addEmitter @starEmitter
   
