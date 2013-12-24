@@ -20,7 +20,6 @@
       this.camFar = 200000;
       this.width = 10000;
       this.height = 10000;
-      this.rippleFactor = 1000;
       this.trees = [];
       this.numTrees = 10;
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
@@ -36,11 +35,13 @@
       waterNormals = new THREE.ImageUtils.loadTexture('./assets/waternormals.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
       this.water = new THREE.Water(FW.Renderer, FW.camera, FW.scene, {
+        textureWidth: 512,
+        textureHeight: 512,
         waterNormals: waterNormals,
         alpha: 1,
         waterColor: 0xffffff,
-        sunColor: 0x5bced8,
-        distortionScale: 100
+        sunColor: 0xf133d8,
+        distortionScale: 10
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(this.width, this.height, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
@@ -49,7 +50,7 @@
       this.meteor = new FW.Meteor();
       this.stars = new FW.Stars();
       for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000));
+        position = new THREE.Vector3(rnd(-1000, 1000), rnd(-500, -10), rnd(-1000, 1000));
         distance = FW.camera.position.distanceTo(position);
         if (distance > 100) {
           this.trees.push(new FW.Tree(position));
@@ -74,7 +75,6 @@
       requestAnimationFrame(this.animate);
       delta = FW.clock.getDelta();
       time = Date.now();
-      this.water.material.uniforms.time.value += 1.0 / this.rippleFactor;
       this.controls.update();
       return this.render();
     };

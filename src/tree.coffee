@@ -1,10 +1,6 @@
 FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos)->
-    @curOrnColor = 
-      r: rnd(0, .5)
-      g: rnd(0, 0.5)
-      b: rnd(0, 0.5)
     @ornamentMaxAge = 1
     @ornamentsMovingUp = true
     @position = pos
@@ -21,12 +17,13 @@ FW.Tree = class Tree
       blending: THREE.NormalBlending
     });
     
-    for y in [1..@numLayers]
-      position = new THREE.Vector3 rnd(@position.x-10, @position.x+10), y*4,  @position.z
-      @treeGroup.addEmitter @generateTree(y, position)
-      @createOrnamentGroup(y)
+    for curHeightLayer in [1..@numLayers]
+      @treeGroup.addEmitter @generateTree(curHeightLayer)
+      @createOrnamentGroup(curHeightLayer)
     FW.scene.add(@treeGroup.mesh)
-    @activateOrnamentLayer()
+    setTimeout(()=>
+      @activateOrnamentLayer()
+    rnd(1000, 5000))
 
 
 
@@ -41,8 +38,8 @@ FW.Tree = class Tree
       @treeTick -=.1
     if @treeTick < .0
       @treeTick = 0.0
-    for ornamentGroup in @ornamentGroups
-      ornamentGroup.tick(@ornamentTick)
+    # for ornamentGroup in @ornamentGroups
+      # ornamentGroup.tick(@ornamentTick)
     
 
   activateOrnamentLayer: ()->
@@ -62,60 +59,55 @@ FW.Tree = class Tree
           @ornamentsMovingUp = true 
           @currentLightLayer++
       @activateOrnamentLayer()
-    rnd(50, 200))
+    50)
 
 
-  createOrnamentGroup: (y, position)->
+  createOrnamentGroup: (curHeightLayer  , position)->
       ornamentGroup = new ShaderParticleGroup(
         texture: THREE.ImageUtils.loadTexture('assets/star.png')
         maxAge: @ornamentMaxAge
         blending: THREE.AdditiveBlending
       )
 
-      ornamentGroup.addPool 2, @generateOrnaments(y), false
+      ornamentGroup.addPool 2, @generateOrnaments(curHeightLayer), false
       @ornamentGroups.push ornamentGroup
       FW.scene.add ornamentGroup.mesh
       ornamentGroup.mesh.renderDepth = -1
 
 
-  generateOrnaments: (y)->
-    spread = Math.max 0, 250 - y * @squishFactor
-    colorStart = new THREE.Color().copy(@curOrnColor)
-    console.log colorStart
+  generateOrnaments: (curHeightLayer)->
+    spread = Math.max 0, 250 - curHeightLayer * @squishFactor
+    colorStart = new THREE.Color()
+    colorStart.setRGB(Math.random(), Math.random(), Math.random())
     ornamentEmmiterSettings = 
       size: 200
       sizeSpread: 200
       sizeEnd: 20
       colorStart: colorStart
+      colorSpread: new THREE.Vector3(0.5, 0.5, 0.5)
       colorEnd: colorStart
-      position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
+      position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+5, 25, spread+ 5
-      particlesPerSecond: 300/y
+      particlesPerSecond: 10
       opacityStart: 1.0
       opacityMiddle: 1.0
-      opacityEnd: 0.5
+      opacityEnd: 1.0
       alive: 0
       emitterDuration: 1
-    #Every layer make color different  
-    @nextColor()
     return ornamentEmmiterSettings
 
-  generateTree: (y)->
-    spread = Math.max 0, 250 - y* @squishFactor
+  generateTree: (curHeightLayer)->
+    spread = Math.max 0, 250 - curHeightLayer* @squishFactor
     @treeEmitter = new ShaderParticleEmitter
       size: 200
       sizeEnd: 100
-      position: new THREE.Vector3 @position.x,  y*@heightFactor, @position.z
+      position: new THREE.Vector3 @position.x,  curHeightLayer*@heightFactor, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread , 10, spread
       colorEnd: new THREE.Color()
-      particlesPerSecond: 25.0/ (y)
+      particlesPerSecond: 25.0/ curHeightLayer
       opacityEnd: 1.0
 
-  nextColor: ->
-    @curOrnColor.r = Math.min @curOrnColor.r+.05, 1
-    # @curOrnColor.g = Math.min @curOrnColor.g+.1, 1
-    # @curOrnColor.b = Math.min @curOrnColor.b+.1, 1
 
 
 

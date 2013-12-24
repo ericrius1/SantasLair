@@ -7,12 +7,8 @@
     rnd = FW.rnd;
 
     function Tree(pos) {
-      var position, y, _i, _ref;
-      this.curOrnColor = {
-        r: rnd(0, .5),
-        g: rnd(0, 0.5),
-        b: rnd(0, 0.5)
-      };
+      var curHeightLayer, _i, _ref,
+        _this = this;
       this.ornamentMaxAge = 1;
       this.ornamentsMovingUp = true;
       this.position = pos;
@@ -28,31 +24,24 @@
         maxAge: 10,
         blending: THREE.NormalBlending
       });
-      for (y = _i = 1, _ref = this.numLayers; 1 <= _ref ? _i <= _ref : _i >= _ref; y = 1 <= _ref ? ++_i : --_i) {
-        position = new THREE.Vector3(rnd(this.position.x - 10, this.position.x + 10), y * 4, this.position.z);
-        this.treeGroup.addEmitter(this.generateTree(y, position));
-        this.createOrnamentGroup(y);
+      for (curHeightLayer = _i = 1, _ref = this.numLayers; 1 <= _ref ? _i <= _ref : _i >= _ref; curHeightLayer = 1 <= _ref ? ++_i : --_i) {
+        this.treeGroup.addEmitter(this.generateTree(curHeightLayer));
+        this.createOrnamentGroup(curHeightLayer);
       }
       FW.scene.add(this.treeGroup.mesh);
-      this.activateOrnamentLayer();
+      setTimeout(function() {
+        return _this.activateOrnamentLayer();
+      }, rnd(1000, 5000));
     }
 
     Tree.prototype.tick = function() {
-      var ornamentGroup, _i, _len, _ref, _results;
       if (this.treeTick > 0.0) {
         this.treeGroup.tick(this.treeTick);
         this.treeTick -= .1;
       }
       if (this.treeTick < .0) {
-        this.treeTick = 0.0;
+        return this.treeTick = 0.0;
       }
-      _ref = this.ornamentGroups;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        ornamentGroup = _ref[_i];
-        _results.push(ornamentGroup.tick(this.ornamentTick));
-      }
-      return _results;
     };
 
     Tree.prototype.activateOrnamentLayer = function() {
@@ -74,62 +63,58 @@
           }
         }
         return _this.activateOrnamentLayer();
-      }, rnd(50, 200));
+      }, 50);
     };
 
-    Tree.prototype.createOrnamentGroup = function(y, position) {
+    Tree.prototype.createOrnamentGroup = function(curHeightLayer, position) {
       var ornamentGroup;
       ornamentGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/star.png'),
         maxAge: this.ornamentMaxAge,
         blending: THREE.AdditiveBlending
       });
-      ornamentGroup.addPool(2, this.generateOrnaments(y), false);
+      ornamentGroup.addPool(2, this.generateOrnaments(curHeightLayer), false);
       this.ornamentGroups.push(ornamentGroup);
       FW.scene.add(ornamentGroup.mesh);
       return ornamentGroup.mesh.renderDepth = -1;
     };
 
-    Tree.prototype.generateOrnaments = function(y) {
+    Tree.prototype.generateOrnaments = function(curHeightLayer) {
       var colorStart, ornamentEmmiterSettings, spread;
-      spread = Math.max(0, 250 - y * this.squishFactor);
-      colorStart = new THREE.Color().copy(this.curOrnColor);
-      console.log(colorStart);
+      spread = Math.max(0, 250 - curHeightLayer * this.squishFactor);
+      colorStart = new THREE.Color();
+      colorStart.setRGB(Math.random(), Math.random(), Math.random());
       ornamentEmmiterSettings = {
         size: 200,
         sizeSpread: 200,
         sizeEnd: 20,
         colorStart: colorStart,
+        colorSpread: new THREE.Vector3(0.5, 0.5, 0.5),
         colorEnd: colorStart,
-        position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
+        position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 5, 25, spread + 5),
-        particlesPerSecond: 300 / y,
+        particlesPerSecond: 10,
         opacityStart: 1.0,
         opacityMiddle: 1.0,
-        opacityEnd: 0.5,
+        opacityEnd: 1.0,
         alive: 0,
         emitterDuration: 1
       };
-      this.nextColor();
       return ornamentEmmiterSettings;
     };
 
-    Tree.prototype.generateTree = function(y) {
+    Tree.prototype.generateTree = function(curHeightLayer) {
       var spread;
-      spread = Math.max(0, 250 - y * this.squishFactor);
+      spread = Math.max(0, 250 - curHeightLayer * this.squishFactor);
       return this.treeEmitter = new ShaderParticleEmitter({
         size: 200,
         sizeEnd: 100,
-        position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
+        position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 10, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 25.0 / y,
+        particlesPerSecond: 25.0 / curHeightLayer,
         opacityEnd: 1.0
       });
-    };
-
-    Tree.prototype.nextColor = function() {
-      return this.curOrnColor.r = Math.min(this.curOrnColor.r + .05, 1);
     };
 
     return Tree;

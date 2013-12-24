@@ -11,7 +11,6 @@ FW.World = class World
     @camFar = 200000
     @width = 10000
     @height = 10000
-    @rippleFactor = 1000
     @trees = []
     @numTrees = 10
 
@@ -41,11 +40,13 @@ FW.World = class World
     waterNormals = new THREE.ImageUtils.loadTexture './assets/waternormals.jpg'
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
     @water = new THREE.Water FW.Renderer, FW.camera, FW.scene,
+      textureWidth: 512
+      textureHeight: 512
       waterNormals: waterNormals
       alpha: 1
       waterColor: 0xffffff
-      sunColor: 0x5bced8
-      distortionScale: 100
+      sunColor: 0xf133d8  
+      distortionScale: 10
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry @width, @height, 50, 50
@@ -62,7 +63,7 @@ FW.World = class World
 
     #TREES
     for i in [1..@numTrees]
-      position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000))
+      position = new THREE.Vector3(rnd(-1000, 1000), rnd(-500, -10), rnd(-1000, 1000))
       distance = FW.camera.position.distanceTo(position)
       if(distance > 100)
         @trees.push new FW.Tree position
@@ -88,7 +89,6 @@ FW.World = class World
     requestAnimationFrame @animate
     delta = FW.clock.getDelta()
     time = Date.now()
-    @water.material.uniforms.time.value += 1.0 / @rippleFactor
     @controls.update()
     @render()
   render : ->
