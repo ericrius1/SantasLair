@@ -69,7 +69,7 @@
           }
         }
         return _this.activateOrnamentLayer();
-      }, 100);
+      }, rnd(50, 200));
     };
 
     Tree.prototype.createOrnamentGroup = function(y, position) {
@@ -94,12 +94,13 @@
       colorEnd.setRGB(Math.random(), Math.random(), Math.random());
       return ornamentEmmiterSettings = new ShaderParticleEmitter({
         size: 200,
+        sizeSpread: 200,
         sizeEnd: 20,
         colorStart: colorStart,
         colorEnd: colorEnd,
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread + 5, 25, spread + 5),
-        particlesPerSecond: 1500 / y,
+        particlesPerSecond: 300 / y,
         opacityStart: 1.0,
         opacityMiddle: 1.0,
         opacityEnd: 0.5,

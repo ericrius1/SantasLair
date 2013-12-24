@@ -58,7 +58,7 @@ FW.Tree = class Tree
           @ornamentsMovingUp = true 
           @currentLightLayer++
       @activateOrnamentLayer()
-    100)
+    rnd(50, 200))
 
 
   createOrnamentGroup: (y, position)->
@@ -82,12 +82,13 @@ FW.Tree = class Tree
     colorEnd.setRGB(Math.random(), Math.random(), Math.random())
     ornamentEmmiterSettings = new ShaderParticleEmitter
       size: 200
+      sizeSpread: 200
       sizeEnd: 20
       colorStart: colorStart
       colorEnd: colorEnd
       position: new THREE.Vector3 @position.x, y*@heightFactor, @position.z
       positionSpread: new THREE.Vector3 spread+5, 25, spread+ 5
-      particlesPerSecond: 1500/y
+      particlesPerSecond: 300/y
       opacityStart: 1.0
       opacityMiddle: 1.0
       opacityEnd: 0.5

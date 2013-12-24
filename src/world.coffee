@@ -9,10 +9,11 @@ FW.World = class World
     @SCREEN_WIDTH = window.innerWidth
     @SCREEN_HEIGHT = window.innerHeight
     @camFar = 200000
-    @width = 50000
-    @height = 50000
+    @width = 10000
+    @height = 10000
     @rippleFactor = 1000
     @trees = []
+    @numTrees = 10
 
 
     # CAMERA
@@ -60,8 +61,8 @@ FW.World = class World
     @stars = new FW.Stars()
 
     #TREES
-    for i in [1..1]
-      position = new THREE.Vector3(0, 0, 0)
+    for i in [1..@numTrees]
+      position = new THREE.Vector3(rnd(-1000, 1000), 0, rnd(-1000, 1000))
       distance = FW.camera.position.distanceTo(position)
       if(distance > 100)
         @trees.push new FW.Tree position
