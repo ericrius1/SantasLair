@@ -21,12 +21,13 @@ FW.World = class World
     @controls = new THREE.OrbitControls(FW.camera)
     # @controls.maxDistance = 5500
     # @controls.minDistance = 500
+    @controls.zoomSpeed = 0.5
     @controls.maxPolarAngle = Math.PI/4 + .7
     
 
     # SCENE 
     FW.scene = new THREE.Scene()
-    # FW.scene.fog = new THREE.FogExp2( 0xefd1b5, .025 );
+    FW.scene.fog = new THREE.FogExp2( 0xefd1b5, .0025 );
 
 
     # RENDERER
@@ -53,10 +54,10 @@ FW.World = class World
       textureWidth: 512
       textureHeight: 512
       waterNormals: waterNormals
-      alpha: 0.99
+      alpha: 1.0
       waterColor: 0xffffff
       sunColor: 0x0ecce3  
-      distortionScale: 100
+      distortionScale: 50
 
     aMeshMirror = new THREE.Mesh(
       new THREE.PlaneGeometry FW.width, FW.width, 50, 50
@@ -67,19 +68,19 @@ FW.World = class World
     FW.scene.add aMeshMirror
 
         
-    #FUN
-    # @meteor = new FW.Meteor()
-    # @stars = new FW.Stars()
-    # @snow = new FW.Snow()
+    # FUN
+    @meteor = new FW.Meteor()
+    @stars = new FW.Stars()
+    @snow = new FW.Snow()
 
 
     # TREES
-    # @trees.push new FW.Tree(new THREE.Vector3(), 10)
-    # for i in [1..@numTrees]
-    #   position = new THREE.Vector3(rnd(-FW.width/2.2, FW.width/2.2), 0, rnd(-FW.width/2.2, FW.width/2.2))
-    #   distance = FW.camera.position.distanceTo(position)
-    #   if(distance > 100)
-    #     @trees.push new FW.Tree position
+    @trees.push new FW.Tree(new THREE.Vector3(), 10)
+    for i in [1..@numTrees]
+      position = new THREE.Vector3(rnd(-FW.width/2.2, FW.width/2.2), 0, rnd(-FW.width/2.2, FW.width/2.2))
+      distance = FW.camera.position.distanceTo(position)
+      if(distance > 100)
+        @trees.push new FW.Tree position
 
 
 
@@ -106,11 +107,11 @@ FW.World = class World
     @controls.update()
     @render()
   render : ->
-    # @meteor.tick()
-    # @snow.tick()
-    # @stars.tick()
-    # for tree in @trees
-    #   tree.tick()
+    @meteor.tick()
+    @snow.tick()
+    @stars.tick()
+    for tree in @trees
+      tree.tick()
     @water.render()
     FW.Renderer.render( FW.scene, FW.camera );
 
@@ -123,8 +124,9 @@ FW.World = class World
 
 
   setUpTerrain: ()->
-    startingPos = new THREE.Vector3(-FW.width/2+ 2000, -100, -FW.width/2 + 1000)
-    @loadTerrain startingPos
+    currentPos = new THREE.Vector3(-FW.width/2+ 2000, -100, -FW.width/2 + 1000)
+    for i in [1..3]
+      @loadTerrain currentPos
 
   loadTerrain: (position)->
     parameters = 

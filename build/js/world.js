@@ -7,7 +7,7 @@
   FW.World = World = (function() {
     function World() {
       this.animate = __bind(this.animate, this);
-      var aMeshMirror, directionalLight, randColor, waterNormals,
+      var aMeshMirror, directionalLight, distance, i, position, randColor, waterNormals, _i, _ref,
         _this = this;
       FW.clock = new THREE.Clock();
       this.SCREEN_WIDTH = window.innerWidth;
@@ -20,8 +20,10 @@
       FW.camera = new THREE.PerspectiveCamera(45.0, this.SCREEN_WIDTH / this.SCREEN_HEIGHT, 1, this.camFar);
       FW.camera.position.set(0, 400, 800);
       this.controls = new THREE.OrbitControls(FW.camera);
+      this.controls.zoomSpeed = 0.5;
       this.controls.maxPolarAngle = Math.PI / 4 + .7;
       FW.scene = new THREE.Scene();
+      FW.scene.fog = new THREE.FogExp2(0xefd1b5, .0025);
       FW.Renderer = new THREE.WebGLRenderer();
       FW.Renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
       document.body.appendChild(FW.Renderer.domElement);
@@ -38,15 +40,26 @@
         textureWidth: 512,
         textureHeight: 512,
         waterNormals: waterNormals,
-        alpha: 0.99,
+        alpha: 1.0,
         waterColor: 0xffffff,
         sunColor: 0x0ecce3,
-        distortionScale: 100
+        distortionScale: 50
       });
       aMeshMirror = new THREE.Mesh(new THREE.PlaneGeometry(FW.width, FW.width, 50, 50), this.water.material);
       aMeshMirror.add(this.water);
       aMeshMirror.rotation.x = -Math.PI * 0.5;
       FW.scene.add(aMeshMirror);
+      this.meteor = new FW.Meteor();
+      this.stars = new FW.Stars();
+      this.snow = new FW.Snow();
+      this.trees.push(new FW.Tree(new THREE.Vector3(), 10));
+      for (i = _i = 1, _ref = this.numTrees; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        position = new THREE.Vector3(rnd(-FW.width / 2.2, FW.width / 2.2), 0, rnd(-FW.width / 2.2, FW.width / 2.2));
+        distance = FW.camera.position.distanceTo(position);
+        if (distance > 100) {
+          this.trees.push(new FW.Tree(position));
+        }
+      }
       window.addEventListener("resize", (function() {
         return _this.onWindowResize();
       }), false);
@@ -72,6 +85,15 @@
     };
 
     World.prototype.render = function() {
+      var tree, _i, _len, _ref;
+      this.meteor.tick();
+      this.snow.tick();
+      this.stars.tick();
+      _ref = this.trees;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tree = _ref[_i];
+        tree.tick();
+      }
       this.water.render();
       return FW.Renderer.render(FW.scene, FW.camera);
     };
@@ -85,9 +107,13 @@
     };
 
     World.prototype.setUpTerrain = function() {
-      var startingPos;
-      startingPos = new THREE.Vector3(-FW.width / 2 + 2000, -100, -FW.width / 2 + 1000);
-      return this.loadTerrain(startingPos);
+      var currentPos, i, _i, _results;
+      currentPos = new THREE.Vector3(-FW.width / 2 + 2000, -100, -FW.width / 2 + 1000);
+      _results = [];
+      for (i = _i = 1; _i <= 3; i = ++_i) {
+        _results.push(this.loadTerrain(currentPos));
+      }
+      return _results;
     };
 
     World.prototype.loadTerrain = function(position) {
