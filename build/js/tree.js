@@ -7,19 +7,20 @@
     rnd = FW.rnd;
 
     function Tree(pos) {
-      var position, y, _i;
+      var position, y, _i, _ref;
       this.position = pos;
-      this.treeTick = 5;
+      this.treeTick = 2;
       this.ornamentGroups = [];
       this.ornamentTick = .08;
-      this.numLayers = 100;
-      this.heightFactor = 6;
+      this.numLayers = 10;
+      this.heightFactor = 25;
+      this.squishFactor = 24;
       this.treeGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/leaf2.png'),
-        maxAge: 100,
+        maxAge: 10,
         blending: THREE.NormalBlending
       });
-      for (y = _i = 1; _i <= 50; y = ++_i) {
+      for (y = _i = 1, _ref = this.numLayers; 1 <= _ref ? _i <= _ref : _i >= _ref; y = 1 <= _ref ? ++_i : --_i) {
         position = new THREE.Vector3(rnd(this.position.x - 10, this.position.x + 10), y * 4, this.position.z);
         this.treeGroup.addEmitter(this.generateTree(y, position));
         this.createOrnamentGroup(y);
@@ -28,23 +29,27 @@
     }
 
     Tree.prototype.generateTree = function(y) {
-      var spread, treeEmitter;
-      spread = Math.max(0, 250 - y * 5);
-      return treeEmitter = new ShaderParticleEmitter({
-        size: 150,
+      var spread;
+      spread = Math.max(0, 250 - y * this.squishFactor);
+      return this.treeEmitter = new ShaderParticleEmitter({
+        size: 200,
+        sizeEnd: 100,
         position: new THREE.Vector3(this.position.x, y * this.heightFactor, this.position.z),
         positionSpread: new THREE.Vector3(spread, 10, spread),
         colorEnd: new THREE.Color(),
-        particlesPerSecond: 10 / y,
+        particlesPerSecond: 10.0,
         opacityEnd: 1.0
       });
     };
 
     Tree.prototype.tick = function() {
       var ornamentGroup, _i, _len, _ref, _results;
-      this.treeGroup.tick(this.treeTick);
       if (this.treeTick > 0.0) {
-        this.treeTick -= .4;
+        this.treeGroup.tick(this.treeTick);
+        this.treeTick -= .01;
+      }
+      if (this.treeTick < 0) {
+        this.treeTick = 0;
       }
       _ref = this.ornamentGroups;
       _results = [];
@@ -70,7 +75,7 @@
 
     Tree.prototype.generateOrnaments = function(y) {
       var colorStart, ornamentEmmiter, spread;
-      spread = Math.max(0, 250 - y * 5);
+      spread = Math.max(0, 250 - y * this.squishFactor);
       colorStart = new THREE.Color();
       colorStart.setRGB(Math.random(), Math.random(), Math.random());
       return ornamentEmmiter = new ShaderParticleEmitter({

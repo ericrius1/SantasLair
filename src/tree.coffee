@@ -2,18 +2,19 @@ FW.Tree = class Tree
   rnd = FW.rnd
   constructor: (pos)->
     @position = pos
-    @treeTick = 5
+    @treeTick = 2
     @ornamentGroups = []
     @ornamentTick = .08
-    @numLayers = 100
-    @heightFactor = 6
+    @numLayers = 10
+    @heightFactor = 25
+    @squishFactor = 24
     @treeGroup = new ShaderParticleGroup({
       texture: THREE.ImageUtils.loadTexture('assets/leaf2.png')
-      maxAge: 100
+      maxAge: 10
       blending: THREE.NormalBlending
     });
     
-    for y in [1..50]
+    for y in [1..@numLayers]
       position = new THREE.Vector3 rnd(@position.x-10, @position.x+10), y*4,  @position.z
       @treeGroup.addEmitter @generateTree(y, position)
       @createOrnamentGroup(y)
@@ -21,23 +22,26 @@ FW.Tree = class Tree
 
 
   generateTree: (y)->
-    spread = Math.max 0, 250 - y* 5
-    treeEmitter = new ShaderParticleEmitter
-      size: 150
+    spread = Math.max 0, 250 - y* @squishFactor
+    @treeEmitter = new ShaderParticleEmitter
+      size: 200
+      sizeEnd: 100
       position: new THREE.Vector3 @position.x,  y*@heightFactor, @position.z
       #As we go higher, we want spread less to give xmas tree pyramid shape
       positionSpread: new THREE.Vector3 spread , 10, spread
       colorEnd: new THREE.Color()
-      particlesPerSecond: 10/y
+      particlesPerSecond: 10.0
       opacityEnd: 1.0
   
   ##########################################
   #TICK MAIN LOOOOP
 
   tick: ->
-    @treeGroup.tick(@treeTick)
     if @treeTick > 0.0
-      @treeTick -=.4 
+      @treeGroup.tick(@treeTick)
+      @treeTick -=.01
+    if @treeTick < 0
+      @treeTick = 0
     
     for ornamentGroup in @ornamentGroups
       ornamentGroup.tick(@ornamentTick)
@@ -57,7 +61,7 @@ FW.Tree = class Tree
 
 
   generateOrnaments: (y)->
-    spread = Math.max 0, 250 - y * 5
+    spread = Math.max 0, 250 - y * @squishFactor
     colorStart = new THREE.Color()
     colorStart.setRGB(Math.random(), Math.random(), Math.random())
     ornamentEmmiter = new ShaderParticleEmitter
