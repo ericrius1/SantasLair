@@ -100,7 +100,8 @@
       colorStart = new THREE.Color();
       colorStart.setRGB(.4, 0, 0);
       ornamentEmmiterSettings = {
-        size: 200 * this.scaleFactor,
+        size: 400 * this.scaleFactor,
+        sizeEnd: 200 * this.scaleFactor,
         colorStart: colorStart,
         colorSpread: new THREE.Vector3(.4, 0, .1),
         position: new THREE.Vector3(this.position.x, curHeightLayer * this.heightFactor, this.position.z),

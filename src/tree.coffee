@@ -90,7 +90,8 @@ FW.Tree = class Tree
     colorStart = new THREE.Color()
     colorStart.setRGB(.4, 0, 0)
     ornamentEmmiterSettings = 
-      size: 200 * @scaleFactor
+      size: 400 * @scaleFactor
+      sizeEnd: 200 * @scaleFactor
       colorStart: colorStart
       colorSpread: new THREE.Vector3(.4, 0, .1)
       position: new THREE.Vector3 @position.x, curHeightLayer*@heightFactor, @position.z
