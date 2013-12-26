@@ -10,7 +10,7 @@
       var colorStart;
       this.snowGroup = new ShaderParticleGroup({
         texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
-        maxAge: 70
+        maxAge: 270
       });
       this.colorEnd = new THREE.Color();
       colorStart = new THREE.Color();
@@ -28,14 +28,14 @@
         size: 700,
         sizeEnd: 200,
         sizeSpread: 200,
-        position: new THREE.Vector3(0, FW.width * 0.4, 0),
+        position: new THREE.Vector3(0, FW.width * 0.7, 0),
         positionSpread: new THREE.Vector3(200, 100, 200),
         colorStart: colorStart,
         colorEnd: this.colorEnd,
-        velocity: new THREE.Vector3(0, -40, 0),
-        velocitySpread: new THREE.Vector3(111, 0, 111),
-        acceleration: new THREE.Vector3(0, -.2, 0),
-        accelerationSpread: new THREE.Vector3(1.1, 0, 1.1),
+        velocity: new THREE.Vector3(0, -11, 0),
+        velocitySpread: new THREE.Vector3(33, 0, 33),
+        acceleration: new THREE.Vector3(0, -.07, 0),
+        accelerationSpread: new THREE.Vector3(0.1, 0, 0.1),
         particlesPerSecond: 15,
         opacityEnd: 0.7
       });
